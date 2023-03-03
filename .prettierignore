@@ -1,0 +1,15 @@
+# Ignore artifacts:
+build
+coverage
+
+# Ignore all HTML files:
+*.html
+
+# dependencies
+**/node_modules
+**/.pnp
+**/.pnp.js
+
+# yarn
+**/.pnp.*
+**/.yarn/*
