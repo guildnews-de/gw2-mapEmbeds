@@ -1,0 +1,26 @@
+body {
+	background: #515151 !important;
+	color: white !important;
+}
+
+.offcanvas {
+  background: #616161 !important;
+  color: white !important;
+}
+
+
+.canvas-toggle {
+  position: fixed;
+  left: 0;
+  top: 34vh;
+  height: 32vh;
+
+}
+
+.toggle-open {
+  left: 400px;
+}
+
+.toggle-close {
+  left: 0;
+}
