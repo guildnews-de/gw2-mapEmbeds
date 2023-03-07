@@ -4,21 +4,20 @@
     "es2021": true
   },
   "extends": [
-    "airbnb",
+    "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:json/recommended",
-    "plugin:import/errors",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["react", "import", "@typescript-eslint"],
+  "plugins": ["react","react-hooks", "import", "@typescript-eslint"],
   "overrides": [
     {
       "files": [".ts", ".tsx"],
-      "extends": [
-        "airbnb-typescript",
-        "plugin:@typescript-eslint/recommended"
-      ],
+      "extends": ["plugin:@typescript-eslint/recommended"],
       "parserOptions": {
         "project": ["./tsconfig.json"]
       }
@@ -32,6 +31,12 @@
     "sourceType": "module"
   },
   "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
@@ -46,6 +51,7 @@
     }
   },
   "rules": {
+    "import/no-unresolved": "error",
     "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }],
     "react/react-in-jsx-scope": "off",
     "react/require-default-props": "off",
