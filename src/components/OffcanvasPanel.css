@@ -9,18 +9,17 @@ body {
 }
 
 
-.canvas-toggle {
+.offcanvas-toggle {
   position: fixed;
-  left: 0;
+  right: 0;
   top: 34vh;
   height: 32vh;
-
 }
 
 .toggle-open {
-  left: 400px;
+  right: 400px;
 }
 
 .toggle-close {
-  left: 0;
+  right: 0;
 }

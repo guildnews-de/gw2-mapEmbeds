@@ -1,7 +1,7 @@
 const init = () => {
   const scripts = document.querySelector('script#gw2maps');
   if (scripts == null) {
-    import('./App').then(({ default: App }) => new App()); // eslint-disable-line
+    import('./App').then(({ default: App }) => new App());
   }
 };
 

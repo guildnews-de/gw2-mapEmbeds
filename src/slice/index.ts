@@ -1,8 +1,6 @@
-/* eslint-disable import/no-named-as-default */
-import appSlice from './appSlice';
-import mapSlice from './mapSlice';
-import markerSlice from './markerSlice';
+import apiReducer from './apiSlice';
+import appReducer from './appSlice';
+import mapReducer from './mapSlice';
+import markerReducer from './markerSlice';
 
-export { appSlice as app };
-export { mapSlice as map };
-export { markerSlice as marker };
+export { apiReducer, appReducer, mapReducer, markerReducer };

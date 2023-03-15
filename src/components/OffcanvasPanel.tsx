@@ -2,71 +2,92 @@
 import React, { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Offcanvas, Button } from 'react-bootstrap';
-import LeafletComp from './leaflet';
+import GW2Container from './leaflet/GW2Container';
 
-import { faArrowsLeftRight, faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowLeft,
+  faArrowRight,
+  faMapLocationDot,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import { closeCanvas, toggleCanvas } from '../slice/appSlice';
 import type { RootState } from '../store';
 
-import './CanvasToggle.css';
+import './OffcanvasPanel.css';
+import { MarkerEmbed } from '../App';
+import { fetchMap } from '../slice/apiSlice';
+import { setActiveMap } from '../slice/mapSlice';
 
 const mapStateToProps = (state: RootState) => {
   const { open } = state.app.canvas;
-  const { active, groups } = state.marker;
-  const marks = active && groups![active] ? groups![active] : 'none';
   return {
     open: open,
-    activeMark: marks,
   };
 };
 
 const mapDispatchToProps = {
   closeCanvas,
   toggleCanvas,
+  setActiveMap,
+  fetchMap,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-type ReduxUIProps = ConnectedProps<typeof connector>;
+type ReduxOffcanvasProps = ConnectedProps<typeof connector>;
 
-/* interface UIProps extends ReduxUIProps {
-  open: boolean;
-} */
+interface OffcanvasPanelProps extends ReduxOffcanvasProps {
+  dataset: MarkerEmbed['dataset'];
+}
 
-class BootstrapUI extends Component<ReduxUIProps> {
+class OffcanvasPanel extends Component<OffcanvasPanelProps> {
+  constructor(props: OffcanvasPanelProps) {
+    super(props);
+    const { setActiveMap, fetchMap, dataset } = props;
+
+    if (dataset.gw2Maps) {
+      fetchMap({ ids: [Number(dataset.gw2Maps)], lang: 'de' });
+      setActiveMap(Number(dataset.gw2Maps));
+    }
+  }
+
+  /*   componentDidMount(): void {
+    console.log('mount action');
+    this.fetchMap({ ids: [Number(this.mapID!)], lang: 'de' });
+  } */
+
   render() {
-    // eslint-disable-next-line no-unused-vars
-    const { open, activeMark, toggleCanvas, closeCanvas } = this.props;
+    const { open, toggleCanvas, closeCanvas } = this.props;
     const slug = open ? 'open' : 'close';
+    const arrow = !open ? faArrowLeft : faArrowRight;
     return (
       <>
         <Button
-          className={`canvas-toggle toggle-${slug}`}
+          className={`offcanvas-toggle toggle-${slug}`}
           variant="secondary"
           size="sm"
           onClick={() => toggleCanvas()}
         >
-          <FontAwesomeIcon icon={faArrowsLeftRight} />
+          <FontAwesomeIcon icon={arrow} />
           <br />
           <br />
           <FontAwesomeIcon icon={faMapLocationDot} />
           <br />
           <br />
-          <FontAwesomeIcon icon={faArrowsLeftRight} />
+          <FontAwesomeIcon icon={arrow} />
         </Button>
         <Offcanvas
           show={open}
           scroll={true}
           backdrop={false}
           onHide={() => closeCanvas()}
+          placement="end"
         >
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>Offcanvas</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <LeafletComp />
+            <GW2Container />
           </Offcanvas.Body>
         </Offcanvas>
       </>
@@ -74,4 +95,4 @@ class BootstrapUI extends Component<ReduxUIProps> {
   }
 }
 
-export default connector(BootstrapUI);
+export default connector(OffcanvasPanel);

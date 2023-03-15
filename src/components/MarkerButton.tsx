@@ -31,7 +31,7 @@ interface MarkerButtonProps extends ReduxMarkerProps {
 class MarkerButton extends Component<MarkerButtonProps> {
   static markParser(raw: MarkerEmbed['dataset']) {
     const markArr: MarkerObject[] = [];
-    const markObj: Record<string, [number, number]> = JSON.parse(raw.gw2Mark!);
+    const markObj: Record<string, [number, number]> = JSON.parse(raw.gw2Marker!);
     Object.entries(markObj).forEach((entry) => {
       const [key, val] = entry;
       markArr.push({

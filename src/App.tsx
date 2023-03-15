@@ -5,15 +5,16 @@ import type NodeListOf from 'typescript';
 import objectHash from 'object-hash';
 import store from './store';
 
-import BootstrapUI from './ui/BootstrapUI';
-import MarkerButton from './ui/MarkerButton';
+import OffcanvasPanel from './components/OffcanvasPanel';
+import MarkerButton from './components/MarkerButton';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export interface MarkerEmbed extends Omit<HTMLElement, 'dataset'> {
   dataset: {
     gw2Embed?: string;
-    gw2Mark?: string;
+    gw2Maps?: string;
+    gw2Marker?: string;
   };
 }
 
@@ -27,16 +28,16 @@ class App {
   constructor() {
     this.targets = Array.from(
       document.querySelectorAll(
-        'div[data-gw2-maps],span[data-gw2-maps]',
+        'div[data-gw2-marker],span[data-gw2-marker]',
       ) as NodeListOf<MarkerEmbed>,
     );
-    this.drawButtons();
-    this.drawUI()
+    this.renderButtons();
+    this.renderOffcanvas();
   }
 
-  drawButtons() {
+  renderButtons() {
     this.targets.forEach((element) => {
-      element.removeAttribute('data-gw2-map');
+      // element.removeAttribute('data-gw2-maps');
       const { dataset } = element;
       const keyHash = App.getHash(dataset);
       const bRoot = createRoot(element);
@@ -49,13 +50,15 @@ class App {
       );
     });
   }
-
-  drawUI() {
-    const uiRoot = createRoot(document.getElementById('root')!);
-    uiRoot.render(
+  renderOffcanvas() {
+    const rootDiv: MarkerEmbed = document.getElementById('root')!
+    const { dataset } = rootDiv;
+    
+    const root = createRoot(rootDiv);
+    root.render(
       <React.StrictMode>
         <Provider store={store}>
-          <BootstrapUI />
+          <OffcanvasPanel dataset={dataset} />
         </Provider>
       </React.StrictMode>,
     );

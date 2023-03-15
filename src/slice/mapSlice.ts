@@ -3,10 +3,12 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface mapState {
   bounds: [number, number];
+  activeMap: number;
 }
 
 const initState: mapState = {
   bounds: [81920, 114688],
+  activeMap: 0,
 };
 
 export const mapSlice = createSlice({
@@ -19,8 +21,15 @@ export const mapSlice = createSlice({
         bounds: action.payload,
       };
     },
+    setActiveMap(state, action: PayloadAction<number>) {
+      return {
+        ...state,
+        activeMap: action.payload,
+      };
+
+    },
   },
 });
 
-export const { setBounds } = mapSlice.actions;
+export const { setBounds, setActiveMap } = mapSlice.actions;
 export default mapSlice.reducer;
