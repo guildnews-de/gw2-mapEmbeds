@@ -51,9 +51,9 @@ class App {
     });
   }
   renderOffcanvas() {
-    const rootDiv: MarkerEmbed = document.getElementById('root')!
+    const rootDiv: MarkerEmbed = document.getElementById('root')!;
     const { dataset } = rootDiv;
-    
+
     const root = createRoot(rootDiv);
     root.render(
       <React.StrictMode>

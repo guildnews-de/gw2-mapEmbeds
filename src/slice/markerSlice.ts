@@ -1,14 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-
-export interface MarkerObject {
-  title: string;
-  pos: [number,number];
-}
+import type { GW2ApiPoi } from '../apiMiddleware';
 
 export interface MarkerState {
   active: string;
-  groups?: Record<string, MarkerObject[]>;
+  groups?: Record<string, GW2ApiPoi[]>;
 }
 
 const initSate: MarkerState = {
@@ -20,7 +16,7 @@ export const markerSlice = createSlice({
   name: 'marker',
   initialState: initSate,
   reducers: {
-    pushMarker(state, action: PayloadAction<[string, MarkerObject[]]>) {
+    pushMarker(state, action: PayloadAction<[string, GW2ApiPoi[]]>) {
       const [hash, object] = action.payload;
       return {
         ...state,

@@ -7,11 +7,11 @@ export interface GW2ApiRequest {
   loading: boolean;
   error?: GW2ApiError | null;
   request: AxiosRequestConfig;
-  response: Record<number,GW2ApiMapsResponse>;
+  response: Record<number, GW2ApiMapsResponse>;
 }
 
 export interface GW2ApiRequestParams {
-  ids?: number[];
+  id?: number;
   lang?: 'de' | 'en' | 'es' | 'fr';
   access_token?: string;
 }
@@ -25,38 +25,26 @@ export const initState: GW2ApiRequest = {
   response: {
     0: {
       id: 0,
-      name: "Dummy Data",
+      name: 'Dummy Data',
       min_level: 0,
       max_level: 0,
       default_floor: 1,
-      type: "Public",
+      type: 'Public',
       floors: [],
       region_id: 0,
-      region_name: "Tyria",
+      region_name: 'Tyria',
       continent_id: 1,
-      continent_name: "Tyria",
+      continent_name: 'Tyria',
       map_rect: [
-        [
-          0,
-          0
-        ],
-        [
-          81920,
-          114688
-        ]
+        [0, 0],
+        [81920, 114688],
       ],
       continent_rect: [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          0
-        ]
-      ]
-    }
-  }
+        [0, 0],
+        [81920, 114688],
+      ],
+    },
+  },
 };
 
 export const apiSlice = createSlice({
@@ -78,28 +66,34 @@ export const apiSlice = createSlice({
       };
     },
     fetchMap(state, action: PayloadAction<GW2ApiRequestParams>) {
-      const { ids, lang = 'en' } = action.payload;
+      const { id, lang = 'en' } = action.payload;
       return {
         ...state,
         request: {
           ...state.request,
-          method: 'GET',
-          url: '/maps',
-          params:{
-            ids: ids,
+          url: `/maps/${id}`,
+          params: {
             lang: lang,
-          }
-        }
+          },
+        },
       };
     },
-    setData(state, action: PayloadAction<{mapID: number, mapData: GW2ApiMapsResponse}>) {
-      const { mapID, mapData } = action.payload;
+    setData(
+      state,
+      action: PayloadAction<{ mapID: number; mapData: GW2ApiMapsResponse }>,
+    ) {
+      const { mapID, mapData: newData } = action.payload;
+      const prevState = state.response[mapID];
       return {
         ...state,
         error: null,
         response: {
           ...state.response,
-          [mapID]: mapData,
+          [mapID]: {
+            ...prevState,
+            ...newData
+          }
+          ,
         },
       };
     },

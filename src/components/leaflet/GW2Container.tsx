@@ -9,12 +9,23 @@ import GW2Layer from './GW2Layer';
 import GW2Marker from './GW2Marker';
 
 import './GW2Container.css';
+import { GW2ApiPoi } from '../../apiMiddleware';
 
 function GW2Container() {
   const { bounds: stateBounds } = useAppSelector((state) => state.map);
+  const { activeMap } = useAppSelector((state) => state.map);
+  const apiData = useAppSelector((state) => state.api.response[activeMap]);
   const { active, groups } = useAppSelector((state) => state.marker);
+
+  let { poi } = apiData;
+  const poiArr: GW2ApiPoi[] = [];
+  if (poi) {
+    Object.entries(poi).forEach((entry) => {
+      poiArr.push(entry[1]);
+    });
+  }
   const markerGroup = active === 'none' ? undefined : groups![active];
-  
+
   const { Simple } = CRS;
 
   return (
@@ -27,7 +38,8 @@ function GW2Container() {
       maxZoom={7}
     >
       <GW2Layer bounds={stateBounds} />
-      {markerGroup && <GW2Marker markers={markerGroup!} />}
+      {markerGroup && <GW2Marker markers={markerGroup!} perm={true} />}
+      {poi && <GW2Marker markers={poiArr! as GW2ApiPoi[]} />}
     </MapContainer>
   );
 }

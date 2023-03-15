@@ -19,16 +19,13 @@ function GW2Layer(props: { bounds: [number, number] }) {
   // Get center of active GW2 Map
   const { activeMap } = useAppSelector((state) => state.map);
   const apiData = useAppSelector((state) => state.api.response[activeMap]);
-  const pointNW = apiData.continent_rect[0];
-  const pointSE = apiData.continent_rect[1];
+  const pointNW = apiData.continent_rect![0];
+  const pointSE = apiData.continent_rect![1];
   const mapBounds = new Bounds(pointNW, pointSE);
-  const center = map.unproject(mapBounds.getCenter(), maxZoom)
-  
+  const center = map.unproject(mapBounds.getCenter(), maxZoom);
+
   map.setMaxBounds(maxBounds);
-  map.setView(
-    center,
-    5
-  );
+  map.setView(center, 5);
   return (
     <TileLayer
       attribution='&copy; Map data and imagery © <a href="https://www.arena.net/" target="_blank">ArenaNet</a>'

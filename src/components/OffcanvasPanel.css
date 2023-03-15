@@ -1,13 +1,12 @@
 body {
-	background: #515151 !important;
-	color: white !important;
+  background: #515151 !important;
+  color: white !important;
 }
 
 .offcanvas {
   background: #616161 !important;
   color: white !important;
 }
-
 
 .offcanvas-toggle {
   position: fixed;

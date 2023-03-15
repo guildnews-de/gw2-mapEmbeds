@@ -26,7 +26,6 @@ export const mapSlice = createSlice({
         ...state,
         activeMap: action.payload,
       };
-
     },
   },
 });
