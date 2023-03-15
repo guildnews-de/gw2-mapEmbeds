@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import { TileLayer, useMap } from 'react-leaflet';
 import { Bounds, LatLngBounds } from 'leaflet';
 import { useAppSelector } from '../../hooks';
-import { pushMarker } from '../../slice/markerSlice';
 
 function GW2Layer(props: { bounds: [number, number] }) {
   const map = useMap();

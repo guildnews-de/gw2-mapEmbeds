@@ -1696,6 +1696,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@discretize/typeface-menomonia@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "@discretize/typeface-menomonia@npm:0.1.3"
+  checksum: f39234e6afa9eefc6fef748de86836e9f8876e1f40c4b79124db6aa6cdcd16b8bd653ce1a17e85f475a39435e1162229f09a1f882aed4e6326eeb8feb0367f56
+  languageName: node
+  linkType: hard
+
 "@eslint/eslintrc@npm:^2.0.0":
   version: 2.0.0
   resolution: "@eslint/eslintrc@npm:2.0.0"
@@ -7594,6 +7601,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "gw2-map-embeds@workspace:."
   dependencies:
+    "@discretize/typeface-menomonia": ^0.1.3
     "@fortawesome/fontawesome-svg-core": ^6.3.0
     "@fortawesome/free-solid-svg-icons": ^6.3.0
     "@fortawesome/react-fontawesome": ^0.2.0

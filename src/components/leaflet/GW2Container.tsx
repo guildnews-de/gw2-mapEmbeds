@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppSelector } from '../../hooks';
 
-import { MapContainer } from 'react-leaflet';
+import { MapContainer, LayerGroup, LayersControl } from 'react-leaflet';
 import { CRS, LatLng } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -10,6 +10,7 @@ import GW2Marker from './GW2Marker';
 
 import './GW2Container.css';
 import { GW2ApiPoi } from '../../apiMiddleware';
+import GW2Sectors from './GW2Sectors';
 
 function GW2Container() {
   const { bounds: stateBounds } = useAppSelector((state) => state.map);
@@ -17,7 +18,7 @@ function GW2Container() {
   const apiData = useAppSelector((state) => state.api.response[activeMap]);
   const { active, groups } = useAppSelector((state) => state.marker);
 
-  let { poi } = apiData;
+  const { poi, sectors } = apiData;
   const poiArr: GW2ApiPoi[] = [];
   if (poi) {
     Object.entries(poi).forEach((entry) => {
@@ -38,8 +39,25 @@ function GW2Container() {
       maxZoom={7}
     >
       <GW2Layer bounds={stateBounds} />
-      {markerGroup && <GW2Marker markers={markerGroup!} perm={true} />}
-      {poi && <GW2Marker markers={poiArr! as GW2ApiPoi[]} />}
+      <LayersControl>
+        {markerGroup && (
+          <LayersControl.Overlay name="Guide Marker" checked>
+            <LayerGroup>
+              <GW2Marker markers={markerGroup!} perm={true} />
+            </LayerGroup>
+          </LayersControl.Overlay>
+        )}
+        {poi && (
+          <LayersControl.Overlay name="Land Marker" checked>
+            <LayerGroup>
+              <GW2Marker markers={poiArr! as GW2ApiPoi[]} />
+            </LayerGroup>
+          </LayersControl.Overlay>
+        )}
+        {sectors && (
+          <GW2Sectors sectors={sectors} />
+        )}
+      </LayersControl>
     </MapContainer>
   );
 }

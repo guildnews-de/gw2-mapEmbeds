@@ -1,0 +1,12 @@
+.gw2sector {
+  font-size: 12pt;
+  line-height: 12pt;
+  text-align: center;
+  margin: -15pt -35pt !important;
+  width: 100px !important;
+  color: hsla(0, 0%, 100%, 0.8);
+  text-shadow: rgb(0, 0, 0) 2px 0px 0px, rgb(0, 0, 0) -2px 0px 0px,
+    rgb(0, 0, 0) 0px 2px 0px, rgb(0, 0, 0) 0px -2px 0px, rgb(0, 0, 0) 1px 1px,
+    rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px,
+    rgb(0, 0, 0) -1px 1px 0px;
+}
