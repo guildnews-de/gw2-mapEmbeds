@@ -26,7 +26,7 @@ function LocationMarker() {
   const style = {
     userSelect: 'all',
     WebkitUserSelect: 'all',
-    width: '86px',
+    width: '96px',
   } as CSSProperties;
 
   return pos === null ? null : (
@@ -36,7 +36,7 @@ function LocationMarker() {
         className="leaflet-control-attribution leaflet-control"
         style={style}
       >
-        {`Clicked: \n[${projectPos!.x},${projectPos!.y}]`}
+        {`Clicked: [${Math.round(projectPos!.x)},${Math.round(projectPos!.y)}]`}
       </div>
     </div>
   );

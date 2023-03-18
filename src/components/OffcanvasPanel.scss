@@ -6,16 +6,20 @@ body {
 .offcanvas {
   background: #616161 !important;
   color: white !important;
+  height: 94vh;
+  margin: auto;
+  width: 36vw !important;
 }
 
 .offcanvas-toggle {
   position: fixed;
   top: 34vh;
   height: 32vh;
+  z-index: 200;
 }
 
 .toggle-open {
-  right: 400px;
+  right: 36vw;
 }
 
 .toggle-close {

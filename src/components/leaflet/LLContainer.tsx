@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import type { RootState } from '../../redux/store';
 
-import { MapContainer, LayerGroup, LayersControl } from 'react-leaflet';
+import { MapContainer, Pane, LayerGroup, LayersControl } from 'react-leaflet';
 import { CRS, LatLng } from 'leaflet';
 
 import { GW2Tiles, GW2Marker, GW2Sectors } from './gw2';
@@ -43,8 +43,8 @@ class LLContainer extends Component<LLContainerReduxProps> {
     Object.entries(poi!).forEach((entry) => {
       this.poi.push(entry[1]);
     });
-
   }
+
   render() {
     const { gw2Bounds, marker, apiData } = this.props;
     const { Simple } = CRS;
@@ -59,15 +59,17 @@ class LLContainer extends Component<LLContainerReduxProps> {
         doubleClickZoom={false}
       >
         <GW2Tiles bounds={gw2Bounds} data={apiData} />
+        <LocationMarker />
         <LayersControl>
-          <LocationMarker />
-          {marker && (
-            <LayersControl.Overlay name="Guide Marker" checked>
-              <LayerGroup>
-                <GW2Marker markers={marker!} perm={true} />
-              </LayerGroup>
-            </LayersControl.Overlay>
-          )}
+          <Pane name='guide-marker' style={{zIndex:'700'}} className='leaflet-marker-pane' >
+            {marker && (
+              <LayersControl.Overlay name="Guide Marker" checked>
+                <LayerGroup>
+                  <GW2Marker markers={marker!} perm={true} />
+                </LayerGroup>
+              </LayersControl.Overlay>
+            )}
+          </Pane>
           {this.sectors && <GW2Sectors sectors={this.sectors} />}
           {this.poi && (
             <LayersControl.Overlay name="Land Marker" checked>

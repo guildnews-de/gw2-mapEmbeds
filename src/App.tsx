@@ -15,6 +15,7 @@ export interface MarkerEmbed extends Omit<HTMLElement, 'dataset'> {
     gw2Embed?: string;
     gw2Maps?: string;
     gw2Marker?: string;
+    gw2Color?: string;
   };
 }
 
@@ -51,7 +52,7 @@ class App {
     });
   }
   renderOffcanvas() {
-    const rootDiv: MarkerEmbed = document.getElementById('root')!;
+    const rootDiv: MarkerEmbed = document.getElementById('mapRoot')!;
     const { dataset } = rootDiv;
 
     const root = createRoot(rootDiv);

@@ -3,3 +3,4 @@ dist
 dist-embeds
 .yarn/**
 *.html
+webpack.config.js

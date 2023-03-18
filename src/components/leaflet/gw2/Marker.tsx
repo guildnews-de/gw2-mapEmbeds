@@ -5,6 +5,10 @@ import { icon } from 'leaflet';
 import { GW2ApiPoi } from '../../../redux/apiMiddleware';
 import {
   star_blue,
+  star_red,
+  star_rose,
+  star_green,
+  star_yellow,
   heart,
   heropoint,
   landmark,
@@ -12,7 +16,9 @@ import {
   waypoint,
 } from './assets';
 
-function GW2Marker(props: { markers: GW2ApiPoi[], perm?: boolean }) {
+import './tooltip.scss';
+
+function GW2Marker(props: { markers: GW2ApiPoi[]; perm?: boolean }) {
   const map = useMap();
   const { markers } = props;
 
@@ -39,6 +45,22 @@ function GW2Marker(props: { markers: GW2ApiPoi[], perm?: boolean }) {
         png = waypoint;
         break;
 
+      case 'red':
+        png = star_red;
+        break;
+
+      case 'rose':
+        png = star_rose;
+        break;
+
+      case 'green':
+        png = star_green;
+        break;
+
+      case 'yellow':
+        png = star_yellow;
+        break;
+
       default:
         png = star_blue;
         break;
@@ -59,11 +81,15 @@ function GW2Marker(props: { markers: GW2ApiPoi[], perm?: boolean }) {
           icon={iconSwitch(el.type)}
           position={map.unproject([el.coord[0], el.coord[1]], map.getMaxZoom())}
         >
-          {el.name &&
-          <Tooltip direction="top" offset={[0, -10]} permanent={props.perm ? true : false}>
-            {el.name}
-          </Tooltip>
-          }
+          {el.name && (
+            <Tooltip
+              direction="right"
+              offset={[-8, 0]}
+              permanent={props.perm ? true : false}
+            >
+              {el.name}
+            </Tooltip>
+          )}
         </Marker>
       ))}
     </>
