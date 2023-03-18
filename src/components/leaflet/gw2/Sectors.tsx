@@ -1,8 +1,8 @@
 import { LatLng } from 'leaflet';
 import React from 'react';
 import { LayerGroup, LayersControl, Polyline, useMap } from 'react-leaflet';
-import { GW2ApiSector } from '../../apiMiddleware';
-import MapTextMark from './MapTextMark';
+import { GW2ApiSector } from '../../../redux/apiMiddleware';
+import SectorText from './SectorText';
 
 interface GW2SectorsProps {
   sectors: Record<number, GW2ApiSector>;
@@ -34,7 +34,7 @@ function GW2Sectors(props: GW2SectorsProps) {
       <LayersControl.Overlay name="Sektor Namen" checked>
         <LayerGroup>
           {names.map((el, i) => (
-            <MapTextMark text={el[0]} coord={el[1]} key={i} />
+            <SectorText text={el[0]} coord={el[1]} key={i} />
           ))}
         </LayerGroup>
       </LayersControl.Overlay>

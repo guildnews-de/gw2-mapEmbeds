@@ -2,7 +2,7 @@ import React from 'react';
 import { Marker, Tooltip, useMap } from 'react-leaflet';
 import { icon } from 'leaflet';
 
-import { GW2ApiPoi } from '../../apiMiddleware';
+import { GW2ApiPoi } from '../../../redux/apiMiddleware';
 import {
   star_blue,
   heart,

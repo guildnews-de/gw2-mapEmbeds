@@ -3,12 +3,12 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import type NodeListOf from 'typescript';
 import objectHash from 'object-hash';
-import store from './store';
+import store from './redux/store';
 
 import OffcanvasPanel from './components/OffcanvasPanel';
 import MarkerButton from './components/MarkerButton';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.scss';
 
 export interface MarkerEmbed extends Omit<HTMLElement, 'dataset'> {
   dataset: {

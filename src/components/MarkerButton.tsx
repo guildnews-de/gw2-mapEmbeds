@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import type { MarkerEmbed } from '../App';
-import type { RootState } from '../store';
+import type { RootState } from '../redux/store';
 
-import { pushMarker, setMarker } from '../slice/markerSlice';
-import { openCanvas } from '../slice/appSlice';
-import { GW2ApiPoi } from '../apiMiddleware';
+import { pushMarker, setMarker, wipeCurrent } from '../redux/slice/markerSlice';
+import { openCanvas } from '../redux/slice/appSlice';
+import { GW2ApiPoi } from '../redux/apiMiddleware';
 
 const mapStateToProps = (state: RootState) => {
   const { active } = state.marker;
@@ -19,6 +19,7 @@ const mapDispatchToProps = {
   setMarker,
   pushMarker,
   openCanvas,
+  wipeCurrent,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -66,6 +67,7 @@ class MarkerButton extends Component<MarkerButtonProps> {
         onClick={() => {
           setMarker(hash as string);
           openCanvas();
+          wipeCurrent();
         }}
       >
         {!(activeMark === hash) ? onText : offText}

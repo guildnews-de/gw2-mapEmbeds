@@ -6,7 +6,7 @@ import { GW2ApiMapsResponse, GW2ApiError } from '../apiMiddleware';
 export interface GW2ApiRequest {
   loading: boolean;
   error?: GW2ApiError | null;
-  request: AxiosRequestConfig;
+  request?: AxiosRequestConfig;
   response: Record<number, GW2ApiMapsResponse>;
 }
 

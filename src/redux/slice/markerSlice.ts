@@ -4,11 +4,13 @@ import type { GW2ApiPoi } from '../apiMiddleware';
 
 export interface MarkerState {
   active: string;
+  currentPos?: string | null;
   groups?: Record<string, GW2ApiPoi[]>;
 }
 
 const initSate: MarkerState = {
   active: 'none',
+  currentPos: null,
   groups: undefined,
 };
 
@@ -42,8 +44,22 @@ export const markerSlice = createSlice({
         active: hash,
       };
     },
+    setCurrent(state, action: PayloadAction<string>) {
+      const { payload: current } = action;
+      return {
+        ...state,
+        currentPos: current,
+      };
+    },
+    wipeCurrent(state) {
+      return {
+        ...state,
+        currentPos: null,
+      };
+    },
   },
 });
 
-export const { pushMarker, popMarker, setMarker } = markerSlice.actions;
+export const { pushMarker, popMarker, setMarker, setCurrent, wipeCurrent } =
+  markerSlice.actions;
 export default markerSlice.reducer;

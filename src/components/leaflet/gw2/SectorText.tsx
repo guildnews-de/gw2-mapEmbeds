@@ -2,7 +2,7 @@ import React from 'react';
 import { divIcon, LatLng } from 'leaflet';
 import { Marker } from 'react-leaflet';
 
-import './MapTextMark.css';
+import './SectorText.scss';
 
 interface MapTextMarkProps {
   text: string;

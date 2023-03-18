@@ -1,23 +1,22 @@
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Offcanvas, Button } from 'react-bootstrap';
-import GW2Container from './leaflet/GW2Container';
+import LLContainer from './leaflet/LLContainer';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowLeft,
   faArrowRight,
   faMapLocationDot,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { closeCanvas, toggleCanvas } from '../slice/appSlice';
-import type { RootState } from '../store';
-
-import './OffcanvasPanel.css';
+import { closeCanvas, toggleCanvas } from '../redux/slice/appSlice';
+import { fetchMap } from '../redux/slice/apiSlice';
+import { setActiveMap } from '../redux/slice/mapSlice';
 import { MarkerEmbed } from '../App';
-import { fetchMap } from '../slice/apiSlice';
-import { setActiveMap } from '../slice/mapSlice';
+import type { RootState } from '../redux/store';
+
+import './OffcanvasPanel.scss';
 
 const mapStateToProps = (state: RootState) => {
   const { open } = state.app.canvas;
@@ -87,7 +86,7 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
             <Offcanvas.Title>Offcanvas</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <GW2Container />
+            <LLContainer />
           </Offcanvas.Body>
         </Offcanvas>
       </>
