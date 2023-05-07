@@ -30,6 +30,8 @@ interface MarkerButtonProps extends ReduxMarkerProps {
   dataset: MarkerEmbed['dataset'];
 }
 
+// TODO: Change active map on button. "default map" fallback mechanic?
+
 class MarkerButton extends Component<MarkerButtonProps> {
   static markParser(raw: MarkerEmbed['dataset']) {
     const markArr: GW2ApiPoi[] = [];

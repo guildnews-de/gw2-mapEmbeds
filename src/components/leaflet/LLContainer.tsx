@@ -14,15 +14,15 @@ import './LLContainer.scss';
 
 const mapStateToProps = (state: RootState) => {
   const { bounds, activeMap } = state.map;
-  const apiData = state.api.response[activeMap];
-
   const { active } = state.marker;
+
   const marker = active === 'none' ? undefined : state.marker.groups![active];
+  const apiData = state.api.response[activeMap];
 
   return {
     gw2Bounds: bounds,
-    apiData: apiData,
     marker: marker,
+    apiData: apiData,
   };
 };
 
@@ -36,7 +36,7 @@ class LLContainer extends Component<LLContainerReduxProps> {
   constructor(props: LLContainerReduxProps) {
     super(props);
 
-    const { sectors, poi } = props.apiData;
+    const { sectors, poi } = props.apiData!;
 
     this.sectors = sectors;
 
