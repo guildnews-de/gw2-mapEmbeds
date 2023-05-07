@@ -6,13 +6,14 @@ body {
 .offcanvas {
   background: #616161 !important;
   color: white !important;
-  height: 94vh;
+  // height: 94vh;
   margin: auto;
-  width: 36vw !important;
+  //width: 36vw !important;
 }
 
 .offcanvas-toggle {
   position: fixed;
+  font-size: 1.5rem !important;
   top: 34vh;
   height: 32vh;
   z-index: 200;
@@ -24,4 +25,20 @@ body {
 
 .toggle-close {
   right: 0;
+}
+
+@media only screen and (max-width: 1024px) {
+
+  .offcanvas {
+      height: 100vh;
+      width: 100vw !important;
+  }
+
+}
+
+@media only screen and (min-width: 1025px) {
+  .offcanvas {
+      height: 94vh;
+      width: 36vw !important;
+  }
 }
