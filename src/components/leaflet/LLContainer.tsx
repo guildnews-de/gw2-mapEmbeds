@@ -40,6 +40,9 @@ class LLContainer extends Component<LLContainerReduxProps> {
 
     this.sectors = sectors;
 
+    if (!poi) {
+      return;
+    }
     Object.entries(poi!).forEach((entry) => {
       this.poi.push(entry[1]);
     });

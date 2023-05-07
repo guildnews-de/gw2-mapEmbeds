@@ -13,9 +13,9 @@ import './App.scss';
 export interface MarkerEmbed extends Omit<HTMLElement, 'dataset'> {
   dataset: {
     gw2Embed?: string;
-    gw2Maps?: string;
-    gw2Marker?: string;
-    gw2Color?: string;
+    gw2mapIds?: string;
+    gw2mapMarker?: string;
+    gw2mapColor?: string;
   };
 }
 
@@ -29,7 +29,7 @@ class App {
   constructor() {
     this.targets = Array.from(
       document.querySelectorAll(
-        'div[data-gw2-marker],span[data-gw2-marker]',
+        'div[data-gw2map-marker],span[data-gw2map-marker]',
       ) as NodeListOf<MarkerEmbed>,
     );
     this.renderButtons();
@@ -37,6 +37,9 @@ class App {
   }
 
   renderButtons() {
+    if (!this.targets) {
+      return;
+    }
     this.targets.forEach((element) => {
       // element.removeAttribute('data-gw2-maps');
       const { dataset } = element;
@@ -52,7 +55,10 @@ class App {
     });
   }
   renderOffcanvas() {
-    const rootDiv: MarkerEmbed = document.getElementById('mapRoot')!;
+    const rootDiv: MarkerEmbed = document.getElementById('gw2mapRoot')!;
+    if (!rootDiv) {
+      return;
+    }
     const { dataset } = rootDiv;
 
     const root = createRoot(rootDiv);

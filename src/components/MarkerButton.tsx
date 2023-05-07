@@ -34,9 +34,9 @@ class MarkerButton extends Component<MarkerButtonProps> {
   static markParser(raw: MarkerEmbed['dataset']) {
     const markArr: GW2ApiPoi[] = [];
     const markObj: Record<string, [number, number]> = JSON.parse(
-      raw.gw2Marker!,
+      raw.gw2mapMarker!,
     );
-    const type = raw.gw2Color ? raw.gw2Color : 'default';
+    const type = raw.gw2mapColor ? raw.gw2mapColor : 'default';
     Object.entries(markObj).forEach((entry) => {
       const [key, val] = entry;
       markArr.push({

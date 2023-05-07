@@ -44,9 +44,9 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
     super(props);
     const { setActiveMap, fetchMap, dataset } = props;
 
-    if (dataset.gw2Maps) {
-      fetchMap({ id: Number(dataset.gw2Maps), lang: 'de' });
-      setActiveMap(Number(dataset.gw2Maps));
+    if (dataset.gw2mapIds) {
+      fetchMap({ id: Number(dataset.gw2mapIds), lang: 'de' });
+      setActiveMap(Number(dataset.gw2mapIds));
     }
   }
 
