@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { AxiosRequestConfig } from 'axios';
+//import type { AxiosRequestConfig } from 'axios';
 import { GW2ApiMapsResponse, GW2ApiError } from '../apiMiddleware';
 
 export interface GW2ApiRequest {
   loading: boolean;
   error?: GW2ApiError | null;
-  request?: AxiosRequestConfig;
+  request: {
+    method?: string
+  };
   response: Record<number, GW2ApiMapsResponse>;
 }
 
@@ -46,6 +48,7 @@ export const initState: GW2ApiRequest = {
     },
   },
 };
+
 
 export const apiSlice = createSlice({
   name: 'api',
