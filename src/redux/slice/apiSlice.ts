@@ -1,15 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 //import type { AxiosRequestConfig } from 'axios';
-import { GW2ApiMapsResponse, GW2ApiError } from '../apiMiddleware';
+import {
+  GW2ApiMapsResponse,
+  GW2ApiError,
+  GW2ApiRegionsResponse,
+  GW2ApiPoi,
+} from '../apiMiddleware';
 
 export interface GW2ApiRequest {
   loading: boolean;
   error?: GW2ApiError | null;
   request: {
-    method?: string
+    method?: string;
   };
-  response: Record<number, GW2ApiMapsResponse>;
+  response: Record<number, GW2MapsApiData>;
+}
+
+export interface GW2MapsApiData
+  extends Omit<
+    GW2ApiMapsResponse & GW2ApiRegionsResponse,
+    'points_of_interest'
+  > {
+  poi?: Record<number, GW2ApiPoi>;
 }
 
 export interface GW2ApiRequestParams {
@@ -49,7 +62,6 @@ export const initState: GW2ApiRequest = {
   },
 };
 
-
 export const apiSlice = createSlice({
   name: 'api',
   initialState: initState,
@@ -83,7 +95,10 @@ export const apiSlice = createSlice({
     },
     setData(
       state,
-      action: PayloadAction<{ mapID: number; mapData: GW2ApiMapsResponse }>,
+      action: PayloadAction<{
+        mapID: number;
+        mapData: GW2ApiMapsResponse | GW2ApiRegionsResponse;
+      }>,
     ) {
       const { mapID, mapData: newData } = action.payload;
       const prevState = state.response[mapID];

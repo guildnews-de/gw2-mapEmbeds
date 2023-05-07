@@ -39,9 +39,19 @@ export interface GW2ApiMapsResponse {
   continent_name?: string;
   map_rect?: [[number, number], [number, number]];
   continent_rect?: [[number, number], [number, number]];
+}
+
+export interface GW2ApiRegionsResponse {
+  name?: string;
+  min_level?: number;
+  max_level?: number;
+  default_floor?: number;
   label_coord?: [number, number];
-  poi?: Record<number, GW2ApiPoi>;
+  map_rect?: [[number, number], [number, number]];
+  continent_rect?: [[number, number], [number, number]];
+  points_of_interest?: Record<number, GW2ApiPoi>;
   sectors?: Record<number, GW2ApiSector>;
+  id?: number;
 }
 
 export type GW2ApiError = { text: string };
@@ -81,7 +91,7 @@ const apiMiddleware: Middleware<{}, RootState> =
           params: {
             lang: lang,
           },
-        }).then(({ data }: { data: GW2ApiMapsResponse }) => {
+        }).then(({ data }: { data: GW2ApiRegionsResponse }) => {
           // @ts-ignore
           const { label_coord, points_of_interest: poi, sectors } = data;
           const cropData = {
