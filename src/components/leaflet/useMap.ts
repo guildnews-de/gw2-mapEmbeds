@@ -26,8 +26,8 @@ export function setMapConfig(
   const maxBounds = getMaxBounds(bounds);
   map.setMaxBounds(maxBounds);
 
-  const center = getCenter(rect[0], rect[1])
-  map.setView(center,5);
+  const center = getCenter(rect[0], rect[1]);
+  map.setView(center, 5);
 
   return maxBounds;
 }

@@ -61,7 +61,11 @@ class LLContainer extends Component<LLContainerReduxProps> {
         <GW2Tiles bounds={gw2Bounds} data={apiData} />
         <LocationMarker />
         <LayersControl>
-          <Pane name='guide-marker' style={{zIndex:'700'}} className='leaflet-marker-pane' >
+          <Pane
+            name="guide-marker"
+            style={{ zIndex: '700' }}
+            className="leaflet-marker-pane"
+          >
             {marker && (
               <LayersControl.Overlay name="Guide Marker" checked>
                 <LayerGroup>

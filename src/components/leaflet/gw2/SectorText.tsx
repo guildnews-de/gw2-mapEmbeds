@@ -15,11 +15,9 @@ function MapTextMark(props: MapTextMarkProps) {
   const name = divIcon({
     html: `<span>${text}</span>`,
     className: 'gw2sector',
-  })
+  });
 
-  return (
-    <Marker position={coord} icon={name} zIndexOffset={-100} />
-  );
+  return <Marker position={coord} icon={name} zIndexOffset={-100} />;
 }
 
 export default MapTextMark;

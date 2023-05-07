@@ -36,7 +36,7 @@ class MarkerButton extends Component<MarkerButtonProps> {
     const markObj: Record<string, [number, number]> = JSON.parse(
       raw.gw2Marker!,
     );
-    const type = raw.gw2Color ? raw.gw2Color : 'default'
+    const type = raw.gw2Color ? raw.gw2Color : 'default';
     Object.entries(markObj).forEach((entry) => {
       const [key, val] = entry;
       markArr.push({

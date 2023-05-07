@@ -2,11 +2,12 @@
   height: 100%;
 }
 
-.dark-skin .leaflet-control>a, .dark-skin .leaflet-control {
+.dark-skin .leaflet-control > a,
+.dark-skin .leaflet-control {
   background-color: #2c2f34;
 }
 
-dark-skin .leaflet-control>a::hover {
+dark-skin .leaflet-control > a::hover {
   color: grey;
 }
 

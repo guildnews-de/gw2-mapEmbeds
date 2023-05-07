@@ -91,9 +91,8 @@ export const apiSlice = createSlice({
           ...state.response,
           [mapID]: {
             ...prevState,
-            ...newData
-          }
-          ,
+            ...newData,
+          },
         },
       };
     },

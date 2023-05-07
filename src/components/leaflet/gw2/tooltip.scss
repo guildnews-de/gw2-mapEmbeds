@@ -6,7 +6,11 @@
 .leaflet-tooltip-right {
   border-radius: 0 50vh 50vh 0 !important;
   padding-left: 1.2vw !important;
-  background: linear-gradient(90deg, rgba(2,0,36,0) 0%, rgba(255,255,255,1) 50%) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 0) 0%,
+    rgba(255, 255, 255, 1) 50%
+  ) !important;
   border: none !important;
 }
 
