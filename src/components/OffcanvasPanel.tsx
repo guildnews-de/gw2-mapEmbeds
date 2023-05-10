@@ -12,7 +12,7 @@ import {
 
 import { closeCanvas, toggleCanvas } from '../redux/slice/appSlice';
 import { fetchMap } from '../redux/slice/apiSlice';
-import { setActiveMap } from '../redux/slice/mapSlice';
+import { addActiveMap } from '../redux/slice/mapSlice';
 import { MarkerEmbed } from '../App';
 import type { RootState } from '../redux/store';
 
@@ -28,7 +28,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = {
   closeCanvas,
   toggleCanvas,
-  setActiveMap,
+  addActiveMap,
   fetchMap,
 };
 
@@ -42,14 +42,15 @@ interface OffcanvasPanelProps extends ReduxOffcanvasProps {
 class OffcanvasPanel extends Component<OffcanvasPanelProps> {
   constructor(props: OffcanvasPanelProps) {
     super(props);
-    const { setActiveMap, fetchMap, dataset } = props;
+    const { addActiveMap, fetchMap, dataset } = props;
 
     if (dataset.gw2mapIds) {
       const ids = dataset.gw2mapIds.split(',');
       ids.forEach((id) => {
-        fetchMap({ id: Number(id), lang: 'de' });
+        const numID = Number(id);
+        fetchMap({ id: numID, lang: 'de' });
+        addActiveMap(numID);
       });
-      setActiveMap(Number(ids[0]));
     }
   }
 

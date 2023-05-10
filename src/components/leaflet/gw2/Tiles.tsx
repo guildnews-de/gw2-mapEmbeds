@@ -1,11 +1,10 @@
 import React from 'react';
 import { TileLayer, useMap } from 'react-leaflet';
 import { Bounds, LatLngBounds, PointExpression, PointTuple } from 'leaflet';
-import { GW2ApiMapsResponse } from '../../../redux/apiMiddleware';
 
 interface GW2LayerProps {
   bounds: PointTuple;
-  data: GW2ApiMapsResponse;
+  rect: [[number, number], [number, number]][];
 }
 
 function GW2Layer(props: GW2LayerProps) {
@@ -20,7 +19,7 @@ function GW2Layer(props: GW2LayerProps) {
   map.setMaxBounds(maxBounds);
 
   // Get center of active GW2 Map
-  const [pNW, pSE] = props.data.continent_rect!;
+  const [pNW, pSE] = props.rect[0];
   const mapBounds = new Bounds(pNW, pSE);
   const center = unproject(mapBounds.getCenter());
   map.setView(center, 5);

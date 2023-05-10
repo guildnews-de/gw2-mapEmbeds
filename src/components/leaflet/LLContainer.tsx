@@ -7,23 +7,44 @@ import { CRS, LatLng } from 'leaflet';
 
 import { GW2Tiles, GW2Marker, GW2Sectors } from './gw2';
 import LocationMarker from './LocationMarker';
-import { GW2ApiPoi } from '../../redux/apiMiddleware';
+import { GW2ApiPoi, GW2ApiSector } from '../../redux/apiMiddleware';
 
 import 'leaflet/dist/leaflet.css';
 import './LLContainer.scss';
 
 const mapStateToProps = (state: RootState) => {
-  const { bounds, activeMap } = state.map;
+  const { bounds, activeMaps } = state.map;
   const { active } = state.marker;
 
   const marker = active === 'none' ? undefined : state.marker.groups![active];
-  const apiData = state.api.response[activeMap];
 
-  return {
+  const apiData = {
     gw2Bounds: bounds,
     marker: marker,
-    apiData: apiData,
+    poi: {},
+    sectors: {},
+    continent_rect: [],
+  } as {
+    gw2Bounds: [number, number];
+    marker: GW2ApiPoi[];
+    poi: Record<number, GW2ApiPoi>;
+    sectors: Record<number, GW2ApiSector>;
+    continent_rect: [[number, number], [number, number]][];
   };
+  activeMaps.forEach((id) => {
+    const { poi, sectors, continent_rect } = state.api.response[id];
+    apiData.poi = {
+      ...apiData.poi,
+      ...poi,
+    };
+    apiData.sectors = {
+      ...apiData.sectors,
+      ...sectors,
+    };
+    apiData.continent_rect.push(continent_rect!);
+  });
+
+  return apiData;
 };
 
 const connector = connect(mapStateToProps);
@@ -36,7 +57,7 @@ class LLContainer extends Component<LLContainerReduxProps> {
   constructor(props: LLContainerReduxProps) {
     super(props);
 
-    const { sectors, poi } = props.apiData!;
+    const { sectors, poi } = props;
 
     this.sectors = sectors;
 
@@ -49,7 +70,7 @@ class LLContainer extends Component<LLContainerReduxProps> {
   }
 
   render() {
-    const { gw2Bounds, marker, apiData } = this.props;
+    const { gw2Bounds, marker, continent_rect } = this.props;
     const { Simple } = CRS;
     return (
       <MapContainer
@@ -61,7 +82,7 @@ class LLContainer extends Component<LLContainerReduxProps> {
         maxZoom={7}
         doubleClickZoom={false}
       >
-        <GW2Tiles bounds={gw2Bounds} data={apiData} />
+        <GW2Tiles bounds={gw2Bounds} rect={continent_rect} />
         <LocationMarker />
         <LayersControl>
           <Pane
