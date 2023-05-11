@@ -8,7 +8,7 @@ export interface appState {
 
 const initState: appState = {
   canvas: {
-    open: false,
+    open: true,
   },
 };
 

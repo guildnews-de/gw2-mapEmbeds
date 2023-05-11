@@ -3,17 +3,18 @@ import { connect, ConnectedProps } from 'react-redux';
 import type { RootState } from '../../redux/store';
 
 import { MapContainer, Pane, LayerGroup, LayersControl } from 'react-leaflet';
-import { CRS, LatLng } from 'leaflet';
+import { CRS, LatLng, PointTuple } from 'leaflet';
 
 import { GW2Tiles, GW2Marker, GW2Sectors } from './gw2';
-import LocationMarker from './LocationMarker';
+import ClickedPosition from './LLClickedPos';
 import { GW2ApiPoi, GW2ApiSector } from '../../redux/apiMiddleware';
 
 import 'leaflet/dist/leaflet.css';
 import './LLContainer.scss';
+import Recenter from './LLRecenter';
 
 const mapStateToProps = (state: RootState) => {
-  const { bounds, activeMaps } = state.map;
+  const { bounds, activeMaps, center } = state.map;
   const { active } = state.marker;
 
   const marker = active === 'none' ? undefined : state.marker.groups![active];
@@ -24,13 +25,16 @@ const mapStateToProps = (state: RootState) => {
     poi: {},
     sectors: {},
     continent_rect: [],
+    center: center,
   } as {
     gw2Bounds: [number, number];
     marker: GW2ApiPoi[];
     poi: Record<number, GW2ApiPoi>;
     sectors: Record<number, GW2ApiSector>;
     continent_rect: [[number, number], [number, number]][];
+    center: PointTuple;
   };
+
   activeMaps.forEach((id) => {
     const { poi, sectors, continent_rect } = state.api.response[id];
     apiData.poi = {
@@ -58,7 +62,6 @@ class LLContainer extends Component<LLContainerReduxProps> {
     super(props);
 
     const { sectors, poi } = props;
-
     this.sectors = sectors;
 
     if (!poi) {
@@ -72,6 +75,7 @@ class LLContainer extends Component<LLContainerReduxProps> {
   render() {
     const { gw2Bounds, marker, continent_rect } = this.props;
     const { Simple } = CRS;
+
     return (
       <MapContainer
         crs={Simple}
@@ -82,8 +86,9 @@ class LLContainer extends Component<LLContainerReduxProps> {
         maxZoom={7}
         doubleClickZoom={false}
       >
-        <GW2Tiles bounds={gw2Bounds} rect={continent_rect} />
-        <LocationMarker />
+        <GW2Tiles bounds={gw2Bounds} />
+        <ClickedPosition />
+        <Recenter newCenter={continent_rect[0]} />
         <LayersControl>
           <Pane
             name="guide-marker"
@@ -91,11 +96,14 @@ class LLContainer extends Component<LLContainerReduxProps> {
             className="leaflet-marker-pane"
           >
             {marker && (
-              <LayersControl.Overlay name="Guide Marker" checked>
-                <LayerGroup>
-                  <GW2Marker markers={marker!} perm={true} />
-                </LayerGroup>
-              </LayersControl.Overlay>
+              <>
+                <LayersControl.Overlay name="Guide Marker" checked>
+                  <LayerGroup>
+                    <GW2Marker markers={marker!} perm={true} />
+                  </LayerGroup>
+                </LayersControl.Overlay>
+                <Recenter newCenter={marker[0].coord} />
+              </>
             )}
           </Pane>
           {this.sectors && <GW2Sectors sectors={this.sectors} />}

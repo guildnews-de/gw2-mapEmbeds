@@ -1,28 +1,23 @@
 import React from 'react';
 import { TileLayer, useMap } from 'react-leaflet';
-import { Bounds, LatLngBounds, PointExpression, PointTuple } from 'leaflet';
+import { LatLngBounds, PointExpression, PointTuple } from 'leaflet';
 
 interface GW2LayerProps {
   bounds: PointTuple;
-  rect: [[number, number], [number, number]][];
 }
 
 function GW2Layer(props: GW2LayerProps) {
   const map = useMap();
-  const unproject = (LatLng: PointExpression) => {
-    return map.unproject(LatLng, map.getMaxZoom());
+  const unproject = (point: PointExpression) => {
+    return map.unproject(point, map.getMaxZoom());
   };
 
+  const { bounds } = props;
+
   // Get max bound of whole leaflet map
-  const [Lat, Lng] = props.bounds;
+  const [Lat, Lng] = bounds;
   const maxBounds = new LatLngBounds(unproject([0, 0]), unproject([Lat, Lng]));
   map.setMaxBounds(maxBounds);
-
-  // Get center of active GW2 Map
-  const [pNW, pSE] = props.rect[0];
-  const mapBounds = new Bounds(pNW, pSE);
-  const center = unproject(mapBounds.getCenter());
-  map.setView(center, 5);
 
   return (
     <TileLayer

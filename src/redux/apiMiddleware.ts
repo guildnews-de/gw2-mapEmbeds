@@ -9,10 +9,11 @@ import {
 } from './slice/apiSlice';
 import { Middleware, isAnyOf } from '@reduxjs/toolkit';
 import { RootState } from './store';
+import { PointTuple } from 'leaflet';
 
 export interface GW2ApiPoi {
   name: string;
-  coord: [number, number];
+  coord: PointTuple;
   type?: string;
   floor?: 1;
   chat_link?: string;

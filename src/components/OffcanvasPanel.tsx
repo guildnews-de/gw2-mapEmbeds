@@ -40,17 +40,22 @@ interface OffcanvasPanelProps extends ReduxOffcanvasProps {
 }
 
 class OffcanvasPanel extends Component<OffcanvasPanelProps> {
+  // Workround to prevent double mapID query
+  // I don't know why it redraws the offcanvas
+  static loadMaps = true;
+
   constructor(props: OffcanvasPanelProps) {
     super(props);
     const { addActiveMap, fetchMap, dataset } = props;
 
-    if (dataset.gw2mapIds) {
+    if (OffcanvasPanel.loadMaps && dataset.gw2mapIds) {
       const ids = dataset.gw2mapIds.split(',');
       ids.forEach((id) => {
         const numID = Number(id);
         fetchMap({ id: numID, lang: 'de' });
         addActiveMap(numID);
       });
+      OffcanvasPanel.loadMaps = false;
     }
   }
 
