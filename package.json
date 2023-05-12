@@ -6,7 +6,7 @@
   "scripts": {
     "start": "react-scripts start",
     "prepare": "yarn build",
-    "test": "yarn format && yarn lint",
+    "test": "yarn format && yarn lint && tsc --noEmit",
     "format": "prettier -w src",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "build": "react-scripts build",

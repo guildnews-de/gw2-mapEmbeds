@@ -12,8 +12,8 @@ import ClickedPosition from './LLClickedPos';
 
 import 'leaflet/dist/leaflet.css';
 import './LLContainer.scss';
-//import Recenter from './LLRecenter';
-//{marker && <Recenter mTupel={this.markerPoints} />}
+import Recenter from './LLRecenter';
+
 const mapStateToProps = (state: RootState) => {
   const { bounds, activeMaps, center } = state.map;
   const { active } = state.marker;
@@ -25,20 +25,17 @@ const mapStateToProps = (state: RootState) => {
     marker: marker,
     poi: {},
     sectors: {},
-    continent_rect: [],
     center: center,
   } as {
     gw2Bounds: [number, number];
     marker: GW2Point[];
     poi: Record<number, GW2ApiPoi>;
     sectors: Record<number, GW2ApiSector>;
-    continent_rect: [[number, number], [number, number]][];
     center: PointTuple;
   };
 
   activeMaps.forEach((id) => {
-    console.debug('ID: ' + id);
-    const { poi, sectors, continent_rect } = state.api.response[id];
+    const { poi, sectors } = state.api.response[id];
     apiData.poi = {
       ...apiData.poi,
       ...poi,
@@ -47,7 +44,6 @@ const mapStateToProps = (state: RootState) => {
       ...apiData.sectors,
       ...sectors,
     };
-    apiData.continent_rect.push(continent_rect!);
   });
 
   return apiData;
@@ -77,6 +73,7 @@ class LLContainer extends Component<LLContainerReduxProps> {
   render() {
     const { gw2Bounds, marker } = this.props;
     const { Simple } = CRS;
+    console.debug(this.sectors);
     return (
       <MapContainer
         crs={Simple}
@@ -112,6 +109,7 @@ class LLContainer extends Component<LLContainerReduxProps> {
           )}
         </LayersControl>
         <ClickedPosition />
+        {marker && <Recenter marker={marker} />}
       </MapContainer>
     );
   }
