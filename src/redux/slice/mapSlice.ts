@@ -25,7 +25,6 @@ export const mapSlice = createSlice({
       };
     },
     setCenter(state, action: PayloadAction<PointTuple>) {
-      console.debug('WuppWupp: ' + action.payload);
       return {
         ...state,
         center: action.payload,

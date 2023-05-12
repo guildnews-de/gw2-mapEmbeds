@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { GW2ApiPoi } from '../apiMiddleware';
+import { GW2Point } from '../../components/leaflet/GW2Point';
 
 export interface MarkerState {
   active: string;
   currentPos?: string | null;
-  groups?: Record<string, GW2ApiPoi[]>;
+  groups?: Record<string, GW2Point[]>;
 }
 
 const initSate: MarkerState = {
@@ -18,7 +18,7 @@ export const markerSlice = createSlice({
   name: 'marker',
   initialState: initSate,
   reducers: {
-    pushMarker(state, action: PayloadAction<[string, GW2ApiPoi[]]>) {
+    pushMarker(state, action: PayloadAction<[string, GW2Point[]]>) {
       const [hash, object] = action.payload;
       return {
         ...state,

@@ -6,7 +6,8 @@ import type { RootState } from '../redux/store';
 
 import { pushMarker, setMarker, wipeCurrent } from '../redux/slice/markerSlice';
 import { openCanvas } from '../redux/slice/appSlice';
-import { GW2ApiPoi } from '../redux/apiMiddleware';
+import { PointTuple } from 'leaflet';
+import { GW2Point } from './leaflet/GW2Point';
 
 const mapStateToProps = (state: RootState) => {
   const { active } = state.marker;
@@ -34,18 +35,12 @@ interface MarkerButtonProps extends ReduxMarkerProps {
 
 class MarkerButton extends Component<MarkerButtonProps> {
   static markParser(raw: MarkerEmbed['dataset']) {
-    const markArr: GW2ApiPoi[] = [];
-    const markObj: Record<string, [number, number]> = JSON.parse(
-      raw.gw2mapMarker!,
-    );
+    const markArr: GW2Point[] = [];
+    const markObj: Record<string, PointTuple> = JSON.parse(raw.gw2mapMarker!);
     const type = raw.gw2mapColor ? raw.gw2mapColor : 'default';
     Object.entries(markObj).forEach((entry) => {
-      const [key, val] = entry;
-      markArr.push({
-        name: key,
-        coord: val,
-        type: type,
-      });
+      const [name, tupel] = entry;
+      markArr.push(new GW2Point({ tupel, name, type }));
     });
 
     return markArr;
