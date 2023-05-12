@@ -18,7 +18,7 @@ const mapStateToProps = (state: RootState) => {
   const { bounds, activeMaps, center } = state.map;
   const { active } = state.marker;
 
-  const marker = active === 'none' ? undefined : state.marker.groups![active];
+  const marker = active ? state.marker.groups![active] : undefined;
 
   const apiData = {
     gw2Bounds: bounds,

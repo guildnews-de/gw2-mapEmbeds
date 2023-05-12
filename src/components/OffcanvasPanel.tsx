@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { Offcanvas, Button } from 'react-bootstrap';
+import { Offcanvas, Button, Spinner } from 'react-bootstrap';
 import LLContainer from './leaflet/LLContainer';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,8 +20,11 @@ import './OffcanvasPanel.scss';
 
 const mapStateToProps = (state: RootState) => {
   const { open } = state.app.canvas;
+  const { loading } = state.api;
+  const ready = loading === false ? true : false;
   return {
     open: open,
+    ready: ready,
   };
 };
 
@@ -65,7 +68,7 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
   } */
 
   render() {
-    const { open, toggleCanvas, closeCanvas } = this.props;
+    const { open, ready, toggleCanvas, closeCanvas } = this.props;
     const slug = open ? 'open' : 'close';
     const arrow = !open ? faArrowLeft : faArrowRight;
     return (
@@ -95,7 +98,13 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
             <Offcanvas.Title>Offcanvas</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <LLContainer />
+            {ready ? (
+              <LLContainer />
+            ) : (
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            )}
           </Offcanvas.Body>
         </Offcanvas>
       </>

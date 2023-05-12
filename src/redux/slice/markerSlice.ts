@@ -3,13 +3,13 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { GW2Point } from '../../components/leaflet/GW2Point';
 
 export interface MarkerState {
-  active: string;
+  active: string | undefined;
   currentPos?: string | null;
   groups?: Record<string, GW2Point[]>;
 }
 
 const initSate: MarkerState = {
-  active: 'none',
+  active: undefined,
   currentPos: null,
   groups: undefined,
 };

@@ -9,7 +9,7 @@ import {
 } from '../apiMiddleware';
 
 export interface GW2ApiRequest {
-  loading: boolean;
+  loading: boolean | undefined;
   error?: GW2ApiError | null;
   request: {
     method?: string;
@@ -32,7 +32,7 @@ export interface GW2ApiRequestParams {
 }
 
 export const initState: GW2ApiRequest = {
-  loading: false,
+  loading: undefined,
   error: null,
   request: {
     method: 'GET',
