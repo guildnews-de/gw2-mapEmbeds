@@ -35,7 +35,7 @@ function LocationMarker() {
     // <Tooltip direction='top' offset={[12, 0]} permanent>{project(pos).toString()}</Tooltip>
     <div className="leaflet-bottom leaflet-left">
       <div className="leaflet-control-attribution leaflet-control">
-        <div>{`Clickd Pos. copied: `}</div>
+        <div>{`Position copied: `}</div>
         <div>{posString}</div>
       </div>
     </div>

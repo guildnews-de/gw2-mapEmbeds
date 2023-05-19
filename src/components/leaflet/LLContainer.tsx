@@ -73,7 +73,6 @@ class LLContainer extends Component<LLContainerReduxProps> {
   render() {
     const { gw2Bounds, marker } = this.props;
     const { Simple } = CRS;
-    console.debug(this.sectors);
     return (
       <MapContainer
         crs={Simple}

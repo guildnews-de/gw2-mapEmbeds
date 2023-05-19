@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, CSSProperties } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Offcanvas, Button, Spinner } from 'react-bootstrap';
 import LLContainer from './leaflet/LLContainer';
@@ -10,7 +10,12 @@ import {
   faMapLocationDot,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { closeCanvas, toggleCanvas } from '../redux/slice/appSlice';
+import {
+  closeCanvas,
+  toggleCanvas,
+  setMapsLoaded,
+  activateLL,
+} from '../redux/slice/appSlice';
 import { fetchMap } from '../redux/slice/apiSlice';
 import { addActiveMap } from '../redux/slice/mapSlice';
 import { MarkerEmbed } from '../App';
@@ -19,12 +24,15 @@ import type { RootState } from '../redux/store';
 import './OffcanvasPanel.scss';
 
 const mapStateToProps = (state: RootState) => {
-  const { open } = state.app.canvas;
+  const { open, loadLL } = state.app.canvas;
+  const { mapsLoaded } = state.app;
   const { loading } = state.api;
   const ready = loading === false ? true : false;
   return {
     open: open,
     ready: ready,
+    mapsLoaded: mapsLoaded,
+    loadLL: loadLL,
   };
 };
 
@@ -33,6 +41,8 @@ const mapDispatchToProps = {
   toggleCanvas,
   addActiveMap,
   fetchMap,
+  setMapsLoaded,
+  activateLL,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -45,32 +55,41 @@ interface OffcanvasPanelProps extends ReduxOffcanvasProps {
 class OffcanvasPanel extends Component<OffcanvasPanelProps> {
   // Workround to prevent double mapID query
   // I don't know why it redraws the offcanvas
-  static loadMaps = true;
+  //static loadMaps = true;
 
   constructor(props: OffcanvasPanelProps) {
     super(props);
-    const { addActiveMap, fetchMap, dataset } = props;
+    const { mapsLoaded, dataset } = props; // Props
+    const { fetchMap, addActiveMap, setMapsLoaded } = props; //Actions
 
-    if (OffcanvasPanel.loadMaps && dataset.gw2mapIds) {
+    if (!mapsLoaded && dataset.gw2mapIds) {
       const ids = dataset.gw2mapIds.split(',');
       ids.forEach((id) => {
         const numID = Number(id);
         fetchMap({ id: numID, lang: 'de' });
         addActiveMap(numID);
       });
-      OffcanvasPanel.loadMaps = false;
+      setMapsLoaded();
     }
   }
 
-  /*   componentDidMount(): void {
-    console.log('mount action');
-    this.fetchMap({ ids: [Number(this.mapID!)], lang: 'de' });
-  } */
+  componentDidMount(): () => void {
+    const timeout = setTimeout(() => {
+      this.props.activateLL();
+    }, 3000);
+    return () => clearTimeout(timeout);
+  }
 
   render() {
-    const { open, ready, toggleCanvas, closeCanvas } = this.props;
+    const { open, loadLL, toggleCanvas, closeCanvas } = this.props;
     const slug = open ? 'open' : 'close';
     const arrow = !open ? faArrowLeft : faArrowRight;
+    const spinnerBox: CSSProperties = {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%',
+    };
     return (
       <>
         <Button
@@ -95,15 +114,17 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
           placement="end"
         >
           <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+            <Offcanvas.Title>Guild Wars 2 Map-Tool</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            {ready ? (
+            {loadLL ? (
               <LLContainer />
             ) : (
-              <Spinner animation="border" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </Spinner>
+              <div style={spinnerBox}>
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden"></span>
+                </Spinner>
+              </div>
             )}
           </Offcanvas.Body>
         </Offcanvas>
