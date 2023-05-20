@@ -91,7 +91,7 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
             {loadLL ? (
               <LLContainer />
             ) : (
-              <div className='offcanvas-spinner'>
+              <div className="offcanvas-spinner">
                 <Spinner animation="border" role="status">
                   <span className="visually-hidden"></span>
                 </Spinner>

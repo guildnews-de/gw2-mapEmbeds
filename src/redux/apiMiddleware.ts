@@ -1,5 +1,7 @@
+import { Middleware, isAnyOf } from '@reduxjs/toolkit';
+import { differenceInDays } from 'date-fns';
+import localforage from 'localforage';
 import axios from 'axios';
-
 import {
   setLoading,
   setError,
@@ -7,7 +9,6 @@ import {
   setDone,
   fetchMap,
 } from './slice/apiSlice';
-import { Middleware, isAnyOf } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import { PointTuple } from 'leaflet';
 
@@ -55,6 +56,10 @@ export interface GW2ApiRegionsResponse {
   id?: number;
 }
 
+interface CachedGW2Data extends GW2ApiMapsResponse, GW2ApiRegionsResponse {
+  timestamp: number;
+}
+
 export type GW2ApiError = { text: string };
 
 const apiMiddleware: Middleware<{}, RootState> =
@@ -65,50 +70,80 @@ const apiMiddleware: Middleware<{}, RootState> =
     const isApiAction = isAnyOf(fetchMap);
     if (!isApiAction(action)) return;
 
-    // axios default configs
-    axios.defaults.baseURL = 'https://api.guildwars2.com/v2';
-    axios.defaults.timeout = 5000;
-    axios.defaults.headers.common['Content-Type'] = 'application/json';
-
-    // fetch basic map data
     dispatch(setLoading());
     const { id, lang } = action.payload;
-    const region = {
-      id: 0,
-    };
-    axios({
-      url: `/maps/${id}`,
-      params: {
-        lang: lang,
-      },
-    })
-      .then(({ data }: { data: GW2ApiMapsResponse }) => {
-        region.id = data.region_id!;
-        dispatch(setData({ mapID: id!, mapData: data }));
-      })
-      .then(() => {
+    const cacheKey = `maps_${id}_${lang}`;
+    const dateNow = new Date();
+
+    localforage.config({
+      name: 'GW2_MapTool',
+      version: 1.0,
+      storeName: 'gw2_api_data', // Should be alphanumeric, with underscores.
+    });
+    // Check if the data is already cached in LocalForage
+    localforage.getItem<CachedGW2Data>(cacheKey).then((cachedData) => {
+      const cacheAge = cachedData ? differenceInDays(dateNow, cachedData.timestamp) : 4 
+      if (cachedData && cacheAge < 3) {
+        // If data is found in LocalForage, dispatch it
+        console.debug('From Database');
+        dispatch(setData({ mapID: id!, mapData: cachedData }));
+        dispatch(setDone());
+      } else {
+        console.debug('From API');
+        // axios default configs
+        axios.defaults.baseURL = 'https://api.guildwars2.com/v2';
+        axios.defaults.timeout = 5000;
+        axios.defaults.headers.common['Content-Type'] = 'application/json';
+
+        const apiData = {
+          regId: 0,
+          map: {} as GW2ApiMapsResponse,
+        };
         axios({
-          url: `/continents/1/floors/1/regions/${region.id}/maps/${id}`,
+          url: `/maps/${id}`,
           params: {
             lang: lang,
           },
-        }).then(({ data }: { data: GW2ApiRegionsResponse }) => {
-          // @ts-ignore
-          const { label_coord, points_of_interest: poi, sectors } = data;
-          const cropData = {
-            label_coord: label_coord,
-            poi: poi,
-            sectors: sectors,
-          };
-          dispatch(setData({ mapID: id!, mapData: cropData }));
-        });
-      })
-      .catch((error: GW2ApiError) => {
-        dispatch(setError(error));
-      })
-      .finally(() => {
-        dispatch(setDone());
-      });
+        })
+          .then(({ data }: { data: GW2ApiMapsResponse }) => {
+            apiData.regId = data.region_id!;
+            apiData.map = data;
+            // dispatch(setData({ mapID: id!, mapData: data }));
+          })
+          .then(() => {
+            axios({
+              url: `/continents/1/floors/1/regions/${apiData.regId}/maps/${id}`,
+              params: {
+                lang: lang,
+              },
+            }).then(({ data }: { data: GW2ApiRegionsResponse }) => {
+              // @ts-ignore
+              const { label_coord, points_of_interest: poi, sectors } = data;
+              const cropData = {
+                label_coord: label_coord,
+                poi: poi,
+                sectors: sectors,
+              };
+              apiData.map = {
+                ...apiData.map,
+                ...cropData,
+              };
+              dispatch(setData({ mapID: id!, mapData: apiData.map }));
+              // Store the data in LocalForage for future use
+              localforage.setItem(cacheKey, {
+                timestamp: dateNow,
+                ...apiData.map,
+              });
+            });
+          })
+          .catch((error: GW2ApiError) => {
+            dispatch(setError(error));
+          })
+          .finally(() => {
+            dispatch(setDone());
+          });
+      }
+    });
   };
 
 export default apiMiddleware;

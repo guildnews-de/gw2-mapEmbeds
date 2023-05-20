@@ -29,7 +29,9 @@ function LocationMarker() {
   const posString = posProject
     ? `[${Math.round(posProject!.x)},${Math.round(posProject!.y)}]`
     : '[,]';
-  posCopy(posString);
+  if (statePos) {
+    posCopy(posString);
+  }
 
   return pos === null ? null : (
     // <Tooltip direction='top' offset={[12, 0]} permanent>{project(pos).toString()}</Tooltip>

@@ -66,5 +66,11 @@ export const appSlice = createSlice({
   },
 });
 
-export const { toggleCanvas, openCanvas, closeCanvas, setMapsLoaded, activateLL } = appSlice.actions;
+export const {
+  toggleCanvas,
+  openCanvas,
+  closeCanvas,
+  setMapsLoaded,
+  activateLL,
+} = appSlice.actions;
 export default appSlice.reducer;
