@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Offcanvas, Spinner } from 'react-bootstrap';
 import LLContainer from './leaflet/LLContainer';
+import { getStorageInfo, removeTile } from 'leaflet.offline';
 
 import {
   closeCanvas,
@@ -66,10 +67,31 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
   }
 
   componentDidMount(): () => void {
+    this.cleanTileCache();
     const timeout = setTimeout(() => {
       this.props.activateLL();
     }, 3000);
     return () => clearTimeout(timeout);
+  }
+
+  async cleanTileCache() {
+      const tiles = await getStorageInfo("https://assets.guildnews.de/tiles/1/1/{z}/{x}/{y}.jpg");
+      const minCreatedAt = new Date().setDate(-30);
+      let count = 0;
+      await Promise.all(
+        tiles.map((tile) =>{
+          if (tile.createdAt < minCreatedAt) {
+            removeTile(tile.key);
+            count++;
+          } else {
+            Promise.resolve();
+          }
+
+        })
+      );
+      if (count > 0) {
+        console.debug(count+" old GW2 map tiles cleaned...")
+      }
   }
 
   render() {

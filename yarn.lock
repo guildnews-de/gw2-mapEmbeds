@@ -7863,6 +7863,7 @@ __metadata:
     eslint-plugin-react: ^7.32.2
     eslint-plugin-react-hooks: ^4.6.0
     leaflet: ^1.9.3
+    leaflet.offline: ^3.0.0
     localforage: ^1.10.0
     mini-css-extract-plugin: ^2.7.2
     object-hash: ^3.0.0
@@ -8247,7 +8248,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"idb@npm:^7.0.1":
+"idb@npm:^7.0.1, idb@npm:^7.1.1":
   version: 7.1.1
   resolution: "idb@npm:7.1.1"
   checksum: 1973c28d53c784b177bdef9f527ec89ec239ec7cf5fcbd987dae75a16c03f5b7dfcc8c6d3285716fd0309dd57739805390bd9f98ce23b1b7d8849a3b52de8d56
@@ -9779,6 +9780,24 @@ __metadata:
   dependencies:
     language-subtag-registry: ~0.3.2
   checksum: c81b5d8b9f5f9cfd06ee71ada6ddfe1cf83044dd5eeefcd1e420ad491944da8957688db4a0a9bc562df4afdc2783425cbbdfd152c01d93179cf86888903123cf
+  languageName: node
+  linkType: hard
+
+"leaflet.offline@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "leaflet.offline@npm:3.0.0"
+  dependencies:
+    idb: ^7.1.1
+    leaflet: ^1.6.0
+    typescript: ^4.5.5
+  checksum: 942a36dafcd5a15f03a4649b9b65562a675446c3c62b39512ff9ea1d454763ce359760c58d17f8da4108b843a20b0bec2ddfeb332c3ef101a3f945b9ba2730a2
+  languageName: node
+  linkType: hard
+
+"leaflet@npm:^1.6.0":
+  version: 1.9.4
+  resolution: "leaflet@npm:1.9.4"
+  checksum: bfc79f17a247b37b92d84b3c78702501603392d6589fde606de4a825d11f1609d90225388834f2e0709dac327e52dcd4b4b9cc9fd3d590060c5b1e53b84fa6c6
   languageName: node
   linkType: hard
 
@@ -14714,7 +14733,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.9.5":
+"typescript@npm:^4.5.5, typescript@npm:^4.9.5":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
   bin:
@@ -14724,7 +14743,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
   bin:
