@@ -12,11 +12,8 @@ import { tilesURL } from '../constants';
 function OffcanvasDelete() {
   async function clearTiles() {
     const tiles = await getStorageInfo(tilesURL);
-    console.debug(tiles.length);
-    indexedDB.databases().then(r => console.log(r))
     const minCreatedAt = Date.now();
     let count = 0;
-    console.debug("onit");
     await Promise.all(
       tiles.map((tile) => {
         tile.createdAt < minCreatedAt
@@ -32,7 +29,7 @@ function OffcanvasDelete() {
 
   return (
     <Button
-      className={`offcanvas-toggle`}
+      className={`offcanvas-delete`}
       variant="secondary"
       size="sm"
       onClick={clearTiles}

@@ -34,7 +34,7 @@ function GW2Layer(props: GW2LayerProps) {
     let count = 0;
     await Promise.all(
       tiles.map((tile) => {
-        console.debug(tile.createdAt + '  ' + apiDate);
+        //console.debug(tile.createdAt + '  ' + apiDate);
         if (tile.createdAt < apiDate) {
           removeTile(tile.key);
           count++;

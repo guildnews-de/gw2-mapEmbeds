@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, CSSProperties } from 'react';
 import axios from 'axios';
 import { connect, ConnectedProps } from 'react-redux';
 import { Offcanvas, Spinner } from 'react-bootstrap';
@@ -88,6 +88,10 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
 
   render() {
     const { open, loadLL, closeCanvas } = this.props;
+    const style: CSSProperties = {
+      flexDirection: 'column',
+      justifyContent: 'center',
+    }
     return (
       <>
         <OffcanvasToggle className="toggle-closed" />
@@ -98,7 +102,7 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
           onHide={() => closeCanvas()}
           placement="end"
         >
-          <Offcanvas.Header>
+          <Offcanvas.Header style={style} >
             <OffcanvasToggle className="toggle-opened" />
             <OffcanvasDelete />
           </Offcanvas.Header>
