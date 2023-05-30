@@ -6,12 +6,19 @@ export interface mapState {
   bounds: [number, number];
   center: PointTuple;
   activeMaps: number[];
+  tileDate: number;
+}
+
+export interface tileApiData {
+  api: number;
+  date: number;
 }
 
 const initState: mapState = {
   bounds: [81920, 114688],
   center: [40960, 57344],
   activeMaps: [0],
+  tileDate: 0,
 };
 
 export const mapSlice = createSlice({
@@ -28,6 +35,13 @@ export const mapSlice = createSlice({
       return {
         ...state,
         center: action.payload,
+      };
+    },
+    setTileDate(state, action: PayloadAction<tileApiData>) {
+      const { date } = action.payload;
+      return {
+        ...state,
+        tileDate: date,
       };
     },
     addActiveMap(state, action: PayloadAction<number>) {
@@ -49,5 +63,5 @@ export const mapSlice = createSlice({
   },
 });
 
-export const { setBounds, setCenter, addActiveMap } = mapSlice.actions;
+export const { setBounds, setCenter, setTileDate, addActiveMap } = mapSlice.actions;
 export default mapSlice.reducer;

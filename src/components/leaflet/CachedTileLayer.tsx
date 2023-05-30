@@ -24,7 +24,7 @@ export function brtTileLayer(
     getBlobByKey(url).then((blob) => {
       if (blob) {
         tile.src = URL.createObjectURL(blob);
-        console.debug(`Loaded ${url} from idb`);
+        //console.debug(`Loaded ${url} from idb`);
         return;
       }
       tile.src = url;
@@ -41,8 +41,8 @@ export function brtTileLayer(
         createdAt: Date.now(),
       };
       downloadTile(url)
-        .then((dl) => saveTile(tileInfo, dl))
-        .then(() => console.debug(`Saved ${url} in idb`));
+        .then((dl) => saveTile(tileInfo, dl));
+        //.then(() => console.debug(`Saved ${url} in idb`));
     });
   });
 

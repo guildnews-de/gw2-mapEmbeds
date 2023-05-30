@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { connect, ConnectedProps } from 'react-redux';
 import { Offcanvas, Spinner } from 'react-bootstrap';
 import LLContainer from './leaflet/LLContainer';
-import { getStorageInfo, removeTile } from 'leaflet.offline';
+//import { getStorageInfo, removeTile } from 'leaflet.offline';
 
 import {
   closeCanvas,
@@ -10,12 +11,17 @@ import {
   activateLL,
 } from '../redux/slice/appSlice';
 import { fetchMap } from '../redux/slice/apiSlice';
-import { addActiveMap } from '../redux/slice/mapSlice';
+import {
+  tileApiData,
+  setTileDate,
+  addActiveMap,
+} from '../redux/slice/mapSlice';
 import { MarkerEmbed } from '../App';
 import type { RootState } from '../redux/store';
 import OffcanvasToggle from './OffcanvasToggle';
 
 import './OffcanvasPanel.scss';
+
 
 const mapStateToProps = (state: RootState) => {
   const { open, loadLL } = state.app.canvas;
@@ -31,6 +37,7 @@ const mapStateToProps = (state: RootState) => {
 };
 
 const mapDispatchToProps = {
+  setTileDate,
   closeCanvas,
   addActiveMap,
   fetchMap,
@@ -46,13 +53,9 @@ interface OffcanvasPanelProps extends ReduxOffcanvasProps {
 }
 
 class OffcanvasPanel extends Component<OffcanvasPanelProps> {
-  // Workround to prevent double mapID query
-  // I don't know why it redraws the offcanvas
-  //static loadMaps = true;
-
   constructor(props: OffcanvasPanelProps) {
     super(props);
-    const { mapsLoaded, dataset } = props; // Props
+    const { mapsLoaded, setTileDate, dataset } = props; // Props
     const { fetchMap, addActiveMap, setMapsLoaded } = props; //Actions
 
     if (!mapsLoaded && dataset.gw2mapIds) {
@@ -62,36 +65,23 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
         fetchMap({ id: numID, lang: 'de' });
         addActiveMap(numID);
       });
+
+      axios
+      .get('https://assets.guildnews.de/tiles/version')
+      .then(({ data }: { data: tileApiData }) => {
+        setTileDate(data);
+      });
       setMapsLoaded();
     }
   }
 
   componentDidMount(): () => void {
-    this.cleanTileCache();
+
     const timeout = setTimeout(() => {
       this.props.activateLL();
     }, 3000);
+
     return () => clearTimeout(timeout);
-  }
-
-  async cleanTileCache() {
-      const tiles = await getStorageInfo("https://assets.guildnews.de/tiles/1/1/{z}/{x}/{y}.jpg");
-      const minCreatedAt = new Date().setDate(-30);
-      let count = 0;
-      await Promise.all(
-        tiles.map((tile) =>{
-          if (tile.createdAt < minCreatedAt) {
-            removeTile(tile.key);
-            count++;
-          } else {
-            Promise.resolve();
-          }
-
-        })
-      );
-      if (count > 0) {
-        console.debug(count+" old GW2 map tiles cleaned...")
-      }
   }
 
   render() {

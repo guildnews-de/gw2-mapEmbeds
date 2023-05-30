@@ -92,11 +92,11 @@ const apiMiddleware: Middleware<{}, RootState> =
             : 4;
           if (cachedData && cacheAge < 3) {
             // If data is found in IndexedDB, dispatch it
-            console.debug('From Database');
+            //console.debug('From Database');
             dispatch(setData({ mapID: id!, mapData: cachedData }));
             dispatch(setDone());
           } else {
-            console.debug('From API');
+            //console.debug('From API');
             // axios default configs
             axios.defaults.baseURL = 'https://api.guildwars2.com/v2';
             axios.defaults.timeout = 5000;
