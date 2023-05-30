@@ -38,7 +38,7 @@ export function brtTileLayer(
         y,
         z,
         urlTemplate,
-        createdAt: Date.now(),
+        createdAt: Date.now()/1000,
       };
       downloadTile(url)
         .then((dl) => saveTile(tileInfo, dl));

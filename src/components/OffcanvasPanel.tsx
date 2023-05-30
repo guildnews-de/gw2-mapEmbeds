@@ -21,6 +21,8 @@ import type { RootState } from '../redux/store';
 import OffcanvasToggle from './OffcanvasToggle';
 
 import './OffcanvasPanel.scss';
+import OffcanvasDelete from './OffcanvasDelete';
+import { tilesURLDate } from '../constants';
 
 
 const mapStateToProps = (state: RootState) => {
@@ -67,7 +69,7 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
       });
 
       axios
-      .get('https://assets.guildnews.de/tiles/version')
+      .get(tilesURLDate)
       .then(({ data }: { data: tileApiData }) => {
         setTileDate(data);
       });
@@ -98,6 +100,7 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
         >
           <Offcanvas.Header>
             <OffcanvasToggle className="toggle-opened" />
+            <OffcanvasDelete />
           </Offcanvas.Header>
           <Offcanvas.Body>
             {loadLL ? (
