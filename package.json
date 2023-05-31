@@ -9,10 +9,7 @@
     "test": "yarn format && yarn lint && tsc --noEmit",
     "format": "prettier -w src",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
-    "build": "react-scripts build",
-    "build:dev": "webpack --mode=development",
-    "build:prod": "webpack --mode=production --node-env=production",
-    "watch": "webpack --watch"
+    "build": "react-scripts build"
   },
   "dependencies": {
     "@discretize/typeface-menomonia": "^0.1.3",
