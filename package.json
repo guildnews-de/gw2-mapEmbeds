@@ -1,8 +1,8 @@
 {
   "name": "gw2-map-embeds",
-  "description": "Embedding script for Guild Wars 2 maps using Leaflet.js",
-  "version": "0.0.1",
-  "packageManager": "yarn@3.4.1",
+  "description": "Guild Wars 2 maps using Leaflet.js with offline cached tiles",
+  "version": "1.0.0",
+  "packageManager": "yarn@3.5.1",
   "scripts": {
     "start": "react-scripts start",
     "prepare": "yarn build",

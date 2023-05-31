@@ -9,7 +9,13 @@ const stylesHandler = MiniCssExtractPlugin.loader;
 
 const config = {
   entry: './src/index.ts',
+  target: "web",
   output: {
+    assetModuleFilename: '[hash:14][ext]',
+    chunkFilename: '[id]_[hash:10].js',
+    asyncChunks: true,
+    clean: true,
+    filename: 'gw2-map-embeds.js',
     path: path.resolve(__dirname, 'dist'),
   },
   plugins: [

@@ -27,9 +27,7 @@ class App {
 
   constructor() {
     this.targets = Array.from(
-      document.querySelectorAll(
-        'div[data-gw2map-marker],span[data-gw2map-marker]',
-      ) as NodeListOf<MarkerEmbed>,
+      document.querySelectorAll('.gw2mapMarker') as NodeListOf<MarkerEmbed>,
     );
     this.renderButtons();
     this.renderOffcanvas();
