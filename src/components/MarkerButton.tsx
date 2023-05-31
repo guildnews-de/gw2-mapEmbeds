@@ -7,7 +7,7 @@ import type { RootState } from '../redux/store';
 import { pushMarker, setMarker, wipeCurrent } from '../redux/slice/markerSlice';
 import { openCanvas } from '../redux/slice/appSlice';
 import { PointTuple } from 'leaflet';
-import { GW2Point } from './leaflet/GW2Point';
+import { GW2Point } from './leaflet/gw2/GW2Point';
 
 const mapStateToProps = (state: RootState) => {
   const { active } = state.marker;

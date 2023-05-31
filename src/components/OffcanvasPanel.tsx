@@ -2,7 +2,7 @@ import React, { Component, CSSProperties } from 'react';
 import axios from 'axios';
 import { connect, ConnectedProps } from 'react-redux';
 import { Offcanvas, Spinner } from 'react-bootstrap';
-import LLContainer from './leaflet/LLContainer';
+import LLContainer from './leaflet/MapContainer';
 //import { getStorageInfo, removeTile } from 'leaflet.offline';
 
 import {
@@ -18,12 +18,11 @@ import {
 } from '../redux/slice/mapSlice';
 import { MarkerEmbed } from '../App';
 import type { RootState } from '../redux/store';
-import OffcanvasToggle from './OffcanvasToggle';
+import OffcanvasToggle from './offcanvas/OffcanvasToggle';
 
 import './OffcanvasPanel.scss';
-import OffcanvasDelete from './OffcanvasDelete';
+import OffcanvasDelete from './offcanvas/OffcanvasDelete';
 import { tilesURLDate } from '../constants';
-
 
 const mapStateToProps = (state: RootState) => {
   const { open, loadLL } = state.app.canvas;
@@ -68,9 +67,7 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
         addActiveMap(numID);
       });
 
-      axios
-      .get(tilesURLDate)
-      .then(({ data }: { data: tileApiData }) => {
+      axios.get(tilesURLDate).then(({ data }: { data: tileApiData }) => {
         setTileDate(data);
       });
       setMapsLoaded();
@@ -78,7 +75,6 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
   }
 
   componentDidMount(): () => void {
-
     const timeout = setTimeout(() => {
       this.props.activateLL();
     }, 3000);
@@ -91,7 +87,7 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
     const style: CSSProperties = {
       flexDirection: 'column',
       justifyContent: 'center',
-    }
+    };
     return (
       <>
         <OffcanvasToggle className="toggle-closed" />
@@ -102,7 +98,7 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
           onHide={() => closeCanvas()}
           placement="end"
         >
-          <Offcanvas.Header style={style} >
+          <Offcanvas.Header style={style}>
             <OffcanvasToggle className="toggle-opened" />
             <OffcanvasDelete />
           </Offcanvas.Header>

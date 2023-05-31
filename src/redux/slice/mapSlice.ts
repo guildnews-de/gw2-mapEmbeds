@@ -63,5 +63,6 @@ export const mapSlice = createSlice({
   },
 });
 
-export const { setBounds, setCenter, setTileDate, addActiveMap } = mapSlice.actions;
+export const { setBounds, setCenter, setTileDate, addActiveMap } =
+  mapSlice.actions;
 export default mapSlice.reducer;

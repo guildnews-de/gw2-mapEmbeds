@@ -8,15 +8,15 @@ import { tileLayer, type TileLayer } from 'leaflet';
 import { getBlobByKey, downloadTile, saveTile } from 'leaflet.offline';
 import { TileLayerProps } from 'react-leaflet';
 
-type btrTileLayerOptions = ReturnType<typeof withPane>;
+type TileLayerOptions = ReturnType<typeof withPane>;
 
-export function brtTileLayer(
+export function leafletOfflineLayer(
   urlTemplate: string,
-  options: btrTileLayerOptions,
+  options: TileLayerOptions,
 ) {
-  const brtLayer = tileLayer(urlTemplate, options);
+  const loLayer = tileLayer(urlTemplate, options);
 
-  brtLayer.on('tileloadstart', (event) => {
+  loLayer.on('tileloadstart', (event) => {
     const { tile } = event;
     const url = tile.src;
     // reset tile.src, to not start download yet
@@ -38,15 +38,14 @@ export function brtTileLayer(
         y,
         z,
         urlTemplate,
-        createdAt: Date.now()/1000,
+        createdAt: Date.now() / 1000,
       };
-      downloadTile(url)
-        .then((dl) => saveTile(tileInfo, dl));
-        //.then(() => console.debug(`Saved ${url} in idb`));
+      downloadTile(url).then((dl) => saveTile(tileInfo, dl));
+      //.then(() => console.debug(`Saved ${url} in idb`));
     });
   });
 
-  return brtLayer;
+  return loLayer;
 }
 
 export const CachedTileLayer = createTileLayerComponent<
@@ -54,7 +53,7 @@ export const CachedTileLayer = createTileLayerComponent<
   TileLayerProps
 >(
   function createTileLayer({ url, ...options }, context) {
-    const layer = brtTileLayer(url, withPane(options, context));
+    const layer = leafletOfflineLayer(url, withPane(options, context));
     return createElementObject(layer, context);
   },
   function updateTileLayer(layer, props, prevProps) {

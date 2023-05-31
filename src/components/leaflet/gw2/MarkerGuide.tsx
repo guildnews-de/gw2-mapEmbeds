@@ -2,41 +2,42 @@ import React from 'react';
 import { Marker, Tooltip, useMap } from 'react-leaflet';
 import { icon } from 'leaflet';
 
-import { GW2ApiPoi } from '../../../redux/apiMiddleware';
-import { heart, heropoint, landmark, vista, waypoint } from './assets';
-import defaultIcon from 'leaflet/dist/images/marker-icon.png';
+import { GW2Point } from './GW2Point';
+import {
+  star_blue,
+  star_red,
+  star_rose,
+  star_green,
+  star_yellow,
+} from './assets';
 
 import './tooltip.scss';
 
-function GW2Marker(props: { markers: GW2ApiPoi[]; perm?: boolean }) {
+function MarkerGuide(props: { markers: GW2Point[]; perm?: boolean }) {
   const map = useMap();
   const { markers } = props;
 
   const iconSwitch = (key: string = '') => {
     let png: string;
     switch (key) {
-      case 'heart':
-        png = heart;
+      case 'red':
+        png = star_red;
         break;
 
-      case 'heropoint':
-        png = heropoint;
+      case 'rose':
+        png = star_rose;
         break;
 
-      case 'landmark':
-        png = landmark;
+      case 'green':
+        png = star_green;
         break;
 
-      case 'vista':
-        png = vista;
-        break;
-
-      case 'waypoint':
-        png = waypoint;
+      case 'yellow':
+        png = star_yellow;
         break;
 
       default:
-        png = defaultIcon;
+        png = star_blue;
         break;
     }
     return icon({
@@ -53,7 +54,7 @@ function GW2Marker(props: { markers: GW2ApiPoi[]; perm?: boolean }) {
         <Marker
           key={i}
           icon={iconSwitch(el.type)}
-          position={map.unproject([el.coord[0], el.coord[1]], map.getMaxZoom())}
+          position={map.unproject([el.x, el.y], map.getMaxZoom())}
         >
           {el.name && (
             <Tooltip
@@ -70,4 +71,4 @@ function GW2Marker(props: { markers: GW2ApiPoi[]; perm?: boolean }) {
   );
 }
 
-export default GW2Marker;
+export default MarkerGuide;

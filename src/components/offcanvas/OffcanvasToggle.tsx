@@ -9,8 +9,8 @@ import {
   faMapLocationDot,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { toggleCanvas } from '../redux/slice/appSlice';
-import type { RootState } from '../redux/store';
+import { toggleCanvas } from '../../redux/slice/appSlice';
+import type { RootState } from '../../redux/store';
 
 import './OffcanvasToggle.scss';
 

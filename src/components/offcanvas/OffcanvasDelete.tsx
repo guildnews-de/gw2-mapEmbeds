@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 import './OffcanvasDelete.scss';
-import { tilesURL } from '../constants';
+import { tilesURL } from '../../constants';
 
 function OffcanvasDelete() {
   async function clearTiles() {

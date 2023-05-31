@@ -6,13 +6,13 @@ import { MapContainer, Pane, LayerGroup, LayersControl } from 'react-leaflet';
 import { CRS, LatLng, PointTuple } from 'leaflet';
 
 import { GW2ApiPoi, GW2ApiSector } from '../../redux/apiMiddleware';
-import { GW2Tiles, GW2Marker, GW2Poi, GW2Sectors } from './gw2';
-import { GW2Point } from './GW2Point';
-import ClickedPosition from './LLClickedPos';
+import { GW2Tiles, GuideMarker, PoiMarker, GW2Sectors } from './gw2';
+import { GW2Point } from './gw2/GW2Point';
+import ClickedPosition from './LocationMarker';
 
 import 'leaflet/dist/leaflet.css';
-import './LLContainer.scss';
-import Recenter from './LLRecenter';
+import './MapContainer.scss';
+import Recenter from './Recenter';
 
 const mapStateToProps = (state: RootState) => {
   const { bounds, activeMaps, center } = state.map;
@@ -93,7 +93,7 @@ class LLContainer extends Component<LLContainerReduxProps> {
             {marker && (
               <LayersControl.Overlay name="Guide Marker" checked>
                 <LayerGroup>
-                  <GW2Marker markers={marker!} perm={true} />
+                  <GuideMarker markers={marker!} perm={true} />
                 </LayerGroup>
               </LayersControl.Overlay>
             )}
@@ -102,7 +102,7 @@ class LLContainer extends Component<LLContainerReduxProps> {
           {this.poi && (
             <LayersControl.Overlay name="Land Marker" checked>
               <LayerGroup>
-                <GW2Poi markers={this.poi} />
+                <PoiMarker markers={this.poi} />
               </LayerGroup>
             </LayersControl.Overlay>
           )}
