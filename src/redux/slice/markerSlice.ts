@@ -31,7 +31,7 @@ export const markerSlice = createSlice({
     popMarker(state, action: PayloadAction<string>) {
       const { payload: hash } = action;
       const { groups } = state;
-      delete groups![hash];
+      groups && delete groups[hash];
       return {
         ...state,
         groups,

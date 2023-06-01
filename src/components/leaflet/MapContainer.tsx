@@ -18,7 +18,8 @@ const mapStateToProps = (state: RootState) => {
   const { bounds, activeMaps, center } = state.map;
   const { active } = state.marker;
 
-  const marker = active ? state.marker.groups![active] : undefined;
+  const marker =
+    state.marker.groups && active ? state.marker.groups[active] : undefined;
 
   const apiData = {
     gw2Bounds: bounds,
@@ -62,10 +63,7 @@ class LLContainer extends Component<LLContainerReduxProps> {
     const { sectors, poi } = props;
     this.sectors = sectors;
 
-    if (!poi) {
-      return;
-    }
-    Object.entries(poi!).forEach((entry) => {
+    Object.entries(poi).forEach((entry) => {
       this.poi.push(entry[1]);
     });
   }
@@ -93,7 +91,7 @@ class LLContainer extends Component<LLContainerReduxProps> {
             {marker && (
               <LayersControl.Overlay name="Guide Marker" checked>
                 <LayerGroup>
-                  <GuideMarker markers={marker!} perm={true} />
+                  <GuideMarker markers={marker} perm={true} />
                 </LayerGroup>
               </LayersControl.Overlay>
             )}

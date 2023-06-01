@@ -19,7 +19,7 @@ export interface MarkerEmbed extends Omit<HTMLElement, 'dataset'> {
 }
 
 class App {
-  static getHash(obj: Object) {
+  static getHash(obj: unknown) {
     return objectHash(JSON.stringify(obj)).substring(0, 8);
   }
 
@@ -52,9 +52,9 @@ class App {
     });
   }
   renderOffcanvas() {
-    const rootDiv: MarkerEmbed = document.getElementById('gw2mapRoot')!;
+    const rootDiv = document.getElementById('gw2mapRoot') as MarkerEmbed;
     if (!rootDiv) {
-      return;
+      throw new Error('Object with ID "gw2mapRoot" not found!');
     }
     const { dataset } = rootDiv;
 

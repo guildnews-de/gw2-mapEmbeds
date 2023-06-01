@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 // eslint-disable-next-line no-unused-vars
-import { getStorageInfo, removeTile, truncate } from 'leaflet.offline';
+import { getStorageInfo, removeTile } from 'leaflet.offline';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';

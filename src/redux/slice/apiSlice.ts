@@ -26,7 +26,7 @@ export interface GW2MapsApiData
 }
 
 export interface GW2ApiRequestParams {
-  id?: number;
+  id: number;
   lang?: 'de' | 'en' | 'es' | 'fr';
   access_token?: string;
 }
