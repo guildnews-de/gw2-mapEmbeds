@@ -11,7 +11,7 @@
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "build": "react-scripts build",
     "build:dev": "webpack --config webpack/webpack.config.js --mode=development",
-    "build:prod": "webpack --config webpack/webpack.config.js --mode=production --node-env=production",
+    "build:prod": "webpack --config webpack/webpack.config.js --mode=production --node-env=production"
   },
   "dependencies": {
     "@discretize/typeface-menomonia": "^0.1.3",
