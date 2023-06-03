@@ -17,7 +17,7 @@ function MarkerGuide(props: { markers: GW2Point[]; perm?: boolean }) {
   const map = useMap();
   const { markers } = props;
 
-  const iconSwitch = (key: string = '') => {
+  const iconSwitch = (key = '') => {
     let png: string;
     switch (key) {
       case 'red':

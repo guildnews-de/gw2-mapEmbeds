@@ -63,7 +63,7 @@ interface CachedGW2Data extends GW2ApiMapsResponse, GW2ApiRegionsResponse {
 
 export type GW2ApiError = { text: string };
 
-const apiMiddleware: Middleware<{}, RootState> =
+const apiMiddleware: Middleware<Record<string,never>, RootState> =
   ({ dispatch }) =>
   (next) =>
   (action) => {
@@ -93,7 +93,7 @@ const apiMiddleware: Middleware<{}, RootState> =
           if (cachedData && cacheAge < 3) {
             // If data is found in IndexedDB, dispatch it
             //console.debug('From Database');
-            dispatch(setData({ mapID: id!, mapData: cachedData }));
+            dispatch(setData({ mapID: id, mapData: cachedData }));
             dispatch(setDone());
           } else {
             //console.debug('From API');
@@ -113,7 +113,7 @@ const apiMiddleware: Middleware<{}, RootState> =
               },
             })
               .then(({ data }: { data: GW2ApiMapsResponse }) => {
-                apiData.regId = data.region_id!;
+                apiData.regId = data.region_id as number;
                 apiData.map = data;
                 // dispatch(setData({ mapID: id!, mapData: data }));
               })
@@ -124,7 +124,6 @@ const apiMiddleware: Middleware<{}, RootState> =
                     lang: lang,
                   },
                 }).then(({ data }: { data: GW2ApiRegionsResponse }) => {
-                  // @ts-ignore
                   const {
                     label_coord,
                     points_of_interest: poi,
@@ -139,7 +138,7 @@ const apiMiddleware: Middleware<{}, RootState> =
                     ...apiData.map,
                     ...cropData,
                   };
-                  dispatch(setData({ mapID: id!, mapData: apiData.map }));
+                  dispatch(setData({ mapID: id, mapData: apiData.map }));
                   // Store the data in IndexedDB for future use
                   db.put(
                     'gw2_api_data',

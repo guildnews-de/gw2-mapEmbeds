@@ -12,7 +12,7 @@ function MarkerPoi(props: { markers: GW2ApiPoi[]; perm?: boolean }) {
   const map = useMap();
   const { markers } = props;
 
-  const iconSwitch = (key: string = '') => {
+  const iconSwitch = (key = '') => {
     let png: string;
     switch (key) {
       case 'heart':

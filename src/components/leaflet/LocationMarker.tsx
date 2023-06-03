@@ -27,7 +27,7 @@ function LocationMarker() {
   const pos: LatLng = statePos ? JSON.parse(statePos) : null;
   const posProject = pos ? project(pos) : null;
   const posString = posProject
-    ? `[${Math.round(posProject!.x)},${Math.round(posProject!.y)}]`
+    ? `[${Math.round(posProject.x)},${Math.round(posProject.y)}]`
     : '[,]';
   if (statePos) {
     posCopy(posString);
