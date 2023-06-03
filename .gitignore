@@ -19,8 +19,6 @@
 
 # production
 /build
-/dist
-/.dist
 package.tgz
 
 # misc
