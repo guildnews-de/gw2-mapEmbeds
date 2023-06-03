@@ -2,7 +2,7 @@ import React from 'react';
 import { Marker, Tooltip, useMap } from 'react-leaflet';
 import { icon } from 'leaflet';
 
-import { GW2Point } from './GW2Point';
+import { default as GW2Point } from './GW2Point';
 import {
   star_blue,
   star_red,

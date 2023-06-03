@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Button } from 'react-bootstrap';
+import { PointTuple } from 'leaflet';
+
 import type { MarkerEmbed } from '../App';
 import type { RootState } from '../redux/store';
-
 import { pushMarker, setMarker, wipeCurrent } from '../redux/slice/markerSlice';
 import { openCanvas } from '../redux/slice/appSlice';
-import { PointTuple } from 'leaflet';
-import { GW2Point } from './leaflet/gw2/GW2Point';
+import { GW2Point } from './leaflet/gw2';
 
 const mapStateToProps = (state: RootState) => {
   const { active } = state.marker;

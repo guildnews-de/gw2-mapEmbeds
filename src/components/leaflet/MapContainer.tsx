@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import type { RootState } from '../../redux/store';
-
 import { MapContainer, Pane, LayerGroup, LayersControl } from 'react-leaflet';
 import { CRS, LatLng, PointTuple } from 'leaflet';
 
+import type { RootState } from '../../redux/store';
 import { GW2ApiPoi, GW2ApiSector } from '../../redux/apiMiddleware';
-import { GW2Tiles, GuideMarker, PoiMarker, GW2Sectors } from './gw2';
-import { GW2Point } from './gw2/GW2Point';
-import ClickedPosition from './LocationMarker';
 
-import 'leaflet/dist/leaflet.css';
-import './MapContainer.scss';
+import { GW2Tiles, GuideMarker, PoiMarker, GW2Sectors, GW2Point } from './gw2';
+import ClickedPosition from './LocationMarker';
 import Recenter from './Recenter';
+
+import './MapContainer.scss';
 
 const mapStateToProps = (state: RootState) => {
   const { bounds, activeMaps, center } = state.map;

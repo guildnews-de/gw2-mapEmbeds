@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { GW2Point } from '../../components/leaflet/gw2/GW2Point';
+import { GW2Point } from '../../components/leaflet/gw2';
 
 export interface MarkerState {
   active: string | undefined;

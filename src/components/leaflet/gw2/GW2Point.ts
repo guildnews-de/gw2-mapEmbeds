@@ -6,7 +6,7 @@ export interface GW2PointProps {
   type: string;
 }
 
-export class GW2Point extends Point {
+export default class GW2Point extends Point {
   name: string;
   type: string;
   constructor(props: GW2PointProps) {

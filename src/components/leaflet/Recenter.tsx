@@ -1,7 +1,7 @@
 import { Bounds } from 'leaflet';
 import React, { useEffect } from 'react';
 import { useMap } from 'react-leaflet';
-import { GW2Point } from './gw2/GW2Point';
+import { GW2Point } from './gw2';
 
 interface RecenterProps {
   //newCenter: PointTuple | [[number, number], [number, number]];
