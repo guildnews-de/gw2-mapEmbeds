@@ -13,9 +13,10 @@
     "test": "yarn format && yarn lint && tsc --noEmit",
     "format": "prettier -w src",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
+    "types": "yarn tsc --emitDeclarationOnly --declaration --declarationDir dist/@types --skiplibCheck",
     "build": "react-scripts build",
     "build:dev": "webpack --config webpack/webpack.config.js --mode=development",
-    "build:prod": "webpack --config webpack/webpack.config.js --mode=production --node-env=production"
+    "build:prod": "webpack --config webpack/webpack.config.js --mode=production --node-env=production && yarn types"
   },
   "dependencies": {
     "@discretize/typeface-menomonia": "^0.1.3",
