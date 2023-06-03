@@ -17,7 +17,7 @@ You may also see any lint errors in the console.
 ## Embed Codes
 The following html blocks can or must be used to add data to the leaflet-gw2 map. 
 ### Init Block
-Necessary to show offcanvas panel. Placemnt not very important. Nothing is shown exactly there.
+Necessary to show offcanvas panel. Placement not very important. Nothing is shown exactly there.
 In the dataset tag you set, which map data will be loaded. (landmarks, sector borders and names, ...)
 #### Config
 | tag             | descr                                                |
@@ -33,9 +33,9 @@ On this block a button will be rendered, which activates the point/point-group o
 #### Config
 | tag                | description                                                   |
 |--------------------|---------------------------------------------------------------|
-| class=gw2mapMarker | Render Target for marker buttons.                             |
-| data-gw2map-marker | Json object ob marker names and coordinates                   |
-| data-gw2map-color  | Set color of marker (red, rose, green, yellow, default: blue) |
+| class=gw2mapMarker | Render target for marker buttons.                             |
+| data-gw2map-marker | Json object of marker names and coordinates                   |
+| data-gw2map-color  | Set marker color (red, rose, green, yellow, default: blue) |
 ```html
 <div class="gw2mapMarker" data-gw2map-marker='{"Marker 1": [26850,99387],"Marker 2": [26689,99871]}' data-gw2map-color="rose"></div>
 or
