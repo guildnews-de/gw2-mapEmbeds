@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export interface appState {
   mapsLoaded: boolean;
+  modal: boolean;
   canvas: {
     open: boolean;
     loadLL: boolean;
@@ -10,8 +11,9 @@ export interface appState {
 
 const initState: appState = {
   mapsLoaded: false,
+  modal: false,
   canvas: {
-    open: true,
+    open: false,
     loadLL: false,
   },
 };
@@ -63,6 +65,13 @@ export const appSlice = createSlice({
         },
       };
     },
+    toggleModal(state) {
+      const { modal } = state;
+      return {
+        ...state,
+        modal: !modal,
+      };
+    },
   },
 });
 
@@ -72,5 +81,6 @@ export const {
   closeCanvas,
   setMapsLoaded,
   activateLL,
+  toggleModal,
 } = appSlice.actions;
 export default appSlice.reducer;

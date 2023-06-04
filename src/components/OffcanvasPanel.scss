@@ -1,34 +1,40 @@
-.offcanvas {
+.gw2maps.offcanvas {
   background: transparent !important;
   color: white !important;
   margin: auto;
   flex-direction: row !important;
 }
 
-.offcanvas-header {
-  padding: 0 !important;
-}
+.gw2maps {
+  .offcanvas-header {
+    padding: 0 !important;
+  }
 
-.offcanvas-body {
-  background: #616161 !important;
-}
+  .offcanvas-body {
+    background: #616161 !important;
+  }
 
-.offcanvas-spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  .offcanvas-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .modal-content{
+    background: #616161 !important;
+  }
 }
 
 @media only screen and (max-width: 1024px) {
-  .offcanvas {
+  .gw2maps.offcanvas {
     height: 100vh;
     width: 100vw !important;
   }
 }
 
 @media only screen and (min-width: 1025px) {
-  .offcanvas {
+  .gw2maps.offcanvas {
     height: 94vh;
     width: 36vw !important;
   }

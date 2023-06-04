@@ -25,6 +25,8 @@ class App {
 
   private targets: MarkerEmbed[];
 
+  private gw2mClass = 'gw2maps';
+
   constructor() {
     this.targets = Array.from(
       document.querySelectorAll('.gw2mapMarker') as NodeListOf<MarkerEmbed>,
@@ -45,7 +47,11 @@ class App {
       bRoot.render(
         <React.StrictMode>
           <Provider store={store}>
-            <MarkerButton hash={keyHash} dataset={dataset} />
+            <MarkerButton
+              hash={keyHash}
+              dataset={dataset}
+              className={this.gw2mClass}
+            />
           </Provider>
         </React.StrictMode>,
       );
@@ -62,7 +68,7 @@ class App {
     root.render(
       <React.StrictMode>
         <Provider store={store}>
-          <OffcanvasPanel dataset={dataset} />
+          <OffcanvasPanel dataset={dataset} className={this.gw2mClass} />
         </Provider>
       </React.StrictMode>,
     );

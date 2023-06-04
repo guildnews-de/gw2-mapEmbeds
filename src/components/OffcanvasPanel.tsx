@@ -19,14 +19,15 @@ import {
 import { MarkerEmbed } from '../App';
 import type { RootState } from '../redux/store';
 import OffcanvasToggle from './offcanvas/OffcanvasToggle';
+import OffcanvasDelete from './offcanvas/OffcanvasDelete';
+import DeleteModal from './offcanvas/DeleteModal';
+import { tilesURLDate } from '../constants';
 
 import './OffcanvasPanel.scss';
-import OffcanvasDelete from './offcanvas/OffcanvasDelete';
-import { tilesURLDate } from '../constants';
 
 const mapStateToProps = (state: RootState) => {
   const { open, loadLL } = state.app.canvas;
-  const { mapsLoaded } = state.app;
+  const { mapsLoaded, modal } = state.app;
   const { loading } = state.api;
   const ready = loading === false ? true : false;
   return {
@@ -34,6 +35,7 @@ const mapStateToProps = (state: RootState) => {
     ready: ready,
     mapsLoaded: mapsLoaded,
     loadLL: loadLL,
+    modal: modal,
   };
 };
 
@@ -51,6 +53,7 @@ type ReduxOffcanvasProps = ConnectedProps<typeof connector>;
 
 interface OffcanvasPanelProps extends ReduxOffcanvasProps {
   dataset: MarkerEmbed['dataset'];
+  className: string;
 }
 
 class OffcanvasPanel extends Component<OffcanvasPanelProps> {
@@ -83,20 +86,22 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
   }
 
   render() {
-    const { open, loadLL, closeCanvas } = this.props;
+    const { open, loadLL, closeCanvas, modal, className } = this.props;
     const style: CSSProperties = {
       flexDirection: 'column',
       justifyContent: 'center',
     };
     return (
       <>
-        <OffcanvasToggle className="toggle-closed" />
+        <DeleteModal show={modal} className={className} />
+        <OffcanvasToggle className={className+" toggle-closed"} />
         <Offcanvas
           show={open}
           scroll={true}
           backdrop={false}
           onHide={() => closeCanvas()}
           placement="end"
+          className={className}
         >
           <Offcanvas.Header style={style}>
             <OffcanvasToggle className="toggle-opened" />
