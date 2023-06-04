@@ -29,15 +29,23 @@ type ReduxMarkerProps = ConnectedProps<typeof connector>;
 interface MarkerButtonProps extends ReduxMarkerProps {
   hash: string;
   dataset: MarkerEmbed['dataset'];
+  className: string;
 }
 
-// TODO: Change active map on button. "default map" fallback mechanic?
-
 class MarkerButton extends Component<MarkerButtonProps> {
-  static markParser(raw: MarkerEmbed['dataset']) {
+  constructor(props: MarkerButtonProps) {
+    super(props);
+    const { hash, dataset, pushMarker } = this.props;
+
+    const group = this.markParser(dataset);
+    pushMarker([hash as string, group]);
+  }
+
+  markParser(raw: MarkerEmbed['dataset']) {
     const markArr: GW2Point[] = [];
-    const markObj: Record<string, PointTuple> = raw.gw2mapMarker && JSON.parse(raw.gw2mapMarker);
+    const markObj = raw.gw2mapMarker ? this.markJSONify(raw.gw2mapMarker) : {};
     const type = raw.gw2mapColor ? raw.gw2mapColor : 'default';
+
     Object.entries(markObj).forEach((entry) => {
       const [name, tupel] = entry;
       markArr.push(new GW2Point({ tupel, name, type }));
@@ -46,16 +54,23 @@ class MarkerButton extends Component<MarkerButtonProps> {
     return markArr;
   }
 
-  constructor(props: MarkerButtonProps) {
-    super(props);
-    const { hash, dataset, pushMarker } = this.props;
+  markJSONify(rawMarker: string) {
+    const parentArray = rawMarker.split(';');
+    const output: Record<string, PointTuple> = {};
 
-    const group = MarkerButton.markParser(dataset);
-    pushMarker([hash as string, group]);
+    parentArray.forEach((string) => {
+      const childArray = string.split(',');
+      if (childArray.length >= 3) {
+        const x = Number(childArray[1]);
+        const y = Number(childArray[2]);
+        output[String(childArray[0])] = [x, y];
+      }
+    });
+    return output;
   }
 
   render() {
-    const { activeMark, hash, setMarker, openCanvas } = this.props;
+    const { activeMark, hash, setMarker, openCanvas, className } = this.props;
     const onText = 'Karte zeigen';
     const offText = 'jetzt sichtbar';
     return (
@@ -68,6 +83,7 @@ class MarkerButton extends Component<MarkerButtonProps> {
           openCanvas();
           wipeCurrent();
         }}
+        className={className}
       >
         {!(activeMark === hash) ? onText : offText}
       </Button>
