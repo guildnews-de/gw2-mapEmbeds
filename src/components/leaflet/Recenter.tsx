@@ -1,4 +1,4 @@
-import { Bounds } from 'leaflet';
+import { Bounds, Point } from 'leaflet';
 import React, { useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import { GW2Point } from './gw2';
@@ -13,8 +13,14 @@ const Recenter = ({ marker }: RecenterProps) => {
   //const [val1, val2] = newCenter;
 
   useEffect(() => {
-    const bounds = new Bounds(marker);
-    const center = bounds.getCenter();
+    let center: Point;
+    if (marker.length === 1) {
+      center = marker[0];
+    } else {
+
+      const bounds = new Bounds(marker);
+      center = bounds.getCenter();
+    }
 
     map.setView(map.unproject(center, map.getMaxZoom()), 6);
   }, [marker, map]);
