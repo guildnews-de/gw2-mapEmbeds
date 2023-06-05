@@ -66,7 +66,11 @@ class MarkerButton extends Component<MarkerButtonProps> {
       if (childArray.length >= 3) {
         const x = Number(childArray[1]);
         const y = Number(childArray[2]);
-        output[String(childArray[0])] = [x, y];
+        if (Number.isNaN(x) || Number.isNaN(y)) {
+          output[String(childArray[0])] = [0,0]
+        } else {
+          output[String(childArray[0])] = [x, y];
+        }
       }
     });
     return output;
