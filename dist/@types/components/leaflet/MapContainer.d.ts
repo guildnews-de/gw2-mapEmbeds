@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { ConnectedProps } from 'react-redux';
 import { PointTuple } from 'leaflet';
 import { GW2ApiPoi, GW2ApiSector } from '../../redux/apiMiddleware';
-import { GW2Point } from './gw2';
 import './MapContainer.scss';
+import { GW2PointGroup } from './gw2/GW2Point';
 declare const connector: import("react-redux").InferableComponentEnhancerWithProps<{
     gw2Bounds: [number, number];
-    marker: GW2Point[];
+    marker: GW2PointGroup;
     poi: Record<number, GW2ApiPoi>;
     sectors: Record<number, GW2ApiSector>;
     center: PointTuple;

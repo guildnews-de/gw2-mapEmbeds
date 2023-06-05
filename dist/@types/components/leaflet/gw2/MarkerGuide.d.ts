@@ -1,8 +1,8 @@
 /// <reference types="react" />
-import { default as GW2Point } from './GW2Point';
+import { GW2PointGroup } from './GW2Point';
 import './tooltip.scss';
 declare function MarkerGuide(props: {
-    markers: GW2Point[];
+    markers: GW2PointGroup;
     perm?: boolean;
 }): JSX.Element;
 export default MarkerGuide;

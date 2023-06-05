@@ -4,9 +4,20 @@ export interface GW2PointProps {
     name: string;
     type: string;
 }
-export default class GW2Point extends Point {
+export interface GW2PointGroupProps {
+    points: GW2Point[];
+    mode?: string;
+}
+export type PointGroupMode = 'points' | 'line';
+export declare class GW2Point extends Point {
     name: string;
     type: string;
     constructor(props: GW2PointProps);
     toString(): string;
+}
+export declare class GW2PointGroup {
+    points: GW2Point[];
+    mode: PointGroupMode;
+    constructor(props: GW2PointGroupProps);
+    getMode(propMode?: string): "points" | "line";
 }

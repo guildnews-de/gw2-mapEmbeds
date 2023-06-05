@@ -15,6 +15,7 @@ export interface MarkerEmbed extends Omit<HTMLElement, 'dataset'> {
     gw2mapIds?: string;
     gw2mapMarker?: string;
     gw2mapColor?: string;
+    gw2mapMode?: string;
   };
 }
 

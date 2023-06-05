@@ -8,6 +8,7 @@ declare const connector: import("react-redux").InferableComponentEnhancerWithPro
     ready: boolean;
     mapsLoaded: boolean;
     loadLL: boolean;
+    modal: boolean;
 } & {
     setTileDate: import("@reduxjs/toolkit").ActionCreatorWithPayload<tileApiData, "map/setTileDate">;
     closeCanvas: import("@reduxjs/toolkit").ActionCreatorWithoutPayload<"map/closeCanvas">;
@@ -19,6 +20,7 @@ declare const connector: import("react-redux").InferableComponentEnhancerWithPro
 type ReduxOffcanvasProps = ConnectedProps<typeof connector>;
 interface OffcanvasPanelProps extends ReduxOffcanvasProps {
     dataset: MarkerEmbed['dataset'];
+    className: string;
 }
 declare class OffcanvasPanel extends Component<OffcanvasPanelProps> {
     constructor(props: OffcanvasPanelProps);
@@ -27,11 +29,13 @@ declare class OffcanvasPanel extends Component<OffcanvasPanelProps> {
 }
 declare const _default: import("react-redux").ConnectedComponent<typeof OffcanvasPanel, {
     ref?: React.LegacyRef<OffcanvasPanel> | undefined;
+    className: string;
     key?: React.Key | null | undefined;
     dataset: {
         gw2mapIds?: string | undefined;
         gw2mapMarker?: string | undefined;
         gw2mapColor?: string | undefined;
+        gw2mapMode?: string | undefined;
     };
     context?: React.Context<import("react-redux").ReactReduxContextValue<any, import("redux").AnyAction>> | undefined;
     store?: import("redux").Store<any, import("redux").AnyAction> | undefined;

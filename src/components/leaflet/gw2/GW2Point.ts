@@ -6,7 +6,14 @@ export interface GW2PointProps {
   type: string;
 }
 
-export default class GW2Point extends Point {
+export interface GW2PointGroupProps {
+  points: GW2Point[];
+  mode?: string;
+}
+
+export type PointGroupMode = 'points' | 'line';
+
+export class GW2Point extends Point {
   name: string;
   type: string;
   constructor(props: GW2PointProps) {
@@ -19,5 +26,27 @@ export default class GW2Point extends Point {
 
   toString() {
     return `[${this.name},${this.type}]${super.toString()}`;
+  }
+}
+
+export class GW2PointGroup {
+  points: GW2Point[];
+  mode: PointGroupMode;
+  constructor(props: GW2PointGroupProps) {
+    const { points, mode } = props;
+
+    this.points = points
+    this.mode = this.getMode( mode );
+  }
+
+  getMode( propMode = '' ) {
+    switch (propMode) {
+      case 'line':
+        return 'line';
+        break;
+      default:
+        return 'points';
+        break;
+    }
   }
 }

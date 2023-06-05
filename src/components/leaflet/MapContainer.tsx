@@ -6,11 +6,12 @@ import { CRS, LatLng, PointTuple } from 'leaflet';
 import type { RootState } from '../../redux/store';
 import { GW2ApiPoi, GW2ApiSector } from '../../redux/apiMiddleware';
 
-import { GW2Tiles, GuideMarker, PoiMarker, GW2Sectors, GW2Point } from './gw2';
+import { GW2Tiles, GuideMarker, PoiMarker, GW2Sectors } from './gw2';
 import ClickedPosition from './LocationMarker';
 import Recenter from './Recenter';
 
 import './MapContainer.scss';
+import { GW2PointGroup } from './gw2/GW2Point';
 
 const mapStateToProps = (state: RootState) => {
   const { bounds, activeMaps, center } = state.map;
@@ -27,7 +28,7 @@ const mapStateToProps = (state: RootState) => {
     center: center,
   } as {
     gw2Bounds: [number, number];
-    marker: GW2Point[];
+    marker: GW2PointGroup;
     poi: Record<number, GW2ApiPoi>;
     sectors: Record<number, GW2ApiSector>;
     center: PointTuple;
@@ -104,7 +105,7 @@ class LLContainer extends Component<LLContainerReduxProps> {
           )}
         </LayersControl>
         <ClickedPosition />
-        {marker && <Recenter marker={marker} />}
+        {marker && <Recenter marker={marker.points} />}
       </MapContainer>
     );
   }
