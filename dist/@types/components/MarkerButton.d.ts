@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ConnectedProps } from 'react-redux';
 import { PointTuple } from 'leaflet';
 import type { MarkerEmbed } from '../App';
+import { GW2Point } from './leaflet/gw2';
 import { GW2PointGroup } from './leaflet/gw2/GW2Point';
 declare const connector: import("react-redux").InferableComponentEnhancerWithProps<{
     activeMark: string | undefined;

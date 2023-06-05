@@ -1,6 +1,6 @@
 import React from 'react';
 import { Marker, Polyline, Tooltip, useMap } from 'react-leaflet';
-import {  LatLngExpression, PathOptions, icon } from 'leaflet';
+import { LatLngExpression, PathOptions, icon } from 'leaflet';
 
 import { GW2PointGroup } from './GW2Point';
 import {
@@ -16,13 +16,13 @@ import './tooltip.scss';
 function MarkerGuide(props: { markers: GW2PointGroup; perm?: boolean }) {
   const map = useMap();
   const { markers } = props;
-  const LatLngPoints: LatLngExpression[] = []
+  const LatLngPoints: LatLngExpression[] = [];
 
   if (markers) {
-    markers.points.forEach( gw2Point => {
+    markers.points.forEach((gw2Point) => {
       LatLngPoints.push(
-        map.unproject([gw2Point.x, gw2Point.y], map.getMaxZoom())
-      )
+        map.unproject([gw2Point.x, gw2Point.y], map.getMaxZoom()),
+      );
     });
   }
 
@@ -31,9 +31,8 @@ function MarkerGuide(props: { markers: GW2PointGroup; perm?: boolean }) {
     weight: 8,
     opacity: 0.8,
     lineCap: 'round',
-    lineJoin: 'round'
-    
-  }
+    lineJoin: 'round',
+  };
   const iconSwitch = (key = '') => {
     let png: string;
     switch (key) {
@@ -59,7 +58,7 @@ function MarkerGuide(props: { markers: GW2PointGroup; perm?: boolean }) {
 
       default:
         png = star_blue;
-        pathProps.color = 'DodgerBlue'
+        pathProps.color = 'DodgerBlue';
         break;
     }
     return icon({
@@ -72,6 +71,13 @@ function MarkerGuide(props: { markers: GW2PointGroup; perm?: boolean }) {
 
   return (
     <>
+      {markers.mode === 'line' && (
+        <Polyline
+          pathOptions={pathProps}
+          positions={LatLngPoints}
+          className="gw2Path"
+        />
+      )}
       {markers.points.map((el, i) => (
         <Marker
           key={i}
@@ -89,10 +95,6 @@ function MarkerGuide(props: { markers: GW2PointGroup; perm?: boolean }) {
           )}
         </Marker>
       ))}
-      {markers.mode === 'line' && 
-      <Polyline pathOptions={pathProps} positions={LatLngPoints} />
-
-      }
     </>
   );
 }
