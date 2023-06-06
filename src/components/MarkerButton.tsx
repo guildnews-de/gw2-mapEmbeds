@@ -46,10 +46,10 @@ class MarkerButton extends Component<MarkerButtonProps> {
 
   markParser(raw: MarkerEmbed['dataset']) {
     const markArr: GW2Point[] = [];
-    const markObj = raw.gw2mapMarker ? this.markJSONify(raw.gw2mapMarker) : {};
+    const markObj = raw.gw2mapMarker ? this.markJSONify(raw.gw2mapMarker) : [];
     const type = raw.gw2mapColor ? raw.gw2mapColor : 'default';
 
-    Object.entries(markObj).forEach((entry) => {
+    markObj.forEach((entry) => {
       const [name, tupel] = entry;
       markArr.push(new GW2Point({ tupel, name, type }));
     });
@@ -59,7 +59,7 @@ class MarkerButton extends Component<MarkerButtonProps> {
 
   markJSONify(rawMarker: string) {
     const parentArray = rawMarker.split(';');
-    const output: Record<string, PointTuple> = {};
+    const output: [string, PointTuple][] = [];
 
     parentArray.forEach((string) => {
       const childArray = string.split(',');
@@ -67,9 +67,9 @@ class MarkerButton extends Component<MarkerButtonProps> {
         const x = Number(childArray[1]);
         const y = Number(childArray[2]);
         if (Number.isNaN(x) || Number.isNaN(y)) {
-          output[String(childArray[0])] = [0,0]
+          output.push([String(childArray[0]),[0,0]]);
         } else {
-          output[String(childArray[0])] = [x, y];
+          output.push([String(childArray[0]),[x, y]]);
         }
       }
     });
