@@ -5,6 +5,7 @@ import { MarkerEmbed } from '../App';
 import './OffcanvasPanel.scss';
 declare const connector: import("react-redux").InferableComponentEnhancerWithProps<{
     open: boolean;
+    wide: boolean;
     ready: boolean;
     mapsLoaded: boolean;
     loadLL: boolean;

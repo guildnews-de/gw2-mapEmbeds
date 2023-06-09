@@ -21,7 +21,7 @@ interface MarkerButtonProps extends ReduxMarkerProps {
 declare class MarkerButton extends Component<MarkerButtonProps> {
     constructor(props: MarkerButtonProps);
     markParser(raw: MarkerEmbed['dataset']): GW2Point[];
-    markJSONify(rawMarker: string): Record<string, PointTuple>;
+    markJSONify(rawMarker: string): [string, PointTuple][];
     render(): JSX.Element;
 }
 declare const _default: import("react-redux").ConnectedComponent<typeof MarkerButton, {
