@@ -5,6 +5,7 @@ export interface appState {
   modal: boolean;
   canvas: {
     open: boolean;
+    wide: boolean;
     loadLL: boolean;
   };
 }
@@ -14,6 +15,7 @@ const initState: appState = {
   modal: false,
   canvas: {
     open: false,
+    wide: false,
     loadLL: false,
   },
 };
@@ -50,6 +52,16 @@ export const appSlice = createSlice({
         },
       };
     },
+    toggleWide(state) {
+      const { wide } = state.canvas;
+      return {
+        ...state,
+       canvas: {
+        ...state.canvas,
+        wide: !wide,
+       },
+      };
+    },
     setMapsLoaded(state) {
       return {
         ...state,
@@ -79,6 +91,7 @@ export const {
   toggleCanvas,
   openCanvas,
   closeCanvas,
+  toggleWide,
   setMapsLoaded,
   activateLL,
   toggleModal,

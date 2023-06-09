@@ -24,14 +24,16 @@ import DeleteModal from './offcanvas/DeleteModal';
 import { tilesURLDate } from '../constants';
 
 import './OffcanvasPanel.scss';
+import OffcanvasWide from './offcanvas/OffcanvasWide';
 
 const mapStateToProps = (state: RootState) => {
-  const { open, loadLL } = state.app.canvas;
+  const { open, wide, loadLL } = state.app.canvas;
   const { mapsLoaded, modal } = state.app;
   const { loading } = state.api;
   const ready = loading === false ? true : false;
   return {
     open: open,
+    wide: wide,
     ready: ready,
     mapsLoaded: mapsLoaded,
     loadLL: loadLL,
@@ -86,11 +88,12 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
   }
 
   render() {
-    const { open, loadLL, closeCanvas, modal, className } = this.props;
+    const { open, wide, loadLL, closeCanvas, modal, className } = this.props;
     const style: CSSProperties = {
       flexDirection: 'column',
       justifyContent: 'center',
     };
+    const cls = wide ? `${className} wide` : className;
     return (
       <>
         <DeleteModal show={modal} className={className} />
@@ -101,9 +104,10 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
           backdrop={false}
           onHide={() => closeCanvas()}
           placement="end"
-          className={className}
+          className={cls}
         >
           <Offcanvas.Header style={style}>
+            <OffcanvasWide/>
             <OffcanvasToggle className="toggle-opened" />
             <OffcanvasDelete />
           </Offcanvas.Header>
