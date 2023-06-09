@@ -24,10 +24,16 @@ function GW2Layer(props: GW2LayerProps) {
   map.setMaxBounds(maxBounds);
 
   const apiDate = useAppSelector((state) => state.map.tileDate);
+  const wide = useAppSelector((state) => state.app.canvas.wide);
 
   useEffect(() => {
     cleanTileCache(apiDate);
-  }, [apiDate]);
+    map.invalidateSize();
+  }, [apiDate, map, wide]);
+
+  useEffect(() => {
+    map.invalidateSize();
+  }, [map, wide]);
 
   const cleanTileCache = async (apiDate: number) => {
     const tiles = await getStorageInfo(tilesURL);
