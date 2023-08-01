@@ -63,7 +63,7 @@ interface CachedGW2Data extends GW2ApiMapsResponse, GW2ApiRegionsResponse {
 
 export type GW2ApiError = { text: string };
 
-const apiMiddleware: Middleware<Record<string,never>, RootState> =
+const apiMiddleware: Middleware<Record<string, never>, RootState> =
   ({ dispatch }) =>
   (next) =>
   (action) => {
@@ -102,6 +102,8 @@ const apiMiddleware: Middleware<Record<string,never>, RootState> =
             axios.defaults.timeout = 5000;
             axios.defaults.headers.common['Content-Type'] = 'application/json';
 
+            const special = [922];
+
             const apiData = {
               regId: 0,
               map: {} as GW2ApiMapsResponse,
@@ -115,6 +117,10 @@ const apiMiddleware: Middleware<Record<string,never>, RootState> =
               .then(({ data }: { data: GW2ApiMapsResponse }) => {
                 apiData.regId = data.region_id as number;
                 apiData.map = data;
+
+                if (special.includes(id)) {
+                  axios.defaults.baseURL = "https://assets.guildnews.de/json/v2";
+                }
                 // dispatch(setData({ mapID: id!, mapData: data }));
               })
               .then(() => {
@@ -123,32 +129,38 @@ const apiMiddleware: Middleware<Record<string,never>, RootState> =
                   params: {
                     lang: lang,
                   },
-                }).then(({ data }: { data: GW2ApiRegionsResponse }) => {
-                  const {
-                    label_coord,
-                    points_of_interest: poi,
-                    sectors,
-                  } = data;
-                  const cropData = {
-                    label_coord: label_coord,
-                    poi: poi,
-                    sectors: sectors,
-                  };
-                  apiData.map = {
-                    ...apiData.map,
-                    ...cropData,
-                  };
-                  dispatch(setData({ mapID: id, mapData: apiData.map }));
-                  // Store the data in IndexedDB for future use
-                  db.put(
-                    'gw2_api_data',
-                    {
-                      timestamp: dateNow,
+                })
+                  .then(({ data }: { data: GW2ApiRegionsResponse }) => {
+                    const {
+                      label_coord,
+                      points_of_interest: poi,
+                      sectors,
+                    } = data;
+                    const cropData = {
+                      label_coord: label_coord,
+                      poi: poi,
+                      sectors: sectors,
+                    };
+                    apiData.map = {
                       ...apiData.map,
-                    },
-                    cacheKey,
-                  );
-                });
+                      ...cropData,
+                    };
+                    //console.log(JSON.stringify(cropData));
+                    //console.log(JSON.stringify(data));
+                    dispatch(setData({ mapID: id, mapData: apiData.map }));
+                    // Store the data in IndexedDB for future use
+                    db.put(
+                      'gw2_api_data',
+                      {
+                        timestamp: dateNow,
+                        ...apiData.map,
+                      },
+                      cacheKey,
+                    );
+                  })
+                  .catch((error: GW2ApiError) => {
+                    dispatch(setError(error));
+                  });
               })
               .catch((error: GW2ApiError) => {
                 dispatch(setError(error));
