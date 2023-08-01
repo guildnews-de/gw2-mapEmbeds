@@ -11,8 +11,7 @@ import Recenter from './Recenter';
 
 import './MapContainer.scss';
 
-
-function LLContainer() { 
+function LLContainer() {
   // Grab redux state info
   const { bounds, activeMaps } = useAppSelector((state) => state.map);
   const { active, groups } = useAppSelector((state) => state.marker);
@@ -23,15 +22,17 @@ function LLContainer() {
   let mapPoi: Record<number, GW2ApiPoi> = {};
   let mapSectors: Record<number, GW2ApiSector> = {};
   activeMaps.forEach((id) => {
-    const { poi, sectors } = apiData[id];
-    mapPoi = {
-      ...mapPoi,
-      ...poi,
-    };
-    mapSectors = {
-      ...mapSectors,
-      ...sectors,
-    };
+    if (apiData[id] != undefined) {
+      const { poi, sectors } = apiData[id];
+      mapPoi = {
+        ...mapPoi,
+        ...poi,
+      };
+      mapSectors = {
+        ...mapSectors,
+        ...sectors,
+      };
+    }
   });
 
   const poiArray: GW2ApiPoi[] = [];
@@ -77,6 +78,6 @@ function LLContainer() {
       {marker && <Recenter marker={marker.points} />}
     </MapContainer>
   );
-};
+}
 
 export default LLContainer;
