@@ -8,9 +8,8 @@ import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 import './OffcanvasDelete.scss';
 
-
 function OffcanvasDelete() {
-  const dispatch = useAppDispatch(); 
+  const dispatch = useAppDispatch();
 
   return (
     <Button

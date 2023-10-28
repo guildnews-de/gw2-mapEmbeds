@@ -40,8 +40,9 @@ class MarkerButton extends Component<MarkerButtonProps> {
 
     const group = new GW2PointGroup({
       points: this.markParser(dataset),
-      mode: dataset.gw2mapMode});
-    pushMarker([hash as string, group]);
+      mode: dataset.gw2mapMode,
+    });
+    pushMarker([hash, group]);
   }
 
   markParser(raw: MarkerEmbed['dataset']) {
@@ -67,9 +68,9 @@ class MarkerButton extends Component<MarkerButtonProps> {
         const x = Number(childArray[1]);
         const y = Number(childArray[2]);
         if (Number.isNaN(x) || Number.isNaN(y)) {
-          output.push([String(childArray[0]),[0,0]]);
+          output.push([String(childArray[0]), [0, 0]]);
         } else {
-          output.push([String(childArray[0]),[x, y]]);
+          output.push([String(childArray[0]), [x, y]]);
         }
       }
     });
@@ -86,7 +87,7 @@ class MarkerButton extends Component<MarkerButtonProps> {
         size="sm"
         active={!(hash === activeMark)}
         onClick={() => {
-          setMarker(hash as string);
+          setMarker(hash);
           openCanvas();
           wipeCurrent();
         }}

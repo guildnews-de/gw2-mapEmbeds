@@ -1,6 +1,6 @@
 const { resolve } = require('path');
 const { ESLintPlugin, MiniCssExtract } = require('./plugins');
-const { TSLoader, CSSLoader } = require('./loaders')
+const { TSLoader, CSSLoader } = require('./loaders');
 
 const isProduction = process.env.NODE_ENV == 'production';
 
@@ -15,10 +15,7 @@ const config = {
     hashDigestLength: 16,
     clean: true,
   },
-  plugins: [
-    ESLintPlugin,
-    MiniCssExtract,
-  ],
+  plugins: [ESLintPlugin, MiniCssExtract],
   module: {
     rules: [
       TSLoader,

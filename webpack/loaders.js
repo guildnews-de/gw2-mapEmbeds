@@ -1,4 +1,4 @@
-const path = require('path');
+// const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const TSLoader = {
@@ -7,7 +7,11 @@ const TSLoader = {
   use: {
     loader: 'babel-loader',
     options: {
-      presets: ['@babel/preset-env', '@babel/preset-typescript', '@babel/preset-react'],
+      presets: [
+        '@babel/preset-env',
+        '@babel/preset-typescript',
+        '@babel/preset-react',
+      ],
     },
   },
 };
@@ -21,7 +25,7 @@ const CSSLoader = {
     },
     {
       loader: 'css-loader',
-      options: { 
+      options: {
         //modules: true,
         //importLoaders: 2,
         //sourceMap: true,
@@ -29,7 +33,6 @@ const CSSLoader = {
     },
     {
       loader: 'resolve-url-loader',
-
     },
     {
       loader: 'sass-loader',

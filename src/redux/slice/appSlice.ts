@@ -56,10 +56,10 @@ export const appSlice = createSlice({
       const { wide } = state.canvas;
       return {
         ...state,
-       canvas: {
-        ...state.canvas,
-        wide: !wide,
-       },
+        canvas: {
+          ...state.canvas,
+          wide: !wide,
+        },
       };
     },
     setMapsLoaded(state) {

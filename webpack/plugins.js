@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = new _ESLintPlugin({
   overrideConfigFile: path.resolve(__dirname, '../.eslintrc.js'),
   context: path.resolve(__dirname, '../src'),
-  files: ['**/*.ts','**/*.tsx'],
+  files: ['**/*.ts', '**/*.tsx'],
 });
 
 const MiniCssExtract = new MiniCssExtractPlugin({

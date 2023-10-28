@@ -1,7 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import type NodeListOf from 'typescript';
 import objectHash from 'object-hash';
 import store from './redux/store';
 
@@ -29,9 +28,7 @@ class App {
   private gw2mClass = 'gw2maps';
 
   constructor() {
-    this.targets = Array.from(
-      document.querySelectorAll('.gw2mapMarker') as NodeListOf<MarkerEmbed>,
-    );
+    this.targets = Array.from(document.querySelectorAll('.gw2mapMarker'));
     this.renderButtons();
     this.renderOffcanvas();
   }

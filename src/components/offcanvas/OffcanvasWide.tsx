@@ -8,9 +8,8 @@ import { faMaximize, faMinimize } from '@fortawesome/free-solid-svg-icons';
 
 import './OffcanvasDelete.scss';
 
-
 function OffcanvasWide() {
-  const dispatch = useAppDispatch(); 
+  const dispatch = useAppDispatch();
   const wide = useAppSelector((state) => state.app.canvas.wide);
 
   return (
@@ -20,7 +19,7 @@ function OffcanvasWide() {
       size="sm"
       onClick={() => dispatch(toggleWide())}
     >
-      <FontAwesomeIcon icon={ wide ? faMinimize : faMaximize} />
+      <FontAwesomeIcon icon={wide ? faMinimize : faMaximize} />
     </Button>
   );
 }

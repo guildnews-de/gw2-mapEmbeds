@@ -13,7 +13,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'import'],
+  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'import', 'prettier'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
@@ -26,6 +26,9 @@ module.exports = {
     'plugin:import/typescript',
     'prettier',
   ],
+  rules: {
+    'prettier/prettier': 'warn',
+  },
   overrides: [
     {
       files: ['webpack/*.js', '*.js'],
@@ -38,8 +41,8 @@ module.exports = {
         '@typescript-eslint/no-var-requires': 'off',
       },
       env: {
-        node: true
-      }
+        node: true,
+      },
     },
   ],
   settings: {

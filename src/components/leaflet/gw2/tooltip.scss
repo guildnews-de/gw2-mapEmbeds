@@ -5,8 +5,15 @@ $ttt-shadow: #fff9;
   font-weight: bold;
   font-size: 1rem;
   line-height: 1.4;
-  text-shadow: 2px 0 $ttt-shadow, -2px 0 $ttt-shadow, 0 2px $ttt-shadow, 0 -2px $ttt-shadow,
-    1px 1px $ttt-shadow, -1px -1px $ttt-shadow, 1px -1px $ttt-shadow, -1px 1px $ttt-shadow;
+  text-shadow:
+    2px 0 $ttt-shadow,
+    -2px 0 $ttt-shadow,
+    0 2px $ttt-shadow,
+    0 -2px $ttt-shadow,
+    1px 1px $ttt-shadow,
+    -1px -1px $ttt-shadow,
+    1px -1px $ttt-shadow,
+    -1px 1px $ttt-shadow;
 }
 
 .leaflet-tooltip-right {

@@ -17,7 +17,6 @@ const Recenter = ({ marker }: RecenterProps) => {
     if (marker.length === 1) {
       center = marker[0];
     } else {
-
       const bounds = new Bounds(marker);
       center = bounds.getCenter();
     }

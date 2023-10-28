@@ -35,11 +35,11 @@ export class GW2PointGroup {
   constructor(props: GW2PointGroupProps) {
     const { points, mode } = props;
 
-    this.points = points
-    this.mode = this.getMode( mode );
+    this.points = points;
+    this.mode = this.getMode(mode);
   }
 
-  getMode( propMode = '' ) {
+  getMode(propMode = '') {
     switch (propMode) {
       case 'line':
         return 'line';
