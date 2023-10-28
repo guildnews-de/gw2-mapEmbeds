@@ -5,7 +5,8 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: ['./tsconfig.json'],
+    project: true,
+    tsconfigRootDir: __dirname,
     ecmaFeatures: {
       jsx: true,
     },
@@ -15,7 +16,9 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'import'],
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended-type-checked',
+    'plugin:@typescript-eslint/stylistic-type-checked',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:json/recommended',
@@ -25,13 +28,18 @@ module.exports = {
   ],
   overrides: [
     {
-      files: ['webpack/*.js', './*.js'],
-      excludedFiles: ['src/**.js', 'src/*ts'],
+      files: ['webpack/*.js', '*.js'],
+      excludedFiles: ['src/**/*'],
       parser: 'espree',
-      extends: 'standard',
-      env: {
-        es2021: true,
+      extends: ['plugin:@typescript-eslint/disable-type-checked'],
+      rules: {
+        '@typescript-eslint/consistent-type-assertions': 'off',
+        '@typescript-eslint/dot-notation': 'off',
+        '@typescript-eslint/no-var-requires': 'off',
       },
+      env: {
+        node: true
+      }
     },
   ],
   settings: {
@@ -39,4 +47,5 @@ module.exports = {
       version: 'detect',
     },
   },
+  root: true,
 };
