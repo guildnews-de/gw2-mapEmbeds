@@ -72,9 +72,14 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
         addActiveMap(numID);
       });
 
-      axios.get(tilesURLDate).then(({ data }: { data: tileApiData }) => {
-        setTileDate(data);
-      });
+      axios
+        .get(tilesURLDate)
+        .then(({ data }: { data: tileApiData }) => {
+          setTileDate(data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
       setMapsLoaded();
     }
   }
@@ -97,7 +102,7 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
     return (
       <>
         <DeleteModal show={modal} className={className} />
-        <OffcanvasToggle className={className+" toggle-closed"} />
+        <OffcanvasToggle className={className + ' toggle-closed'} />
         <Offcanvas
           show={open}
           scroll={true}
@@ -107,7 +112,7 @@ class OffcanvasPanel extends Component<OffcanvasPanelProps> {
           className={cls}
         >
           <Offcanvas.Header style={style}>
-            <OffcanvasWide/>
+            <OffcanvasWide />
             <OffcanvasToggle className="toggle-opened" />
             <OffcanvasDelete />
           </Offcanvas.Header>

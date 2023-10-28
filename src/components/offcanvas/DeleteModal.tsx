@@ -5,7 +5,6 @@ import { toggleModal } from '../../redux/slice/appSlice';
 import { getStorageInfo, removeTile } from 'leaflet.offline';
 import { tilesURL } from '../../constants';
 
-
 function DeleteModal(props: ModalProps) {
   const dispatch = useAppDispatch();
 
@@ -16,8 +15,12 @@ function DeleteModal(props: ModalProps) {
     await Promise.all(
       tiles.map((tile) => {
         tile.createdAt < minCreatedAt
-          ? removeTile(tile.key)
-          : Promise.resolve();
+          ? removeTile(tile.key).catch((err) => {
+              console.error(err);
+            })
+          : Promise.resolve().catch((err) => {
+              console.error(err);
+            });
         count++;
       }),
     );
@@ -40,12 +43,23 @@ function DeleteModal(props: ModalProps) {
       </Modal.Header>
       <Modal.Body>
         <p>
-          Die Guild Wars 2 Karten Bilder werden nach dem laden lokal gespeichert, um eure Ladezeiten zu verkürzen.
-          Veraltete Karten werden automatisch aktualisiert. Willst du die gepeicherten Daten dennoch löschen?
+          Die Guild Wars 2 Karten Bilder werden nach dem laden lokal
+          gespeichert, um eure Ladezeiten zu verkürzen. Veraltete Karten werden
+          automatisch aktualisiert. Willst du die gepeicherten Daten dennoch
+          löschen?
         </p>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => {dispatch(toggleModal()) && clearTiles()}}>Löschen!</Button>
+        <Button
+          onClick={() => {
+            dispatch(toggleModal()) &&
+              clearTiles().catch((err) => {
+                console.error(err);
+              });
+          }}
+        >
+          Löschen!
+        </Button>
         <Button onClick={() => dispatch(toggleModal())}>Abbrechen</Button>
       </Modal.Footer>
     </Modal>

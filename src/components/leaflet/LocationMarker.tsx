@@ -24,13 +24,16 @@ function LocationMarker() {
   };
 
   const statePos = useAppSelector((state) => state.marker.currentPos);
-  const pos: LatLng = statePos ? JSON.parse(statePos) : null;
-  const posProject = pos ? project(pos) : null;
+  const pos = statePos ? (JSON.parse(statePos) as LatLng) : undefined;
+  const posProject = pos ? project(pos) : undefined;
   const posString = posProject
     ? `${Math.round(posProject.x)},${Math.round(posProject.y)}`
     : ',';
+
   if (statePos) {
-    posCopy(posString);
+    posCopy(posString).catch((err) => {
+      console.error(err);
+    });
   }
 
   return pos === null ? null : (

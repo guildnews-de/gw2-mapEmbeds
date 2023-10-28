@@ -27,7 +27,9 @@ function GW2Layer(props: GW2LayerProps) {
   const wide = useAppSelector((state) => state.app.canvas.wide);
 
   useEffect(() => {
-    cleanTileCache(apiDate);
+    cleanTileCache(apiDate).catch((err) => {
+      console.error(err);
+    });
     map.invalidateSize();
   }, [apiDate, map, wide]);
 
@@ -42,10 +44,14 @@ function GW2Layer(props: GW2LayerProps) {
       tiles.map((tile) => {
         //console.debug(tile.createdAt + '  ' + apiDate);
         if (tile.createdAt < apiDate) {
-          removeTile(tile.key);
+          removeTile(tile.key).catch((err) => {
+            console.error(err);
+          });
           count++;
         } else {
-          Promise.resolve();
+          Promise.resolve().catch((err) => {
+            console.error(err);
+          });
         }
       }),
     );

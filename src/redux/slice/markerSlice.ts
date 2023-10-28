@@ -4,13 +4,13 @@ import { GW2PointGroup } from '../../components/leaflet/gw2/GW2Point';
 
 export interface MarkerState {
   active: string | undefined;
-  currentPos?: string | null;
+  currentPos?: string | undefined;
   groups?: Record<string, GW2PointGroup>;
 }
 
 const initSate: MarkerState = {
   active: undefined,
-  currentPos: null,
+  currentPos: undefined,
   groups: undefined,
 };
 
@@ -54,7 +54,7 @@ export const markerSlice = createSlice({
     wipeCurrent(state) {
       return {
         ...state,
-        currentPos: null,
+        currentPos: undefined,
       };
     },
   },

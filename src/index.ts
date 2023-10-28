@@ -1,7 +1,11 @@
 const init = () => {
   const scripts = document.querySelector('script#gw2maps');
   if (scripts == null) {
-    import('./App').then(({ default: App }) => new App());
+    import('./App')
+      .then(({ default: App }) => new App())
+      .catch((err) => {
+        console.error(err);
+      });
   }
 };
 
