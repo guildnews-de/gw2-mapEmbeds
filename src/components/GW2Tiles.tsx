@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import { useMap } from 'react-leaflet';
-import { LatLngBounds, PointExpression, PointTuple } from 'leaflet';
+import { LatLngBounds, type PointExpression, type PointTuple } from 'leaflet';
 import { getStorageInfo, removeTile } from 'leaflet.offline';
 
-import { CachedTileLayer } from '../CachedTileLayer';
-import { useAppSelector } from '../../../redux/hooks';
-import { tilesURL } from '../../../constants';
+import { CachedTileLayer } from './leaflet/CachedTileLayer';
+import { useAppSelector } from '../redux/hooks';
+import { tilesURL } from '../common/constants';
 
-interface GW2LayerProps {
+interface GW2TilesProps {
   bounds: PointTuple;
 }
 
-function GW2Layer(props: GW2LayerProps) {
+export function GW2Tiles(props: GW2TilesProps) {
   const map = useMap();
   const unproject = (point: PointExpression) => {
     return map.unproject(point, map.getMaxZoom());
@@ -73,5 +73,3 @@ function GW2Layer(props: GW2LayerProps) {
     />
   );
 }
-
-export default GW2Layer;

@@ -1,18 +1,11 @@
-import { Point, PointTuple } from 'leaflet';
+import { Point } from 'leaflet';
+import type { PointTuple } from 'leaflet';
 
 export interface GW2PointProps {
   tupel: PointTuple;
-  name: string;
-  type: string;
+  name?: string;
+  type?: string;
 }
-
-export interface GW2PointGroupProps {
-  points: GW2Point[];
-  mode?: string;
-}
-
-export type PointGroupMode = 'points' | 'line';
-
 export class GW2Point extends Point {
   name: string;
   type: string;
@@ -20,8 +13,8 @@ export class GW2Point extends Point {
     const { tupel, name, type } = props;
     super(tupel[0], tupel[1]);
 
-    this.name = name;
-    this.type = type;
+    this.name = name ? name : '';
+    this.type = type ? type : 'default';
   }
 
   toString() {
@@ -29,9 +22,13 @@ export class GW2Point extends Point {
   }
 }
 
+export interface GW2PointGroupProps {
+  points: GW2Point[];
+  mode?: string;
+}
 export class GW2PointGroup {
   points: GW2Point[];
-  mode: PointGroupMode;
+  mode: ReturnType<typeof this.getMode>;
   constructor(props: GW2PointGroupProps) {
     const { points, mode } = props;
 
@@ -43,10 +40,8 @@ export class GW2PointGroup {
     switch (propMode) {
       case 'line':
         return 'line';
-        break;
       default:
         return 'points';
-        break;
     }
   }
 }

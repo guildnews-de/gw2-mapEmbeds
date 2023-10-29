@@ -1,14 +1,21 @@
-import { LatLng } from 'leaflet';
 import React from 'react';
-import { LayerGroup, LayersControl, Polyline, useMap } from 'react-leaflet';
-import { GW2ApiSector } from '../../../redux/apiMiddleware';
-import SectorText from './SectorText';
+import {
+  LayerGroup,
+  LayersControl,
+  Polyline,
+  useMap,
+  Marker,
+} from 'react-leaflet';
+import { divIcon, type LatLng } from 'leaflet';
+import type { GW2ApiSector } from '../../common/interfaces';
+
+import './Sectors.scss';
 
 interface GW2SectorsProps {
   sectors: Record<number, GW2ApiSector>;
 }
 
-function GW2Sectors(props: GW2SectorsProps) {
+export function GW2Sectors(props: GW2SectorsProps) {
   const map = useMap();
   const unproject = (pos: [number, number]) => {
     return map.unproject(pos, map.getMaxZoom());
@@ -34,7 +41,7 @@ function GW2Sectors(props: GW2SectorsProps) {
       <LayersControl.Overlay name="Sektor Namen" checked>
         <LayerGroup>
           {names.map((el, i) => (
-            <SectorText text={el[0]} coord={el[1]} key={i} />
+            <GW2MapText text={el[0]} coord={el[1]} key={i} />
           ))}
         </LayerGroup>
       </LayersControl.Overlay>
@@ -42,4 +49,18 @@ function GW2Sectors(props: GW2SectorsProps) {
   );
 }
 
-export default GW2Sectors;
+interface GW2MapTextProps {
+  text: string;
+  coord: LatLng;
+}
+
+export function GW2MapText(props: GW2MapTextProps) {
+  const { text, coord } = props;
+
+  const name = divIcon({
+    html: `<span>${text}</span>`,
+    className: 'gw2-map-text',
+  });
+
+  return <Marker position={coord} icon={name} zIndexOffset={-100} />;
+}

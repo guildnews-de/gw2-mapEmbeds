@@ -6,7 +6,7 @@ import {
 } from '@react-leaflet/core';
 import { TileEvent, tileLayer, type TileLayer } from 'leaflet';
 import { getBlobByKey, downloadTile, saveTile } from 'leaflet.offline';
-import { TileLayerProps } from 'react-leaflet';
+import type { TileLayerProps } from 'react-leaflet';
 
 type TileLayerOptions = ReturnType<typeof withPane>;
 

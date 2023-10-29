@@ -1,9 +1,6 @@
-import React, { Component, CSSProperties } from 'react';
+import React, { CSSProperties, useEffect } from 'react';
 import axios from 'axios';
-import { connect, ConnectedProps } from 'react-redux';
-import { Offcanvas, Spinner } from 'react-bootstrap';
-import LLContainer from './leaflet/MapContainer';
-//import { getStorageInfo, removeTile } from 'leaflet.offline';
+import { Offcanvas, OffcanvasProps, Spinner } from 'react-bootstrap';
 
 import {
   closeCanvas,
@@ -16,121 +13,102 @@ import {
   setTileDate,
   addActiveMap,
 } from '../redux/slice/mapSlice';
-import { MarkerEmbed } from '../App';
-import type { RootState } from '../redux/store';
-import OffcanvasToggle from './offcanvas/OffcanvasToggle';
-import OffcanvasDelete from './offcanvas/OffcanvasDelete';
-import DeleteModal from './offcanvas/DeleteModal';
-import { tilesURLDate } from '../constants';
+import { GW2MapContainer } from './leaflet/MapContainer';
+import {
+  DeleteModal,
+  DeleteButton,
+  OffcanvasWide,
+  OffcanvasToggle,
+} from './OffcanvasElements';
+import { tilesURLDate } from '../common/constants';
+import { useAppSelector, useAppDispatch } from '../redux/hooks';
+
+import type { MarkerEmbed } from '../common/interfaces';
 
 import './OffcanvasPanel.scss';
-import OffcanvasWide from './offcanvas/OffcanvasWide';
 
-const mapStateToProps = (state: RootState) => {
-  const { open, wide, loadLL } = state.app.canvas;
-  const { mapsLoaded, modal } = state.app;
-  const { loading } = state.api;
-  const ready = loading === false ? true : false;
-  return {
-    open: open,
-    wide: wide,
-    ready: ready,
-    mapsLoaded: mapsLoaded,
-    loadLL: loadLL,
-    modal: modal,
-  };
-};
-
-const mapDispatchToProps = {
-  setTileDate,
-  closeCanvas,
-  addActiveMap,
-  fetchMap,
-  setMapsLoaded,
-  activateLL,
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type ReduxOffcanvasProps = ConnectedProps<typeof connector>;
-
-interface OffcanvasPanelProps extends ReduxOffcanvasProps {
+interface OffcanvasPanelProps extends OffcanvasProps {
   dataset: MarkerEmbed['dataset'];
   className: string;
 }
 
-class OffcanvasPanel extends Component<OffcanvasPanelProps> {
-  constructor(props: OffcanvasPanelProps) {
-    super(props);
-    const { mapsLoaded, setTileDate, dataset } = props; // Props
-    const { fetchMap, addActiveMap, setMapsLoaded } = props; //Actions
+export function OffcanvasPanel(props: OffcanvasPanelProps) {
+  const dispatch = useAppDispatch();
 
-    if (!mapsLoaded && dataset.gw2mapIds) {
-      const ids = dataset.gw2mapIds.split(',');
-      ids.forEach((id) => {
-        const numID = Number(id);
-        fetchMap({ id: numID, lang: 'de' });
-        addActiveMap(numID);
-      });
+  const { open, wide, loadLL } = useAppSelector((state) => state.app.canvas);
+  const { mapsLoaded, modal } = useAppSelector((state) => state.app);
+  // const { loading } = useAppSelector((state) => state.api);
+  const { tileDate } = useAppSelector((state) => state.map);
+  const { dataset, className } = props;
 
+  const cls = wide ? `${className} wide` : className;
+  const style: CSSProperties = {
+    flexDirection: 'column',
+    justifyContent: 'center',
+  };
+
+  useEffect(() => {
+    if (!tileDate) {
       axios
         .get(tilesURLDate)
         .then(({ data }: { data: tileApiData }) => {
-          setTileDate(data);
+          dispatch(setTileDate(data));
         })
         .catch((err) => {
           console.error(err);
         });
-      setMapsLoaded();
     }
-  }
+  }, [dispatch, tileDate]);
 
-  componentDidMount(): () => void {
+  useEffect(() => {
+    if (!mapsLoaded && dataset.gw2mapIds) {
+      const ids = dataset.gw2mapIds.split(',');
+      ids.forEach((id) => {
+        const numID = Number(id);
+        dispatch(fetchMap({ id: numID, lang: 'de' }));
+        dispatch(addActiveMap(numID));
+      });
+      dispatch(setMapsLoaded());
+    }
+  }, [dispatch, mapsLoaded, dataset]);
+
+  useEffect(() => {
     const timeout = setTimeout(() => {
-      this.props.activateLL();
+      dispatch(activateLL());
     }, 3000);
 
     return () => clearTimeout(timeout);
-  }
+  }, [dispatch]);
 
-  render() {
-    const { open, wide, loadLL, closeCanvas, modal, className } = this.props;
-    const style: CSSProperties = {
-      flexDirection: 'column',
-      justifyContent: 'center',
-    };
-    const cls = wide ? `${className} wide` : className;
-    return (
-      <>
-        <DeleteModal show={modal} className={className} />
-        <OffcanvasToggle className={className + ' toggle-closed'} />
-        <Offcanvas
-          show={open}
-          scroll={true}
-          backdrop={false}
-          onHide={() => closeCanvas()}
-          placement="end"
-          className={cls}
-        >
-          <Offcanvas.Header style={style}>
-            <OffcanvasWide />
-            <OffcanvasToggle className="toggle-opened" />
-            <OffcanvasDelete />
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            {loadLL ? (
-              <LLContainer />
-            ) : (
-              <div className="offcanvas-spinner">
-                <Spinner animation="border" role="status">
-                  <span className="visually-hidden"></span>
-                </Spinner>
-              </div>
-            )}
-          </Offcanvas.Body>
-        </Offcanvas>
-      </>
-    );
-  }
+  return (
+    <>
+      <DeleteModal show={modal} className={className} />
+      <OffcanvasToggle className={className + ' toggle-closed'} />
+      <Offcanvas
+        show={open}
+        scroll={true}
+        backdrop={false}
+        onHide={() => dispatch(closeCanvas())}
+        placement="end"
+        className={cls}
+      >
+        <Offcanvas.Header style={style}>
+          <OffcanvasWide />
+          <OffcanvasToggle className="toggle-opened" />
+          <DeleteButton />
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          {loadLL ? (
+            <GW2MapContainer />
+          ) : (
+            <div className="offcanvas-spinner">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden"></span>
+              </Spinner>
+            </div>
+          )}
+        </Offcanvas.Body>
+      </Offcanvas>
+    </>
+  );
 }
-
-export default connector(OffcanvasPanel);

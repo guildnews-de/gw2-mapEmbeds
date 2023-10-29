@@ -4,73 +4,58 @@ import { Provider } from 'react-redux';
 import objectHash from 'object-hash';
 import store from './redux/store';
 
-import OffcanvasPanel from './components/OffcanvasPanel';
-import MarkerButton from './components/MarkerButton';
+import { OffcanvasPanel } from './components/OffcanvasPanel';
+// import MarkerButton from './components/MarkerButton';
+import { MarkerButton } from './components/MarkerButton';
+
+import type { MarkerEmbed } from './common/interfaces';
 
 import './App.scss';
 
-export interface MarkerEmbed extends Omit<HTMLElement, 'dataset'> {
-  dataset: {
-    gw2mapIds?: string;
-    gw2mapMarker?: string;
-    gw2mapColor?: string;
-    gw2mapMode?: string;
-  };
+export default function App() {
+  renderButtons();
+  renderOffcanvas();
 }
 
-class App {
-  static getHash(obj: unknown) {
-    return objectHash(JSON.stringify(obj)).substring(0, 8);
-  }
-
-  private targets: MarkerEmbed[];
-
-  private gw2mClass = 'gw2maps';
-
-  constructor() {
-    this.targets = Array.from(document.querySelectorAll('.gw2mapMarker'));
-    this.renderButtons();
-    this.renderOffcanvas();
-  }
-
-  renderButtons() {
-    if (!this.targets) {
-      return;
-    }
-    this.targets.forEach((element) => {
-      // element.removeAttribute('data-gw2-maps');
-      const { dataset } = element;
-      const keyHash = App.getHash(dataset);
-      const bRoot = createRoot(element);
-      bRoot.render(
-        <React.StrictMode>
-          <Provider store={store}>
-            <MarkerButton
-              hash={keyHash}
-              dataset={dataset}
-              className={this.gw2mClass}
-            />
-          </Provider>
-        </React.StrictMode>,
-      );
-    });
-  }
-  renderOffcanvas() {
-    const rootDiv = document.getElementById('gw2mapRoot') as MarkerEmbed;
-    if (!rootDiv) {
-      throw new Error('Object with ID "gw2mapRoot" not found!');
-    }
-    const { dataset } = rootDiv;
-
-    const root = createRoot(rootDiv);
-    root.render(
+function renderButtons() {
+  const gw2mClass = 'gw2maps';
+  const targets: MarkerEmbed[] = Array.from(
+    document.querySelectorAll('.gw2mapMarker'),
+  );
+  targets.forEach((element) => {
+    element.classList.remove('gw2mapMarker');
+    const { dataset } = element;
+    const keyHash = objectHash(JSON.stringify(dataset)).substring(0, 8);
+    const bRoot = createRoot(element);
+    bRoot.render(
       <React.StrictMode>
         <Provider store={store}>
-          <OffcanvasPanel dataset={dataset} className={this.gw2mClass} />
+          <MarkerButton
+            hash={keyHash}
+            dataset={dataset}
+            className={gw2mClass}
+          />
         </Provider>
       </React.StrictMode>,
     );
-  }
+  });
 }
 
-export default App;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function renderOffcanvas() {
+  const gw2mClass = 'gw2maps';
+  const rootDiv = document.getElementById('gw2mapRoot') as MarkerEmbed;
+  if (!rootDiv) {
+    throw new Error('Object with ID "gw2mapRoot" not found!');
+  }
+  const { dataset } = rootDiv;
+
+  const root = createRoot(rootDiv);
+  root.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <OffcanvasPanel dataset={dataset} className={gw2mClass} />
+      </Provider>
+    </React.StrictMode>,
+  );
+}

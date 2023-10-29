@@ -1,11 +1,12 @@
-import { LatLngExpression, LatLng } from 'leaflet';
 import React from 'react';
 import { useMapEvents } from 'react-leaflet';
 
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { setCurrent } from '../../redux/slice/markerSlice';
 
-function LocationMarker() {
+import type { LatLngExpression, LatLng } from 'leaflet';
+
+export function LocationMarker() {
   const dispatch = useAppDispatch();
   const map = useMapEvents({
     click(e) {
@@ -46,5 +47,3 @@ function LocationMarker() {
     </div>
   );
 }
-
-export default LocationMarker;

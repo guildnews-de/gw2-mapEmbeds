@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { PointTuple } from 'leaflet';
+import type { PointTuple } from 'leaflet';
 
 export interface mapState {
   bounds: [number, number];
@@ -45,8 +45,8 @@ export const mapSlice = createSlice({
       };
     },
     addActiveMap(state, action: PayloadAction<number>) {
-      const { activeMaps } = state;
-      if (activeMaps.includes(action.payload)) {
+      const activeMaps = state.activeMaps.slice();
+      if (activeMaps.indexOf(action.payload) != -1) {
         return state;
       }
       if (activeMaps.length === 1 && activeMaps[0] === 0) {
@@ -54,10 +54,12 @@ export const mapSlice = createSlice({
           ...state,
           activeMaps: [action.payload],
         };
+      } else {
+        activeMaps.push(action.payload);
       }
       return {
         ...state,
-        activeMaps: [...state.activeMaps, action.payload],
+        activeMaps: activeMaps,
       };
     },
   },
