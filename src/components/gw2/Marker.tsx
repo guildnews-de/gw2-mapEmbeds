@@ -86,7 +86,12 @@ export function PoiMarker(props: { markers: GW2ApiPoi[]; perm?: boolean }) {
       {markers.map((el, i) => (
         <DefaultMark
           gw2poi={
-            new GW2Point({ tupel: el.coord, name: el.name, type: el.type })
+            new GW2Point({
+              tupel: el.coord,
+              name: el.name,
+              type: el.type,
+              icon: el.icon,
+            })
           }
           perm={perm}
           key={i}
@@ -107,7 +112,7 @@ function DefaultMark(props: DefaultMarkProps) {
 
   return (
     <Marker
-      icon={LeafletIcon(gw2poi.type)}
+      icon={LeafletIcon(gw2poi)}
       position={map.unproject([gw2poi.x, gw2poi.y], map.getMaxZoom())}
     >
       {gw2poi.name && (
@@ -123,47 +128,52 @@ function DefaultMark(props: DefaultMarkProps) {
   );
 }
 
-function LeafletIcon(name = '') {
-  let png: string;
+function LeafletIcon(point: GW2Point) {
+  const { type, icon: iconURL } = point;
+  let link: string;
 
-  switch (name) {
-    case 'red':
-      png = star_red;
-      break;
-    case 'rose':
-      png = star_rose;
-      break;
-    case 'green':
-      png = star_green;
-      break;
-    case 'yellow':
-      png = star_yellow;
-      break;
-    case 'blue':
-      png = star_blue;
-      break;
-    case 'heart':
-      png = heart;
-      break;
-    case 'heropoint':
-      png = heropoint;
-      break;
-    case 'landmark':
-      png = landmark;
-      break;
-    case 'vista':
-      png = vista;
-      break;
-    case 'waypoint':
-      png = waypoint;
-      break;
-    default:
-      png = defaultIcon;
-      break;
+  if (iconURL) {
+    link = iconURL;
+  } else {
+    switch (type) {
+      case 'red':
+        link = star_red;
+        break;
+      case 'rose':
+        link = star_rose;
+        break;
+      case 'green':
+        link = star_green;
+        break;
+      case 'yellow':
+        link = star_yellow;
+        break;
+      case 'blue':
+        link = star_blue;
+        break;
+      case 'heart':
+        link = heart;
+        break;
+      case 'heropoint':
+        link = heropoint;
+        break;
+      case 'landmark':
+        link = landmark;
+        break;
+      case 'vista':
+        link = vista;
+        break;
+      case 'waypoint':
+        link = waypoint;
+        break;
+      default:
+        link = defaultIcon;
+        break;
+    }
   }
 
   return icon({
-    iconUrl: png,
+    iconUrl: link,
     iconSize: [32, 32],
     iconAnchor: [16, 16],
     popupAnchor: [0, -16],

@@ -5,16 +5,19 @@ export interface GW2PointProps {
   tupel: PointTuple;
   name?: string;
   type?: string;
+  icon?: string;
 }
 export class GW2Point extends Point {
   name: string;
   type: string;
+  icon: string;
   constructor(props: GW2PointProps) {
-    const { tupel, name, type } = props;
+    const { tupel, name, type, icon } = props;
     super(tupel[0], tupel[1]);
 
     this.name = name ? name : '';
     this.type = type ? type : 'default';
+    this.icon = icon ? icon : '';
   }
 
   toString() {

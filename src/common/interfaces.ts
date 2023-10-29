@@ -15,6 +15,7 @@ export interface GW2ApiPoi {
   type?: string;
   floor?: 1;
   chat_link?: string;
+  icon?: string;
 }
 
 export interface GW2ApiSector {
