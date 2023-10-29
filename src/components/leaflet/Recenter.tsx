@@ -14,8 +14,8 @@ const Recenter = ({ marker }: RecenterProps) => {
   //const [val1, val2] = newCenter;
 
   useEffect(() => {
-    const bounds = new Bounds(marker);
-    const center = bounds.getCenter();
+    const center =
+      marker.length === 1 ? marker[0] : new Bounds(marker).getCenter();
 
     map.setView(map.unproject(center, map.getMaxZoom()), 6);
   }, [marker, map]);

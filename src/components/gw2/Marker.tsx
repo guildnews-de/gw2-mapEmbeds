@@ -22,11 +22,12 @@ import './tooltip.scss';
 
 export function GuideMarker(props: { markers: GW2PointGroup; perm?: boolean }) {
   const map = useMap();
-  const { markers } = props;
+  const { markers, perm } = props;
+  const { points, mode } = markers;
   const LatLngPoints: LatLngExpression[] = [];
 
-  if (markers) {
-    markers.points.forEach((gw2Point) => {
+  if (points) {
+    points.forEach((gw2Point) => {
       LatLngPoints.push(
         map.unproject([gw2Point.x, gw2Point.y], map.getMaxZoom()),
       );
@@ -63,22 +64,22 @@ export function GuideMarker(props: { markers: GW2PointGroup; perm?: boolean }) {
 
   return (
     <>
-      {markers.mode === 'line' && (
+      {mode === 'line' && (
         <Polyline
-          pathOptions={pathPropsMod(markers.points[0].type)}
+          pathOptions={pathPropsMod(points[0].type)}
           positions={LatLngPoints}
           className="gw2Path"
         />
       )}
-      {markers.points.map((el, i) => (
-        <DefaultMark gw2poi={el} perm={props.perm} key={i} />
+      {points.map((el, i) => (
+        <DefaultMark gw2poi={el} perm={perm} key={i} />
       ))}
     </>
   );
 }
 
 export function PoiMarker(props: { markers: GW2ApiPoi[]; perm?: boolean }) {
-  const { markers } = props;
+  const { markers, perm } = props;
 
   return (
     <>
@@ -87,7 +88,7 @@ export function PoiMarker(props: { markers: GW2ApiPoi[]; perm?: boolean }) {
           gw2poi={
             new GW2Point({ tupel: el.coord, name: el.name, type: el.type })
           }
-          perm={props.perm}
+          perm={perm}
           key={i}
         />
       ))}

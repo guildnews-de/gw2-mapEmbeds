@@ -21,7 +21,7 @@ export function MarkerButton(props: MarkerButtonProps) {
   const { hash, dataset, className } = props;
 
   useEffect(() => {
-    if (!groupNames || groupNames?.indexOf(hash) != -1) {
+    if (!groupNames || groupNames?.indexOf(hash) === -1) {
       const { gw2mapMarker, gw2mapColor, gw2mapMode } = dataset;
       const type = gw2mapColor ? gw2mapColor : 'blue';
 
