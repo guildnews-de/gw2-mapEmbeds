@@ -78,25 +78,32 @@ export function GuideMarker(props: { markers: GW2PointGroup; perm?: boolean }) {
   );
 }
 
-export function PoiMarker(props: { markers: GW2ApiPoi[]; perm?: boolean }) {
+export function PoiMarker(props: {
+  markers: Record<number, GW2ApiPoi>;
+  perm?: boolean;
+}) {
   const { markers, perm } = props;
 
   return (
     <>
-      {markers.map((el, i) => (
-        <DefaultMark
-          gw2poi={
-            new GW2Point({
-              tupel: el.coord,
-              name: el.name,
-              type: el.type,
-              icon: el.icon,
-            })
-          }
-          perm={perm}
-          key={i}
-        />
-      ))}
+      {Object.entries(markers).forEach((entry, i) => {
+        const poi = entry[1];
+        const { coord, name, type, icon } = poi;
+        return (
+          <DefaultMark
+            gw2poi={
+              new GW2Point({
+                tupel: coord,
+                name: name,
+                type: type,
+                icon: icon,
+              })
+            }
+            perm={perm}
+            key={i}
+          />
+        );
+      })}
     </>
   );
 }

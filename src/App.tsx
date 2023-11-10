@@ -41,7 +41,6 @@ function renderButtons() {
   });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function renderOffcanvas() {
   const gw2mClass = 'gw2maps';
   const rootDiv = document.getElementById('gw2mapRoot') as MarkerEmbed;

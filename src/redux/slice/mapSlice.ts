@@ -4,7 +4,11 @@ import type { PointTuple } from 'leaflet';
 
 export interface mapState {
   bounds: [number, number];
-  center: PointTuple;
+  markView: [PointTuple, PointTuple];
+  dragView: [PointTuple, PointTuple];
+  dragged: boolean;
+  recenter: boolean;
+  // wait: boolean;
   activeMaps: number[];
   tileDate: number;
 }
@@ -16,7 +20,17 @@ export interface tileApiData {
 
 const initState: mapState = {
   bounds: [81920, 114688],
-  center: [40960, 57344],
+  markView: [
+    [0, 0],
+    [40960, 57344],
+  ],
+  dragView: [
+    [1, 1],
+    [1, 1],
+  ],
+  dragged: false,
+  recenter: true,
+  // wait: false,
   activeMaps: [0],
   tileDate: 0,
 };
@@ -31,12 +45,36 @@ export const mapSlice = createSlice({
         bounds: action.payload,
       };
     },
-    setCenter(state, action: PayloadAction<PointTuple>) {
+    setMarkView(state, action: PayloadAction<[PointTuple, PointTuple]>) {
       return {
         ...state,
-        center: action.payload,
+        markView: action.payload,
       };
     },
+    setDragView(state, action: PayloadAction<[PointTuple, PointTuple]>) {
+      return {
+        ...state,
+        dragView: action.payload,
+      };
+    },
+    setDragged(state, action: PayloadAction<boolean>) {
+      return {
+        ...state,
+        dragged: action.payload,
+      };
+    },
+    setRecenter(state, action: PayloadAction<boolean>) {
+      return {
+        ...state,
+        recenter: action.payload,
+      };
+    },
+    // setWait(state, action: PayloadAction<boolean>) {
+    //   return {
+    //     ...state,
+    //     wait: action.payload,
+    //   };
+    // },
     setTileDate(state, action: PayloadAction<tileApiData>) {
       const { date } = action.payload;
       return {
@@ -65,6 +103,13 @@ export const mapSlice = createSlice({
   },
 });
 
-export const { setBounds, setCenter, setTileDate, addActiveMap } =
-  mapSlice.actions;
+export const {
+  setBounds,
+  setMarkView,
+  setDragView,
+  setDragged,
+  setRecenter,
+  setTileDate,
+  addActiveMap,
+} = mapSlice.actions;
 export default mapSlice.reducer;

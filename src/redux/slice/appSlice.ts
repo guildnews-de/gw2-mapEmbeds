@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface appState {
   mapsLoaded: boolean;
@@ -7,6 +8,7 @@ export interface appState {
     open: boolean;
     wide: boolean;
     loadLL: boolean;
+    delayed: boolean;
   };
 }
 
@@ -17,6 +19,7 @@ const initState: appState = {
     open: false,
     wide: false,
     loadLL: false,
+    delayed: false,
   },
 };
 
@@ -31,6 +34,7 @@ export const appSlice = createSlice({
         canvas: {
           ...state.canvas,
           open: !open,
+          delayed: !open,
         },
       };
     },
@@ -40,6 +44,7 @@ export const appSlice = createSlice({
         canvas: {
           ...state.canvas,
           open: true,
+          delayed: true,
         },
       };
     },
@@ -49,6 +54,16 @@ export const appSlice = createSlice({
         canvas: {
           ...state.canvas,
           open: false,
+          delayed: false,
+        },
+      };
+    },
+    setDelayed(state, action: PayloadAction<boolean>) {
+      return {
+        ...state,
+        canvas: {
+          ...state.canvas,
+          delayed: action.payload,
         },
       };
     },
@@ -91,6 +106,7 @@ export const {
   toggleCanvas,
   openCanvas,
   closeCanvas,
+  setDelayed,
   toggleWide,
   setMapsLoaded,
   activateLL,

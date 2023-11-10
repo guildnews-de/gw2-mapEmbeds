@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Button, Modal, type ModalProps } from 'react-bootstrap';
 import { getStorageInfo, removeTile } from 'leaflet.offline';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,10 +12,16 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { toggleModal, toggleWide, toggleCanvas } from '../redux/slice/appSlice';
+import {
+  toggleModal,
+  toggleWide,
+  toggleCanvas,
+  setDelayed,
+} from '../redux/slice/appSlice';
 import { tilesURL } from '../common/constants';
 
 import './OffcanvasElements.scss';
+import { setRecenter } from '../redux/slice/mapSlice';
 
 export function DeleteModal(props: ModalProps) {
   const dispatch = useAppDispatch();
@@ -98,18 +104,35 @@ interface OffcanvasToggleProps {
 }
 
 export function OffcanvasToggle(props: OffcanvasToggleProps) {
-  const { open } = useAppSelector((state) => state.app.canvas);
+  const { open, delayed } = useAppSelector((state) => state.app.canvas);
   const dispatch = useAppDispatch();
 
   const { className } = props;
   const arrow = !open ? faArrowLeft : faArrowRight;
+
+  useMemo(() => {
+    if (open && delayed) {
+      dispatch(setDelayed(false));
+      const timeout = setTimeout(() => {
+        dispatch(setRecenter(true));
+        console.debug('Delayed "setRecenter" done...');
+      }, 300);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [dispatch, open, delayed]);
 
   return (
     <Button
       className={`offcanvas-toggle ${className}`}
       variant="secondary"
       size="sm"
-      onClick={() => dispatch(toggleCanvas())}
+      onClick={() => {
+        dispatch(toggleCanvas());
+        // if (open) {
+        // dispatch(setWait(true));
+        // }
+      }}
     >
       <FontAwesomeIcon icon={arrow} />
       <br />

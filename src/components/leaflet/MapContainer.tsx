@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { MapContainer, Pane, LayerGroup, LayersControl } from 'react-leaflet';
 import { CRS, LatLng } from 'leaflet';
 
@@ -7,7 +7,7 @@ import { GW2Tiles } from '../GW2Tiles';
 import { GW2Sectors } from '../gw2/Sectors';
 import { GuideMarker, PoiMarker } from '../gw2/Marker';
 import { LocationMarker } from './LocationMarker';
-import Recenter from './Recenter';
+import { MapCenter, MarkerBounds } from './MapCenter';
 
 import type { GW2ApiPoi, GW2ApiSector } from '../../common/interfaces';
 
@@ -23,28 +23,26 @@ export function GW2MapContainer() {
   const marker =
     groups && active && groups[active] ? groups[active] : undefined;
 
-  const mapData = {
-    poi: {} as Record<number, GW2ApiPoi>,
-    sectors: {} as Record<number, GW2ApiSector>,
-  };
-  activeMaps.forEach((id) => {
-    if (apiData[id] != undefined) {
-      const { poi, sectors } = apiData[id];
-      mapData.poi = {
-        ...mapData.poi,
-        ...poi,
-      };
-      mapData.sectors = {
-        ...mapData.sectors,
-        ...sectors,
-      };
-    }
-  });
-
-  const poiArray: GW2ApiPoi[] = [];
-  Object.entries(mapData.poi).forEach((entry) => {
-    poiArray.push(entry[1]);
-  });
+  const mapData = useMemo(() => {
+    const stack = {
+      poi: {} as Record<number, GW2ApiPoi>,
+      sectors: {} as Record<number, GW2ApiSector>,
+    };
+    activeMaps.forEach((id) => {
+      if (apiData[id] != undefined) {
+        const { poi, sectors } = apiData[id];
+        stack.poi = {
+          ...stack.poi,
+          ...poi,
+        };
+        stack.sectors = {
+          ...stack.sectors,
+          ...sectors,
+        };
+      }
+    });
+    return stack;
+  }, [activeMaps, apiData]);
 
   return (
     <MapContainer
@@ -72,16 +70,17 @@ export function GW2MapContainer() {
           )}
         </Pane>
         {mapData.sectors && <GW2Sectors sectors={mapData.sectors} />}
-        {poiArray.length > 0 && (
+        {Object.keys(mapData.poi).length > 0 && (
           <LayersControl.Overlay name="Land Marker" checked>
             <LayerGroup>
-              <PoiMarker markers={poiArray} />
+              <PoiMarker markers={mapData.poi} />
             </LayerGroup>
           </LayersControl.Overlay>
         )}
       </LayersControl>
       <LocationMarker />
-      {marker && <Recenter marker={marker.points} />}
+      {marker && <MarkerBounds marker={marker.points} />}
+      {<MapCenter />}
     </MapContainer>
   );
 }

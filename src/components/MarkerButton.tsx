@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
 import { Button, ButtonProps } from 'react-bootstrap';
 
 import { openCanvas } from '../redux/slice/appSlice';
-import { pushMarker, setMarker, wipeCurrent } from '../redux/slice/markerSlice';
+import { pushMarker, setMarker } from '../redux/slice/markerSlice';
 import { GW2Point, GW2PointGroup } from '../common/classes';
 
 import type { MarkerEmbed } from '../common/interfaces';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
+import { setDragged } from '../redux/slice/mapSlice';
 
 interface MarkerButtonProps extends ButtonProps {
   hash: string;
@@ -62,7 +62,7 @@ export function MarkerButton(props: MarkerButtonProps) {
       onClick={() => {
         dispatch(setMarker(hash));
         dispatch(openCanvas());
-        dispatch(wipeCurrent());
+        dispatch(setDragged(false));
       }}
       className={className}
     >
