@@ -63,7 +63,7 @@ export function GW2Tiles(props: GW2TilesProps) {
   return (
     <CachedTileLayer
       attribution={`Data and Imagery: &copy; <a href="https://www.arena.net/" target="_blank">ArenaNet</a></br> 
-                    Additional imagery by: <a href="https://blog.thatshaman.com/" target="_blank">that_shaman</a>`}
+                    Additional imagery by: <a href="https://thatshaman.com/" target="_blank">that_shaman</a>`}
       url={tilesURL}
       minZoom={1}
       maxZoom={8}
