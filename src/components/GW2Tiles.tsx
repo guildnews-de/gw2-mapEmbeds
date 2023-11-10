@@ -14,7 +14,7 @@ interface GW2TilesProps {
 export function GW2Tiles(props: GW2TilesProps) {
   const map = useMap();
   const unproject = (point: PointExpression) => {
-    return map.unproject(point, map.getMaxZoom());
+    return map.unproject(point, map.getMaxZoom() - 1);
   };
 
   // Get max bound of whole leaflet map
@@ -66,7 +66,8 @@ export function GW2Tiles(props: GW2TilesProps) {
                     Additional imagery by: <a href="https://blog.thatshaman.com/" target="_blank">that_shaman</a>`}
       url={tilesURL}
       minZoom={1}
-      maxZoom={7}
+      maxZoom={8}
+      maxNativeZoom={7}
       noWrap={true}
       bounds={maxBounds}
       subdomains={['1', '2', '3', '4']}

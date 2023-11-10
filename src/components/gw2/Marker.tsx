@@ -29,7 +29,7 @@ export function GuideMarker(props: { markers: GW2PointGroup; perm?: boolean }) {
   if (points) {
     points.forEach((gw2Point) => {
       LatLngPoints.push(
-        map.unproject([gw2Point.x, gw2Point.y], map.getMaxZoom()),
+        map.unproject([gw2Point.x, gw2Point.y], map.getMaxZoom() - 1),
       );
     });
   }
@@ -120,7 +120,7 @@ function DefaultMark(props: DefaultMarkProps) {
   return (
     <Marker
       icon={LeafletIcon(gw2poi)}
-      position={map.unproject([gw2poi.x, gw2poi.y], map.getMaxZoom())}
+      position={map.unproject([gw2poi.x, gw2poi.y], map.getMaxZoom() - 1)}
     >
       {gw2poi.name && (
         <Tooltip

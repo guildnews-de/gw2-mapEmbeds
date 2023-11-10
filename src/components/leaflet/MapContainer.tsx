@@ -51,7 +51,7 @@ export function GW2MapContainer() {
       zoom={2}
       center={new LatLng(0, 0)}
       minZoom={1}
-      maxZoom={7}
+      maxZoom={8}
       doubleClickZoom={false}
     >
       <GW2Tiles bounds={bounds} />

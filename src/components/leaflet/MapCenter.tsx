@@ -27,7 +27,7 @@ export function MapCenter() {
 
   const setView = useCallback(() => {
     const bounds = map.getBounds();
-    const zoom = map.getMaxZoom();
+    const zoom = map.getMaxZoom() - 1;
     const llMin = bounds.getNorthWest();
     const llMax = bounds.getSouthEast();
 
@@ -61,11 +61,11 @@ export function MapCenter() {
       const [topLeft, bottomRight] = view;
       console.debug('Flying to: ' + JSON.stringify(view));
       if (new Point(topLeft[0], topLeft[1]).equals(refPoint)) {
-        map.flyTo(map.unproject(bottomRight, map.getMaxZoom()));
+        map.flyTo(map.unproject(bottomRight, map.getMaxZoom() - 1));
       } else {
         const latlngBounds = new LatLngBounds(
-          map.unproject(topLeft, map.getMaxZoom()),
-          map.unproject(bottomRight, map.getMaxZoom()),
+          map.unproject(topLeft, map.getMaxZoom() - 1),
+          map.unproject(bottomRight, map.getMaxZoom() - 1),
         );
         map.flyToBounds(latlngBounds);
       }

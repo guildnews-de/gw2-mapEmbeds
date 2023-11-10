@@ -18,7 +18,7 @@ interface GW2SectorsProps {
 export function GW2Sectors(props: GW2SectorsProps) {
   const map = useMap();
   const unproject = (pos: [number, number]) => {
-    return map.unproject(pos, map.getMaxZoom());
+    return map.unproject(pos, map.getMaxZoom() - 1);
   };
   const lines: LatLng[][] = [];
   const names: [string, LatLng][] = [];

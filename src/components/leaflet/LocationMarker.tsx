@@ -17,7 +17,7 @@ export function LocationMarker() {
   });
 
   const project = (LatLng: LatLngExpression) => {
-    return map.project(LatLng, map.getMaxZoom());
+    return map.project(LatLng, map.getMaxZoom() - 1);
   };
 
   const posCopy = async (text: string) => {
