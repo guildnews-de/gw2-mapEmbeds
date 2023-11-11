@@ -20,6 +20,7 @@
 # production
 /build
 package.tgz
+dist/
 
 # misc
 .DS_Store
