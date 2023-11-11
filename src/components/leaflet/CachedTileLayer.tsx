@@ -31,7 +31,7 @@ export function leafletOfflineLayer(
       .then((blob) => {
         if (blob) {
           tile.src = URL.createObjectURL(blob);
-          //console.debug(`Loaded ${url} from idb`);
+          // console.debug(`Loaded ${url} from idb`);
           return;
         }
         tile.src = url;

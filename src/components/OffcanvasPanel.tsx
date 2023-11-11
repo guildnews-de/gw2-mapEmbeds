@@ -6,6 +6,7 @@ import {
   closeCanvas,
   setMapsLoaded,
   activateLL,
+  setDebug,
 } from '../redux/slice/appSlice';
 import { fetchMap } from '../redux/slice/apiSlice';
 import {
@@ -23,23 +24,24 @@ import {
 import { tilesURLDate } from '../common/constants';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 
-import type { MarkerEmbed } from '../common/interfaces';
+import type { MapsInitEmbed } from '../common/interfaces';
 
 import './OffcanvasPanel.scss';
 
 interface OffcanvasPanelProps extends OffcanvasProps {
-  dataset: MarkerEmbed['dataset'];
+  dataset: MapsInitEmbed['dataset'];
   className: string;
 }
 
 export function OffcanvasPanel(props: OffcanvasPanelProps) {
   const dispatch = useAppDispatch();
 
+  const { dataset, className } = props;
+  dataset.gw2mapDebug && dispatch(setDebug(true));
+
   const { open, wide, loadLL } = useAppSelector((state) => state.app.canvas);
   const { mapsLoaded, modal } = useAppSelector((state) => state.app);
-  // const { loading } = useAppSelector((state) => state.api);
   const { tileDate } = useAppSelector((state) => state.map);
-  const { dataset, className } = props;
 
   const cls = wide ? `${className} wide` : className;
   const style: CSSProperties = {

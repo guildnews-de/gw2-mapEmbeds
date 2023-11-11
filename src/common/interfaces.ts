@@ -9,6 +9,14 @@ export interface MarkerEmbed extends Omit<HTMLElement, 'dataset'> {
   };
 }
 
+export interface MapsInitEmbed extends Omit<HTMLElement, 'dataset'> {
+  dataset: {
+    gw2mapIds?: string;
+    gw2mapLang?: string;
+    gw2mapDebug?: boolean;
+  };
+}
+
 export interface GW2ApiPoi {
   name: string;
   coord: PointTuple;

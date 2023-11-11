@@ -25,6 +25,7 @@ import { setRecenter } from '../redux/slice/mapSlice';
 
 export function DeleteModal(props: ModalProps) {
   const dispatch = useAppDispatch();
+  const { debug } = useAppSelector((state) => state.app);
 
   async function clearTiles() {
     const tiles = await getStorageInfo(tilesURL);
@@ -43,7 +44,7 @@ export function DeleteModal(props: ModalProps) {
       }),
     );
     if (count > 0) {
-      console.debug(count + ' GW2 tiles manually cleaned...');
+      debug && console.debug(count + ' GW2 tiles manually cleaned...');
     }
   }
 
@@ -105,6 +106,7 @@ interface OffcanvasToggleProps {
 
 export function OffcanvasToggle(props: OffcanvasToggleProps) {
   const { open, delayed } = useAppSelector((state) => state.app.canvas);
+  const { debug } = useAppSelector((state) => state.app);
   const dispatch = useAppDispatch();
 
   const { className } = props;
@@ -115,12 +117,12 @@ export function OffcanvasToggle(props: OffcanvasToggleProps) {
       dispatch(setDelayed(false));
       const timeout = setTimeout(() => {
         dispatch(setRecenter(true));
-        console.debug('Delayed "setRecenter" done...');
+        debug && console.debug('Delayed "setRecenter" done...');
       }, 300);
 
       return () => clearTimeout(timeout);
     }
-  }, [dispatch, open, delayed]);
+  }, [dispatch, open, delayed, debug]);
 
   return (
     <Button

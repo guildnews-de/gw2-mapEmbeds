@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import { LatLngBounds, type PointExpression, type PointTuple } from 'leaflet';
 import { getStorageInfo, removeTile } from 'leaflet.offline';
@@ -23,42 +23,46 @@ export function GW2Tiles(props: GW2TilesProps) {
   const maxBounds = new LatLngBounds(unproject([0, 0]), unproject([Lat, Lng]));
   map.setMaxBounds(maxBounds);
 
-  const apiDate = useAppSelector((state) => state.map.tileDate);
-  const wide = useAppSelector((state) => state.app.canvas.wide);
+  const { debug } = useAppSelector((state) => state.app);
+  const { tileDate } = useAppSelector((state) => state.map);
+  const { wide } = useAppSelector((state) => state.app.canvas);
+
+  const cleanTileCache = useCallback(
+    async (tileDate: number) => {
+      const tiles = await getStorageInfo(tilesURL);
+      let count = 0;
+      await Promise.all(
+        tiles.map((tile) => {
+          debug && console.debug(tile.createdAt + '  ' + tileDate);
+          if (tile.createdAt < tileDate) {
+            removeTile(tile.key).catch((err) => {
+              console.error(err);
+            });
+            count++;
+          } else {
+            Promise.resolve().catch((err) => {
+              console.error(err);
+            });
+          }
+        }),
+      );
+      if (count > 0) {
+        debug && console.debug(count + ' old GW2 map tiles cleaned...');
+      }
+    },
+    [debug],
+  );
 
   useEffect(() => {
-    cleanTileCache(apiDate).catch((err) => {
+    cleanTileCache(tileDate).catch((err) => {
       console.error(err);
     });
     map.invalidateSize();
-  }, [apiDate, map, wide]);
+  }, [tileDate, map, wide, cleanTileCache]);
 
   useEffect(() => {
     map.invalidateSize();
   }, [map, wide]);
-
-  const cleanTileCache = async (apiDate: number) => {
-    const tiles = await getStorageInfo(tilesURL);
-    let count = 0;
-    await Promise.all(
-      tiles.map((tile) => {
-        //console.debug(tile.createdAt + '  ' + apiDate);
-        if (tile.createdAt < apiDate) {
-          removeTile(tile.key).catch((err) => {
-            console.error(err);
-          });
-          count++;
-        } else {
-          Promise.resolve().catch((err) => {
-            console.error(err);
-          });
-        }
-      }),
-    );
-    if (count > 0) {
-      console.debug(count + ' old GW2 map tiles cleaned...');
-    }
-  };
 
   return (
     <CachedTileLayer

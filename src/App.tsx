@@ -8,7 +8,7 @@ import { OffcanvasPanel } from './components/OffcanvasPanel';
 // import MarkerButton from './components/MarkerButton';
 import { MarkerButton } from './components/MarkerButton';
 
-import type { MarkerEmbed } from './common/interfaces';
+import type { MapsInitEmbed, MarkerEmbed } from './common/interfaces';
 
 import './App.scss';
 
@@ -43,7 +43,7 @@ function renderButtons() {
 
 function renderOffcanvas() {
   const gw2mClass = 'gw2maps';
-  const rootDiv = document.getElementById('gw2mapRoot') as MarkerEmbed;
+  const rootDiv = document.getElementById('gw2mapRoot') as MapsInitEmbed;
   if (!rootDiv) {
     throw new Error('Object with ID "gw2mapRoot" not found!');
   }

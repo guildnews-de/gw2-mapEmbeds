@@ -10,6 +10,7 @@ export interface appState {
     loadLL: boolean;
     delayed: boolean;
   };
+  debug: boolean;
 }
 
 const initState: appState = {
@@ -21,6 +22,7 @@ const initState: appState = {
     loadLL: false,
     delayed: false,
   },
+  debug: false,
 };
 
 export const appSlice = createSlice({
@@ -99,6 +101,12 @@ export const appSlice = createSlice({
         modal: !modal,
       };
     },
+    setDebug(state, action: PayloadAction<boolean>) {
+      return {
+        ...state,
+        debug: action.payload,
+      };
+    },
   },
 });
 
@@ -111,5 +119,6 @@ export const {
   setMapsLoaded,
   activateLL,
   toggleModal,
+  setDebug,
 } = appSlice.actions;
 export default appSlice.reducer;

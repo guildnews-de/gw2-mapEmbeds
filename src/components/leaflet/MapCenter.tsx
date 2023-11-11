@@ -18,6 +18,7 @@ export function MapCenter() {
   const { dragView, markView, dragged, recenter } = useAppSelector(
     (state) => state.map,
   );
+  const { debug } = useAppSelector((state) => state.app);
   const map = useMap();
 
   const view = useMemo(() => {
@@ -41,12 +42,12 @@ export function MapCenter() {
       [min.x, min.y],
       [max.x, max.y],
     ];
-    console.debug('View set (d): ' + JSON.stringify(view));
+    debug && console.debug('View set (d): ' + JSON.stringify(view));
     dispatch(setDragView(view));
     if (dragged === false) {
       dispatch(setDragged(true));
     }
-  }, [dispatch, map, dragged]);
+  }, [dispatch, map, dragged, debug]);
 
   useEffect(() => {
     map.on('dragend', setView);
@@ -59,7 +60,7 @@ export function MapCenter() {
     if (recenter && open) {
       const refPoint = new Point(0, 0);
       const [topLeft, bottomRight] = view;
-      console.debug('Flying to: ' + JSON.stringify(view));
+      debug && console.debug('Flying to: ' + JSON.stringify(view));
       if (new Point(topLeft[0], topLeft[1]).equals(refPoint)) {
         map.flyTo(map.unproject(bottomRight, map.getMaxZoom() - 1));
       } else {
@@ -71,13 +72,14 @@ export function MapCenter() {
       }
       dispatch(setRecenter(false));
     }
-  }, [map, view, recenter, dispatch, open]);
+  }, [map, view, recenter, dispatch, open, debug]);
 
   return <>{/* <MarkerBounds marker={marker} /> */}</>;
 }
 
 export function MarkerBounds({ marker }: { marker: GW2Point[] }) {
   const dispatch = useAppDispatch();
+  const { debug } = useAppSelector((state) => state.app);
 
   useMemo(() => {
     if (marker.length === 1) {
@@ -87,7 +89,7 @@ export function MarkerBounds({ marker }: { marker: GW2Point[] }) {
         [Math.round(x * 1.001), Math.round(y * 1.001)],
       ];
       dispatch(setMarkView(view));
-      console.debug('View set (1): ' + JSON.stringify(view));
+      debug && console.debug('View set (1): ' + JSON.stringify(view));
     } else {
       const bounds = new Bounds(marker);
       const min = bounds.getTopLeft();
@@ -97,8 +99,8 @@ export function MarkerBounds({ marker }: { marker: GW2Point[] }) {
         [max.x, max.y],
       ];
       dispatch(setMarkView(view));
-      console.debug('View set (n): ' + JSON.stringify(view));
+      debug && console.debug('View set (n): ' + JSON.stringify(view));
     }
-  }, [dispatch, marker]);
+  }, [dispatch, marker, debug]);
   return <></>;
 }
