@@ -1,7 +1,7 @@
 {
   "name": "gw2-map-embeds",
   "description": "Guild Wars 2 maps using Leaflet.js with offline cached tiles",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "main": "dist/gw2-map-embeds.js",
   "types": "dist/@types/index.d.ts",
   "files": [
