@@ -83,26 +83,27 @@ export function PoiMarker(props: {
   perm?: boolean;
 }) {
   const { markers, perm } = props;
+  const points: GW2Point[] = [];
+
+  if (markers) {
+    Object.entries(markers).forEach((entry) => {
+      const poi = entry[1];
+      const { coord, name, type, icon } = poi;
+      const point = new GW2Point({
+        tupel: coord,
+        name: name,
+        type: type,
+        icon: icon,
+      });
+      points.push(point);
+    });
+  }
 
   return (
     <>
-      {Object.entries(markers).forEach((entry, i) => {
-        const poi = entry[1];
-        const { coord, name, type, icon } = poi;
-        return (
-          <DefaultMark
-            gw2poi={
-              new GW2Point({
-                tupel: coord,
-                name: name,
-                type: type,
-                icon: icon,
-              })
-            }
-            perm={perm}
-            key={i}
-          />
-        );
+      {points.map((el, i) => {
+        console.log('Poi: ' + JSON.stringify(points));
+        return <DefaultMark gw2poi={el} perm={perm} key={i} />;
       })}
     </>
   );
