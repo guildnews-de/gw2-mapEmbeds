@@ -37,10 +37,13 @@ export function OffcanvasPanel(props: OffcanvasPanelProps) {
   const dispatch = useAppDispatch();
 
   const { dataset, className } = props;
-  dataset.gw2mapDebug && dispatch(setDebug(true));
+  const { mapsLoaded, modal, debug } = useAppSelector((state) => state.app);
+
+  dataset.gw2mapDebug !== 'false' &&
+    debug === false &&
+    dispatch(setDebug(true));
 
   const { open, wide, loadLL } = useAppSelector((state) => state.app.canvas);
-  const { mapsLoaded, modal } = useAppSelector((state) => state.app);
   const { tileDate } = useAppSelector((state) => state.map);
 
   const cls = wide ? `${className} wide` : className;

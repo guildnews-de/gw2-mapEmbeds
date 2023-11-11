@@ -33,8 +33,8 @@ export function GW2Tiles(props: GW2TilesProps) {
       let count = 0;
       await Promise.all(
         tiles.map((tile) => {
-          debug && console.debug(tile.createdAt + '  ' + tileDate);
           if (tile.createdAt < tileDate) {
+            debug && console.debug(tile.createdAt + '  ' + tileDate);
             removeTile(tile.key).catch((err) => {
               console.error(err);
             });

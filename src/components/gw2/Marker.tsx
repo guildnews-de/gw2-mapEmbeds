@@ -102,7 +102,6 @@ export function PoiMarker(props: {
   return (
     <>
       {points.map((el, i) => {
-        console.log('Poi: ' + JSON.stringify(points));
         return <DefaultMark gw2poi={el} perm={perm} key={i} />;
       })}
     </>

@@ -13,7 +13,7 @@ export interface MapsInitEmbed extends Omit<HTMLElement, 'dataset'> {
   dataset: {
     gw2mapIds?: string;
     gw2mapLang?: string;
-    gw2mapDebug?: boolean;
+    gw2mapDebug?: string;
   };
 }
 
