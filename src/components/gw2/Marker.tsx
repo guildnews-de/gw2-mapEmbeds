@@ -155,6 +155,7 @@ function LeafletIcon(point: GW2Point) {
       case 'yellow':
         link = star_yellow;
         break;
+      case 'default': // Fallback for old name scheme
       case 'blue':
         link = star_blue;
         break;
