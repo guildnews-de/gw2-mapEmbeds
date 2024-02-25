@@ -23,6 +23,9 @@ const config = {
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
   },
+  performance: {
+    maxAssetSize: 512000,
+  },
 };
 
 module.exports = () => {
