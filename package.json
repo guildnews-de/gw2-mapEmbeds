@@ -7,7 +7,7 @@
   "files": [
     "dist"
   ],
-  "packageManager": "yarn@3.5.1",
+  "packageManager": "yarn@4.1.0",
   "scripts": {
     "start": "react-scripts start",
     "prepare": "yarn build",
