@@ -59,7 +59,9 @@ const CSSLoader = {
   ],
 };
 
-module.exports = {
-  TSLoader: TSLoader,
-  CSSLoader: CSSLoader,
+const AssetLoader = {
+  test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+  type: 'asset/resource',
 };
+
+module.exports = [TSLoader, CSSLoader, AssetLoader];
