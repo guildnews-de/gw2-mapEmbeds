@@ -5,51 +5,47 @@ import { openCanvas } from '../redux/slice/appSlice';
 import { pushMarker, setMarker } from '../redux/slice/markerSlice';
 import { GW2Point, GW2PointGroup } from '../common/classes';
 
-import type { MarkerEmbed } from '../common/interfaces';
+import type { MarkerEmbedData } from '../common/interfaces';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import { setDragged } from '../redux/slice/mapSlice';
 
 interface MarkerButtonProps extends ButtonProps {
   hash: string;
-  dataset: MarkerEmbed['dataset'];
+  elementData: MarkerEmbedData;
   className: string;
 }
 
 export function MarkerButton(props: MarkerButtonProps) {
   const dispatch = useAppDispatch();
   const { active, groupNames } = useAppSelector((state) => state.marker);
-  const { hash, dataset, className } = props;
+  const { hash, elementData, className } = props;
 
   useEffect(() => {
     if (!groupNames || groupNames?.indexOf(hash) === -1) {
-      const { gw2mapMarker, gw2mapColor, gw2mapMode } = dataset;
-      const type = gw2mapColor ? gw2mapColor : 'blue';
+      const { marker, color, mode } = elementData;
 
       const points: GW2Point[] = [];
-      const rawArray = gw2mapMarker?.split(';');
-      rawArray?.forEach((string) => {
+      marker.forEach((string) => {
         const childArray = string.split(',');
         if (childArray.length >= 3) {
-          const x = Number(childArray[1]);
-          const y = Number(childArray[2]);
-          if (Number.isNaN(x) || Number.isNaN(y)) {
-            points.push(
-              new GW2Point({ tupel: [0, 0], name: childArray[0], type: type }),
-            );
-          } else {
-            points.push(
-              new GW2Point({ tupel: [x, y], name: childArray[0], type: type }),
-            );
-          }
+          const [name = '', x = '2', y = '2'] = childArray;
+
+          points.push(
+            new GW2Point({
+              tupel: [Number(x), Number(y)],
+              name: name,
+              type: color,
+            }),
+          );
         }
       });
       const group = new GW2PointGroup({
         points: points,
-        mode: gw2mapMode,
+        mode: mode,
       });
       dispatch(pushMarker([hash, group]));
     }
-  }, [dispatch, groupNames, dataset, hash]);
+  }, [dispatch, groupNames, elementData, hash]);
 
   const onText = 'Karte zeigen';
   const offText = 'jetzt sichtbar';

@@ -1,13 +1,14 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import objectHash from 'object-hash';
+import { MD5 } from 'object-hash';
 import store from './redux/store';
 
 import { OffcanvasPanel } from './components/OffcanvasPanel';
 // import MarkerButton from './components/MarkerButton';
 import { MarkerButton } from './components/MarkerButton';
 
+import { MarkerEmbedData } from './common/interfaces';
 import type { MapsInitEmbed, MarkerEmbed } from './common/interfaces';
 
 import './App.scss';
@@ -24,15 +25,16 @@ function renderButtons() {
   );
   targets.forEach((element) => {
     element.classList.remove('gw2mapMarker');
-    const { dataset } = element;
-    const keyHash = objectHash(JSON.stringify(dataset)).substring(0, 8);
-    const bRoot = createRoot(element);
-    bRoot.render(
+    // const { dataset } = element;
+    const elementData = new MarkerEmbedData(element.dataset);
+    const keyHash = MD5(elementData);
+    const btnRoot = createRoot(element);
+    btnRoot.render(
       <React.StrictMode>
         <Provider store={store}>
           <MarkerButton
             hash={keyHash}
-            dataset={dataset}
+            elementData={elementData}
             className={gw2mClass}
           />
         </Provider>

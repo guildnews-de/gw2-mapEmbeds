@@ -1,5 +1,22 @@
 import type { PointTuple } from 'leaflet';
 
+export class MarkerEmbedData {
+  marker: string[];
+  color: string;
+  mode: string;
+  constructor(props: MarkerEmbed['dataset']) {
+    const {
+      gw2mapMarker = '1,1',
+      gw2mapColor = 'blue',
+      gw2mapMode = 'points',
+    } = props;
+
+    this.marker = gw2mapMarker?.split(';');
+    this.color = gw2mapColor;
+    this.mode = gw2mapMode;
+  }
+}
+
 export interface MarkerEmbed extends Omit<HTMLElement, 'dataset'> {
   dataset: {
     gw2mapIds?: string;
@@ -20,7 +37,7 @@ export interface MapsInitEmbed extends Omit<HTMLElement, 'dataset'> {
 export interface GW2ApiPoi {
   name: string;
   coord: PointTuple;
-  type?: string;
+  type: string;
   floor?: 1;
   chat_link?: string;
   icon?: string;
