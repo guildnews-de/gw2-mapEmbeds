@@ -24,24 +24,24 @@ import {
 import { tilesURLDate } from '../common/constants';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 
-import type { MapsInitEmbed } from '../common/interfaces';
+import type { MapsInitEmbedData } from '../common/interfaces';
 
 import './OffcanvasPanel.scss';
 
 interface OffcanvasPanelProps extends OffcanvasProps {
-  dataset: MapsInitEmbed['dataset'];
+  elementData: MapsInitEmbedData;
   className: string;
 }
 
 export function OffcanvasPanel(props: OffcanvasPanelProps) {
   const dispatch = useAppDispatch();
 
-  const { dataset, className } = props;
+  const { elementData, className } = props;
   const { mapsLoaded, modal, debug } = useAppSelector((state) => state.app);
 
-  dataset.gw2mapDebug !== 'false' &&
-    debug === false &&
+  if (elementData.debug && debug === false) {
     dispatch(setDebug(true));
+  }
 
   const { open, wide, loadLL } = useAppSelector((state) => state.app.canvas);
   const { tileDate } = useAppSelector((state) => state.map);
@@ -66,8 +66,8 @@ export function OffcanvasPanel(props: OffcanvasPanelProps) {
   }, [dispatch, tileDate]);
 
   useEffect(() => {
-    if (!mapsLoaded && dataset.gw2mapIds) {
-      const ids = dataset.gw2mapIds.split(',');
+    const { ids } = elementData;
+    if (ids.length > 0 && !mapsLoaded) {
       ids.forEach((id) => {
         const numID = Number(id);
         dispatch(fetchMap({ id: numID, lang: 'de' }));
@@ -75,7 +75,7 @@ export function OffcanvasPanel(props: OffcanvasPanelProps) {
       });
       dispatch(setMapsLoaded());
     }
-  }, [dispatch, mapsLoaded, dataset]);
+  }, [dispatch, mapsLoaded, elementData]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {

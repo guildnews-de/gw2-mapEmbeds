@@ -12,7 +12,7 @@
     "start": "react-scripts start",
     "prepare": "yarn build",
     "test": "yarn format && yarn lint && tsc --noEmit",
-    "format": "prettier -w src",
+    "format": "prettier -l -w src",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "types": "yarn tsc --emitDeclarationOnly --declaration --declarationDir dist/@types --skiplibCheck",
     "build:dev": "webpack --config webpack/webpack.config.js --mode=development",

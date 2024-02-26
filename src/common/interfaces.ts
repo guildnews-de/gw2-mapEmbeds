@@ -26,6 +26,23 @@ export interface MarkerEmbed extends Omit<HTMLElement, 'dataset'> {
   };
 }
 
+export class MapsInitEmbedData {
+  ids: string[];
+  lang: string;
+  debug: boolean;
+  constructor(props: MapsInitEmbed['dataset']) {
+    const { gw2mapIds = '', gw2mapLang = 'de', gw2mapDebug = 'false' } = props;
+
+    if (gw2mapIds != '') {
+      this.ids = gw2mapIds.split(',');
+    } else {
+      this.ids = [];
+    }
+    this.lang = gw2mapLang;
+    this.debug = gw2mapDebug === 'true' ? true : false;
+  }
+}
+
 export interface MapsInitEmbed extends Omit<HTMLElement, 'dataset'> {
   dataset: {
     gw2mapIds?: string;

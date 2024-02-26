@@ -8,7 +8,7 @@ import { OffcanvasPanel } from './components/OffcanvasPanel';
 // import MarkerButton from './components/MarkerButton';
 import { MarkerButton } from './components/MarkerButton';
 
-import { MarkerEmbedData } from './common/interfaces';
+import { MapsInitEmbedData, MarkerEmbedData } from './common/interfaces';
 import type { MapsInitEmbed, MarkerEmbed } from './common/interfaces';
 
 import './App.scss';
@@ -45,17 +45,16 @@ function renderButtons() {
 
 function renderOffcanvas() {
   const gw2mClass = 'gw2maps';
-  const rootDiv = document.getElementById('gw2mapRoot') as MapsInitEmbed;
-  if (!rootDiv) {
+  const element = document.getElementById('gw2mapRoot') as MapsInitEmbed;
+  if (!element) {
     throw new Error('Object with ID "gw2mapRoot" not found!');
   }
-  const { dataset } = rootDiv;
-
-  const root = createRoot(rootDiv);
+  const elementData = new MapsInitEmbedData(element.dataset);
+  const root = createRoot(element);
   root.render(
     <React.StrictMode>
       <Provider store={store}>
-        <OffcanvasPanel dataset={dataset} className={gw2mClass} />
+        <OffcanvasPanel elementData={elementData} className={gw2mClass} />
       </Provider>
     </React.StrictMode>,
   );
